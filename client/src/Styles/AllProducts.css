@@ -1,0 +1,308 @@
+.all-products-container {
+  display: flex;
+  gap: 2rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid #ccc;
+  margin-top: calc(var(--header-height) + 2rem);
+}
+
+.filter-sidebar {
+  position: sticky;
+  min-width: 250px;
+  top: calc(var(--header-height) + 2rem);
+  max-width: 300px;
+  height: calc(100vh - var(--header-height) + 2rem);
+  overflow-y: auto;
+}
+
+.sidebar-title {
+  font-size: var(--h3-font-size);
+  margin-bottom: var(--mb-1);
+  font-weight: var(--font-medium);
+  color: var(--title-color);
+}
+
+label {
+  display: block;
+  font-weight: var(--font-normal);
+  margin-bottom: var(--mb-0-5);
+  cursor: pointer;
+}
+
+.filter-dropdown {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: var(--mb-1);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: var(--normal-font-size);
+  background: #fff;
+}
+
+/* Product Section */
+.product-section {
+  flex-grow: 1;
+  padding: 1rem;
+}
+
+/* Product Header */
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--h2-font-size);
+  margin-bottom: var(--mb-1-5);
+}
+
+.product-sort {
+  font-size: var(--normal-font-size);
+  padding: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: var(--body-color);
+}
+
+/* Product Grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* Adjusting layout for larger screens */
+@media (min-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--mb-1);
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+}
+
+.pagination button:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination button.active {
+  background-color: #000;
+  color: #fff;
+  font-weight: var(--font-semi-bold);
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.products-item-img img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+}
+
+/* Responsive Sidebar */
+@media (max-width: 1024px) {
+  .filter-section {
+    width: 100%;
+    max-width: none;
+    position: static;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.filter-category {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.filter-title {
+  font-size: var(--normal-font-size);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.arrow {
+  font-size: var(--normal-font-size);
+  font-weight: var(--font-medium);
+}
+
+.filter-options {
+  margin-top: 10px;
+}
+
+.filter-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--normal-font-size);
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.filter-label input {
+  margin-right: var(--mb-0-75);
+}
+
+.item-count {
+  color: gray;
+  font-size: var(--normal-font-size);
+}
+
+.filter-checkbox-tick {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  accent-color: white;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--normal-font-size);
+}
+
+@media (max-width: 768px) {
+  .filter-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background: white;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    transform: translateX(-100%);
+  }
+
+  .filter-sidebar.active {
+    transform: translateX(0);
+  }
+
+  .filter-toggle-btn {
+    display: block;
+    padding: 10px 20px;
+    background: #000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+}
+
+/* Product Section */
+.product-section {
+  flex: 3;
+  width: 100%;
+}
+
+/* Product Grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border: 1px solid #000;
+  background: white;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: black;
+  color: white;
+}
+
+/* Hide filter toggle button on desktop */
+@media (min-width: 769px) {
+  .filter-toggle-btn {
+    display: none;
+  }
+}
+
+/* Mobile filter sidebar - Hidden by default */
+@media (max-width: 768px) {
+  .filter-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background: white;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 200; /* Ensure it's above other elements */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto; /* Allows scrolling */
+    padding: 20px;
+  }
+
+  /* Show sidebar when active */
+  .filter-sidebar.active {
+    transform: translateX(0);
+  }
+
+  /* Add an overlay background when filters are open */
+  .filter-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 150; /* Below the sidebar but above the rest */
+  }
+
+  .filter-overlay.active {
+    display: block;
+  }
+
+  /* Ensure the filter toggle button is above everything */
+  .filter-toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    padding: 10px 20px;
+    background: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 300;
+  }
+}

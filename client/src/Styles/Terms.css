@@ -1,0 +1,35 @@
+.terms {
+  align-items: center;
+  margin-top: calc(var(--header-height) + 2rem);
+}
+
+.terms-description {
+  padding: 0 4rem 0 0;
+  margin-bottom: var(--mb-1);
+}
+
+.highlight-text {
+  color: var(--title-color);
+  font-weight: var(--font-medium);
+}
+
+/* ---- BREAKPOINTS ---- */
+/* For large devices */
+@media screen and (max-width: 992px) {
+  .terms {
+    grid-template-columns: (2, 1fr);
+    row-gap: 2.5rem;
+  }
+
+  .terms-description {
+    text-align: left;
+    margin-bottom: 1rem;
+  }
+}
+
+/* For medium devices */
+@media screen and (max-width: 576px) {
+  .terms-description {
+    padding: 0;
+  }
+}

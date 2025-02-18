@@ -1,0 +1,239 @@
+import orderModel from "../models/orderModel.js";
+import UserModel from "../models/UserModel.js";
+import razorpay from "razorpay";
+import dotenv from "dotenv";
+import {
+  createOrder,
+  fetchAvailableCouriers,
+  assignCourier,
+  trackShipment,
+} from "../helpers/shiprocketHelper.js";
+dotenv.config();
+
+const razorpayInstance = new razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
+
+const updateStock = async (items) => {
+  const bulkOperations = [];
+
+  for (const item of items) {
+    bulkOperations.push({
+      updateOne: {
+        filter: { _id: item.productID, "sizes.size": item.size },
+        update: { $inc: { "sizes.$.stock": -item.quantity } },
+      },
+    });
+  }
+
+  if (bulkOperations.length > 0) {
+    await ProductModel.bulkWrite(bulkOperations);
+  }
+};
+
+// Placing orders using online payment method
+const placeOrderRazorpay = async (req, res) => {
+  try {
+    const { userId, items, amount, address } = req.body;
+    const orderData = {
+      userId,
+      items,
+      amount,
+      address,
+      paymentMethod: "Razorpay",
+      payment: false,
+      date: Date.now(),
+    };
+
+    const newOrder = new orderModel(orderData);
+    await newOrder.save();
+
+    const options = {
+      amount: amount * 100,
+      currency: "INR",
+      receipt: newOrder._id.toString(),
+    };
+
+    await razorpayInstance.orders.create(options, (error, order) => {
+      if (error) {
+        console.log(error);
+        return res.json({ success: false, message: error.message });
+      }
+      res.json({ success: true, order, message: "Order Placed Successfully" });
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const verifyRazorpay = async (req, res) => {
+  try {
+    const { userId, razorpay_order_id } = req.body;
+    const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id);
+    if (orderInfo.status === "paid") {
+      const order = await orderModel.findByIdAndUpdate(
+        orderInfo.receipt,
+        { payment: true },
+        { new: true }
+      );
+
+      await UserModel.findByIdAndUpdate(userId, { cartData: {} });
+      const shiprocketResponse = await createOrder(order);
+
+      if (shiprocketResponse && shiprocketResponse.order_id) {
+        const courierResponse = await fetchAvailableCouriers(order);
+        if (!courierResponse || !courierResponse.courier_company_id) {
+          return res.json({
+            success: false,
+            message: "No available courier found",
+          });
+        }
+        // Assign the courier to the shipment
+        const assignCourierResponse = await assignCourier(
+          shiprocketResponse.shipment_id,
+          courierResponse.courier_company_id
+        );
+        if (
+          !assignCourierResponse ||
+          assignCourierResponse.awb_assign_status !== 1
+        ) {
+          return res.json({
+            success: false,
+            message: "Failed to assign courier",
+          });
+        }
+        console.log("✅ Courier Assigned Successfully");
+
+        const awbCode = assignCourierResponse.response?.data?.awb_code;
+        console.log("🚀 AWB Code:", awbCode);
+        if (awbCode) {
+          await orderModel.findByIdAndUpdate(order._id, {
+            awbNumber: awbCode,
+            courierName: courierResponse.courier_name,
+            status: "Order Placed",
+          });
+        } else {
+          console.log("AWB Code not found in the response");
+          return res.json({
+            success: false,
+            message: "Failed to retrieve AWB Code",
+          });
+        }
+        // Track the shipment using the AWB number
+        const shipmentTracking = await trackShipment(awbCode);
+        console.log("Shipment tracking data:", shipmentTracking);
+        if (shipmentTracking) {
+          console.log("🚚 Shipment Tracking Info:", shipmentTracking);
+          await orderModel.findByIdAndUpdate(order._id, {
+            shipmentStatus: shipmentTracking.status,
+          });
+        }
+      }
+
+      // const pickupResponse = await schedulePickup(
+      //   shiprocketResponse.shipment_id,
+      //   order // Pass the order data to schedule pickup
+      // );
+      // if (!pickupResponse || !pickupResponse.pickup_scheduled_date) {
+      //   return res.json({
+      //     success: false,
+      //     message: "Failed to schedule pickup",
+      //   });
+      // }
+      // console.log(
+      //   "📦 Pickup Scheduled for:",
+      //   pickupResponse.pickup_scheduled_date
+      // );
+
+      res.json({
+        success: true,
+        message: "Payment Successful and Order Sent to Shiprocket",
+      });
+    } else {
+      res.json({ success: false, message: "Payment failed" });
+    }
+  } catch (error) {
+    console.error("❌ Error in verifyRazorpay:", error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+const trackOrderStatus = async (req, res) => {
+  try {
+    const { orderId } = req.body;
+
+    // Fetch order details from the database
+    const order = await orderModel.findById(orderId);
+    if (!order || !order.awbNumber) {
+      return res.json({
+        success: false,
+        message: "Order not found or AWB missing",
+      });
+    }
+
+    // Fetch shipment tracking data from Shiprocket
+    const trackingInfo = await trackShipment(order.awbNumber);
+    console.log("🚚 Shipment tracking response:", trackingInfo); // Debugging
+
+    if (!trackingInfo || !trackingInfo.tracking_data) {
+      return res.json({
+        success: false,
+        message: "Tracking information not available.",
+      });
+    }
+
+    const trackUrl = trackingInfo.tracking_data.track_url;
+    console.log("✅ Tracking URL:", trackUrl); // Debugging
+
+    res.json({ success: true, trackingInfo: trackingInfo.tracking_data });
+  } catch (error) {
+    console.error("❌ Error in trackOrderStatus:", error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// All orders for Admin Panel
+const allOrders = async (req, res) => {
+  try {
+    const orders = await orderModel.find({});
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// user orders data
+const userOrders = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const orders = await orderModel.find({ userId });
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// update order status from admin panel
+const updateStatus = async (req, res) => {
+  try {
+    const { orderId, status } = req.body;
+    await orderModel.findByIdAndUpdate(orderId, { status });
+    res.json({ success: true, message: "Status Updated Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export {
+  verifyRazorpay,
+  placeOrderRazorpay,
+  allOrders,
+  userOrders,
+  updateStatus,
+  trackOrderStatus,
+};
