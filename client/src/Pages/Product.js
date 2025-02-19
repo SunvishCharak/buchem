@@ -91,9 +91,12 @@ const Product = () => {
             {productData.price}
           </p>
           <div className="product-sizes">
-            <p className="size-label">
-              <SizeChartModal />
-            </p>
+            <div className="select-size-label">
+              <p className="size-label">Select Size</p>
+              <p className="size-label">
+                <SizeChartModal />
+              </p>
+            </div>
             <p className="size-label">
               <LengthChartModal />
             </p>

@@ -9,7 +9,7 @@ const NewArrivals = () => {
   const [NewArrivals, setNewArrivals] = useState([]);
 
   useEffect(() => {
-    setNewArrivals(products.slice(0, 8));
+    setNewArrivals(products.slice(0, 12));
   }, [products]);
 
   const navigate = useNavigate();

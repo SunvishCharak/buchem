@@ -10,7 +10,7 @@ const LengthChartModal = () => {
   return (
     <div>
       <button className="size-chart-btn" onClick={openModal}>
-        LengthChart
+        Length Guide
       </button>
 
       {isOpen && (

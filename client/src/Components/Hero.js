@@ -5,7 +5,7 @@ import Banner from "../Assets/Banner.jpg";
 const HeroSection = () => {
   return (
     <section className="hero-section " id="main">
-      <div>
+      <div className="hero-image">
         <img src={Banner} alt="Slide 1" className="hero-slide-image" />
       </div>
     </section>

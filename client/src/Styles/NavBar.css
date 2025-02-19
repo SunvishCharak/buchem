@@ -89,7 +89,7 @@
   left: -350px;
   width: 350px;
   height: 100vh;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: var(--body-color);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: left 0.3s ease-in-out;
   padding: 1.5rem 1rem;
@@ -189,11 +189,13 @@
 /* Responsive */
 @media (max-width: 768px) {
   .nav-icons > i {
+    color: black;
     display: none !important;
   }
 
   .nav-icons {
     gap: 4px;
+    color: var(--title-color);
   }
 
   .nav-icons .uil-user {
