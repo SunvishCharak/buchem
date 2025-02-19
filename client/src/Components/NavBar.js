@@ -76,12 +76,13 @@ const NavBar = () => {
             )}
           </div>
 
-          <NavLink to="/" className="nav-con-link">
+          <NavLink to="/" className="nav-icons">
             <i
               onClick={() => setShowSearch(true)}
               className="uil uil-search"
             ></i>
           </NavLink>
+
           <NavLink to="/wishlist" className="nav-icons">
             <i className="uil uil-heart"></i>
           </NavLink>
@@ -183,11 +184,12 @@ const NavBar = () => {
                     className="dropdown-text"
                     onClick={toggleMenu}
                   >
-                    Dresses
+                    Dress
                   </NavLink>
                 </li>
               </ul>
             )}
+
             <li>
               <NavLink
                 to="/Orders"
