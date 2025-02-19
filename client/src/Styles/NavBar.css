@@ -1,7 +1,7 @@
 /* NavBar.css */
 .header {
   width: 100%;
-  background-color: #f9d9e1;
+  background-color: var(--container-color);
   position: fixed;
   top: 0;
   left: 0;
@@ -191,12 +191,17 @@
   .nav-icons > i {
     display: none !important;
   }
-  .nav-icons .uil-search,
-  .nav-icons .uil-shopping-bag {
-    display: inline-block !important;
-  }
 
   .nav-icons {
     gap: 4px;
+  }
+
+  .nav-icons .uil-user {
+    display: none !important;
+  }
+
+  .nav-icons .uil-search,
+  .nav-icons .uil-shopping-bag {
+    display: inline-block !important;
   }
 }
