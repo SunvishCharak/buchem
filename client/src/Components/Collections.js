@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Collections = () => {
   return (
-    <section className="collections section" id="collections">
+    <section className="collections container" id="collections">
       <h2 className="section-title">Collections</h2>
       <div className="collections-container container grid">
         {[
