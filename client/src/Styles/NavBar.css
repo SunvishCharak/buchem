@@ -186,9 +186,14 @@
   display: block;
 }
 
+.nav-icons > i {
+    color: black;
+  }
+
 /* Responsive */
 @media (max-width: 768px) {
   .nav-icons > i {
+    color: black;
     display: none !important;
   }
 
