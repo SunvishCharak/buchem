@@ -1,4 +1,3 @@
-/* NavBar.css */
 .header {
   width: 100%;
   background-color: var(--container-color);
@@ -186,10 +185,6 @@
   display: block;
 }
 
-.nav-icons > i {
-    color: black;
-  }
-
 /* Responsive */
 @media (max-width: 768px) {
   .nav-icons > i {
@@ -199,6 +194,7 @@
 
   .nav-icons {
     gap: 4px;
+    color: var(--title-color);
   }
 
   .nav-icons .uil-user {
