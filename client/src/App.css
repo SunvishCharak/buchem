@@ -36,6 +36,7 @@
   --mb-2: 2rem;
   --mb-2-5: 2.5rem;
   --mb-3: 3rem;
+  --mb-4: 4rem;
 
   /* z index */
   --z-tooltip: 10;
@@ -80,7 +81,7 @@ body {
   color: var(--text-color);
   margin: 0;
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   transition: background-color 0.3s, color 0.3s;
   background-size: 200px 200px;
   background-position: 0 0;
@@ -187,8 +188,8 @@ img {
 }
 /* For medium devices */
 @media screen and (max-width: 768px) {
-  body {
-    margin: 0 0 var(--header-height) 0;
+  .footer {
+    bottom: 0;
   }
   .section {
     padding: 2rem 0 4rem;

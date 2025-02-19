@@ -13,6 +13,15 @@ const AllProducts = () => {
   const categoryFromUrl = queryParams.get("category");
   const [showFilters, setShowFilters] = useState(false);
 
+  const [sortOpen, setSortOpen] = useState(false);
+  const [selectedSort, setSelectedSort] = useState("");
+
+  const handleSort = (sortType) => {
+    setSelectedSort(sortType);
+    setSortType(sortType);
+    setSortOpen(false);
+  };
+
   const [selectedCategories, setSelectedCategories] = useState(
     categoryFromUrl ? [categoryFromUrl] : []
   );
@@ -38,7 +47,6 @@ const AllProducts = () => {
   );
   const productsPerPage = 15;
 
-  // Save filters & sorting to localStorage
   useEffect(() => {
     localStorage.setItem(
       "selectedCategories",
@@ -162,14 +170,10 @@ const AllProducts = () => {
   return (
     <div className="all-products-container container">
       {/* Filter Sidebar */}
-      <button
-        className="filter-toggle-btn"
-        onClick={() => setShowFilters(!showFilters)}
-      >
-        {showFilters ? "Hide Filters" : "Show Filters"}
-      </button>
-
       <div className={`filter-sidebar ${showFilters ? "active" : ""}`}>
+        <button className="close-btn" onClick={() => setShowFilters(false)}>
+          &times;
+        </button>
         <h2 className="sidebar-title">Filters</h2>
 
         {/* Category Filter */}
@@ -266,21 +270,40 @@ const AllProducts = () => {
           )}
         </div>
       </div>
+
       {/* Product Section */}
       <div className="product-section">
         <div className="product-header">
-          <h1 className="section-title">All Products</h1>
-          <select
-            value={sortType}
-            onChange={(e) => setSortType(e.target.value)}
-            className="product-sort"
-          >
-            <option value="">Sort by: Default</option>
-            <option value="low-high">Price: Low to High</option>
-            <option value="high-low">Price: High to Low</option>
-            <option value="new">Newly Added</option>
-            <option value="bestselling">Bestselling</option>
-          </select>
+          <div className="filter-controls">
+            <button
+              className="filter-toggle-btn"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              {showFilters ? "Hide Filters" : "Show Filters"}
+            </button>
+          </div>
+          <div className="sort-controls">
+            <div className="sort-dropdown">
+              <button
+                className="sort-button"
+                onClick={() => setSortOpen(!sortOpen)}
+              >
+                Sort by: {selectedSort || "Default"} ▾
+              </button>
+              {sortOpen && (
+                <ul className="sort-menu">
+                  <li onClick={() => handleSort("low-high")}>
+                    Price: Low to High
+                  </li>
+                  <li onClick={() => handleSort("high-low")}>
+                    Price: High to Low
+                  </li>
+                  <li onClick={() => handleSort("new")}>Newly Added</li>
+                  <li onClick={() => handleSort("bestselling")}>Bestselling</li>
+                </ul>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Product Grid */}

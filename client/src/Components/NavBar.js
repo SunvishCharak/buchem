@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, Suspense, lazy } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "../Styles/NavBar.css";
 import Logo from "./Logo.js";
+import { Link } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext.js";
 
 const SearchBar = lazy(() => import("./SearchBar.js"));
@@ -127,11 +128,7 @@ const NavBar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink
-                to="/new-arrivals"
-                className="side-menu-link"
-                onClick={toggleMenu}
-              >
+              <NavLink to="/products?new-arrivlas" className="side-menu-link">
                 New Arrivals
               </NavLink>
             </li>
@@ -153,38 +150,34 @@ const NavBar = () => {
               <ul className="dropdown-content">
                 <li>
                   <NavLink
-                    to="/shop/men"
+                    to="/products?category=dress"
                     className="dropdown-text"
-                    onClick={toggleMenu}
-                  >
-                    Dresses
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/shop/women"
-                    className="dropdown-text"
-                    onClick={toggleMenu}
-                  >
-                    Tops
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/shop/accessories"
-                    className="dropdown-text"
-                    onClick={toggleMenu}
-                  >
-                    Co-ords
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/shop/men"
-                    className="dropdown-text"
-                    onClick={toggleMenu}
                   >
                     Dress
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/products?category=Top"
+                    className="dropdown-text"
+                  >
+                    Top
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/products?category=skirts"
+                    className="dropdown-text"
+                  >
+                    Skirt
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/products?category=co-ords"
+                    className="dropdown-text"
+                  >
+                    Co-ords
                   </NavLink>
                 </li>
               </ul>

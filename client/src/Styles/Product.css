@@ -13,6 +13,7 @@
 .product-images {
   display: flex;
   gap: 12px;
+  justify-content: center;
 }
 
 .product-thumbnails {
