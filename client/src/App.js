@@ -8,6 +8,7 @@ import Home from "./Pages/Home.js";
 import Product from "./Pages/Product.js";
 import Cart from "./Pages/Cart.js";
 import Login from "./Pages/Login.js";
+import ProfilePage from "./Pages/MyProfile.js";
 import TermsConditions from "./Pages/Terms&Conditions.js";
 import Contact from "./Pages/ContactUs.js";
 import AllProducts from "./Pages/AllProducts.js";
@@ -30,6 +31,7 @@ const App = () => {
       <SearchBar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/MyProfile" element={<ProfilePage/>}/>
         <Route path="/product/:productName" element={<Product />} />
         <Route path="/about" element={<About />} />
         <Route path="/products" element={<AllProducts />} />
