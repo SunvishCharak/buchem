@@ -20,6 +20,28 @@ const ShopContextProvider = (props) => {
   const [shipmentStatus, setShipmentStatus] = useState(null);
   const [trackingNumber, setTrackingNumber] = useState("");
   const [estimatedDelivery, setEstimatedDelivery] = useState(null);
+  const [user, setUser] = useState(null);
+
+  const getUserProfile = async () => {
+    if (!token) return;
+    try {
+      const response = await axios.get(`${backendUrl}/api/user/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      if (response.data.success) {
+        setUser(response.data.user);
+      }
+    } catch (error) {
+      console.error("Failed to fetch user profile:", error);
+    }
+  };
+  
+    // Fetch user profile when token changes
+  useEffect(() => {
+    getUserProfile();
+  }, [token]);
+
 
   const saveCartToLocalStorage = (cart) => {
     localStorage.setItem("cartItems", JSON.stringify(cart));
@@ -306,6 +328,8 @@ const ShopContextProvider = (props) => {
   };
 
   const value = {
+    user,
+    setUser,
     products,
     currency,
     search,

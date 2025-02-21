@@ -66,7 +66,7 @@ const NavBar = () => {
                 onMouseLeave={() => setDropdownOpen(false)}
               >
                 <li>
-                  <NavLink to="/profile">My Profile</NavLink>
+                  <NavLink to="/MyProfile">My Profile</NavLink>
                 </li>
 
                 <li>

@@ -1,6 +1,6 @@
 import express from "express";
 import AdminAuth from "../middleware/AdminAuth.js";
-import authUser from "../middleware/auth.js";
+import {authUser} from "../middleware/auth.js";
 
 import {
   placeOrderRazorpay,
