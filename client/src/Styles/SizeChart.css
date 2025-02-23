@@ -20,6 +20,7 @@
   max-width: 600px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
+  overflow-x: auto; ;
 }
 
 .close-btn {
@@ -64,4 +65,24 @@
 
 .size-chart-btn:hover {
   color: var(--title-color-dark);
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%; /* Make modal fit better on mobile */
+    padding: 15px;
+  }
+
+  .size-chart {
+    overflow-x: auto;
+    display: block; /* Ensures scrolling works */
+  }
+
+  table {
+    font-size: 14px; /* Adjust font size for better readability */
+  }
+
+  th, td {
+    padding: 8px;
+  }
 }

@@ -1,70 +1,33 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { ShopContext } from "../context/ShopContext";
-import "../Styles/CartTotal.css";
 
 const CartTotal = () => {
-  const { currency, getCartAmount, delivery_fee, cartItems, products } =
-    useContext(ShopContext);
+  const { cart, currency } = useContext(ShopContext);
 
-  // Helper function to get product details by ID
-  const getProductDetails = (itemId) => {
-    return products.find((product) => product.name === itemId);
-  };
+  if (!cart || cart.length === 0) {
+    return <p>Your cart is empty.</p>;
+  }
+
+  // Calculate Total Price
+  const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
-    <div className="cart-total-container container">
-      <h2 className="section-title">Cart Total</h2>
-      <div className="cart-total-content">
-        {/* Loop through the cart items */}
-        {Object.keys(cartItems).map((itemId) => {
-          const product = getProductDetails(itemId);
-          return (
-            <div className="cart-item-checkout" key={itemId}>
-              {/* Product Image */}
-              <div className="cart-item-checkout-image">
-                <img src={product.image[0]} alt={product.name} />
-              </div>
-              {/* Product Details */}
-              <div className="cart-item-detail">
-                <p className="cart-item-checkout-name">{product.name}</p>
-                <p className="cart-item-checkout-price">
-                  {currency} {product.price}
-                </p>
-                <p className="cart-item-checkout-size">
-                  Size: {Object.keys(cartItems[itemId]).join(", ")}
-                </p>
-                <p className="cart-item-checkout-quantity">
-                  Quantity:{" "}
-                  {Object.values(cartItems[itemId]).reduce((a, b) => a + b, 0)}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-
-        <hr />
-        {/* Subtotal */}
-        <div className="cart-row">
-          <p>Subtotal</p>
-          <p>
-            {currency} {getCartAmount()}.00
-          </p>
+    <div className="cart-summary">
+      {cart.map((item, index) => (
+        <div key={index} className="cart-item">
+          <img 
+            src={item.image} 
+            alt={item.name} 
+            className="cart-item-image"
+          />
+          <p>{item.name}</p>
+          <p>Size: {item.size}</p>
+          <p>Qty: {item.quantity}</p>
+          <p>{currency}{item.price * item.quantity}</p>
         </div>
-        <hr />
-        {/* Shipping Fee */}
-        <div className="cart-row">
-          <p>Shipping</p>
-          <p>
-            {currency} {delivery_fee}
-          </p>
-        </div>
-        {/* Total */}
-        <div className="cart-row cart-total">
-          <b>Total</b>
-          <b>
-            {currency} {getCartAmount() + delivery_fee}.00
-          </b>
-        </div>
+      ))}
+      <div className="cart-total">
+        <strong>Total: {currency}{totalPrice}</strong>
       </div>
     </div>
   );

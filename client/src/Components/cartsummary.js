@@ -1,8 +1,12 @@
 import React, { useContext } from "react";
 import { ShopContext } from "../context/ShopContext";
 
-const CartSummary = () => {
+const CartSummary = ({cartData}) => {
   const { currency, getCartAmount, delivery_fee } = useContext(ShopContext);
+
+  if(cartData.length === 0) {
+    return null;
+  }
 
   return (
     <div className="cart-summary">
