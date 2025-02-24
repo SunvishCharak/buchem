@@ -41,7 +41,9 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  white-space: nowrap;
 }
+
 
 .size-chart th,
 .size-chart td {
@@ -64,4 +66,17 @@
 
 .size-chart-btn:hover {
   color: var(--title-color-dark);
+}
+
+@media (max-width: 600px){
+  .size-chart th,
+  .size-chart td{
+    font-size: 12px;
+    padding : 6px;
+  }
+
+  .modal-content{
+    width : 95%;
+    max-width: 400px;
+  }
 }
