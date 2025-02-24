@@ -28,6 +28,19 @@ const NavBar = () => {
     setCartItems({});
   };
 
+  const [scrolling, setScrolling] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolling(window.scrollY > 50); // Hide announcement bar when scrolling down
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
@@ -42,7 +55,13 @@ const NavBar = () => {
   }
 
   return (
-    <header className="header">
+    <header className={`header ${scrolling ? "shrink-nav": ""}`}>
+            {/* Announcement Bar */}
+            <div className={`announcement-bar ${scrolling ? "hide-announcement" : ""}`}>
+        <p>🔥 Limited Time Offer: Get 20% OFF on your first order! 🔥</p>
+      </div>
+
+
       <nav className="nav container">
         {/* Hamburger Menu */}
         <div className="nav-toggle" onClick={toggleMenu}>

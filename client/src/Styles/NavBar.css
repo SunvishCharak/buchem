@@ -13,6 +13,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: height 0.3s ease-in-out;
+  
 }
 
 .nav-toggle {
@@ -208,3 +210,28 @@
     display: inline-block !important;
   }
 }
+
+.announcement-bar {
+  background-color: #ae71ae;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Hide Announcement Bar When Scrolling */
+.hide-announcement {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Shrink Navbar when scrolling */
+.shrink-nav .nav {
+  height: 60px;
+  padding: 15px;
+}
+

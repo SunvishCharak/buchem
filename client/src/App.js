@@ -21,24 +21,17 @@ import Wishlist from "./Pages/wishlist.js";
 import Account from "./Pages/Account.js";
 import PrivacyPolicy from "./Pages/PrivacyPolicy.js";
 import ScrollToTop from "./Components/scrolltotop.js";
-import AnnouncementBar from "./Components/AnnouncementBar.js";
-import {useEffect} from "react";
-const App = () => {
-  const location = useLocation();
 
-  useEffect(() => {
-    if (location.pathname === "/") {
-      document.documentElement.style.setProperty("--header-offset", "40px"); // Adjust based on your announcement bar height
-    } else {
-      document.documentElement.style.setProperty("--header-offset", "0px");
-    }
-  }, [location.pathname]);
+const App = () => {
+  
+
+ 
 
   return (
     <div className="App">
       <ScrollToTop />
       <ToastContainer />
-      {location.pathname == "/" && <AnnouncementBar/>}
+      
       <NavBar />
       <SearchBar />
       <Routes>
