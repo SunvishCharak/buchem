@@ -1,8 +1,9 @@
 .header {
   width: 100%;
   background-color: var(--container-color);
+  top: var(--header-offset, 0);
   position: fixed;
-  top: 0;
+  top: 10;
   left: 0;
   z-index: var(--z-fixed);
 }
