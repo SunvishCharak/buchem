@@ -27,7 +27,11 @@ const Cart = () => {
       }
       setCartData(tempData);
     }
+
   }, [cartItems, products]);
+
+  console.log("Cart Data:", cartData);
+  console.log("Products:", products);
 
   return (
     <div className="cart-container container">
@@ -36,14 +40,19 @@ const Cart = () => {
         {cartData.map((item, index) => {
           const productData = products.find(
             (product) => product.name === item._id
+            
+
           );
 
           return (
             <div key={index} className="cart-item">
               <div className="cart-item-details">
+                {productData ? (
+                  <>
+                 
                 <img
                   className="cart-item-image"
-                  src={productData.image[0]}
+                  src={productData.image[0] || "fallback-image.jpg"}
                   alt=""
                 />
                 <div>
@@ -56,6 +65,10 @@ const Cart = () => {
                     <p className="cart-item-size">{item.size}</p>
                   </div>
                 </div>
+                </>
+                ):(
+                 <p>Product not found</p> 
+                )}
               </div>
               <QuantitySelector
                 quantity={item.quantity}

@@ -35,6 +35,11 @@ const NavBar = () => {
   const toggleShopDropdown = () => {
     setShopDropdownOpen(!isShopDropdownOpen);
   };
+   
+
+  const sideMenu = () => {
+    const isLoggedIn = localStorage.getItem("userToken");
+  }
 
   return (
     <header className="header">
@@ -105,14 +110,17 @@ const NavBar = () => {
         <ul className="side-menu-items">
           <div className="side-menu-top">
             <li>
-              <NavLink
-                to="/Login"
-                className="side-menu-login"
-                onClick={toggleMenu}
-              >
-                <i class="uil uil-user"></i>
-                <span className="side-menu-login-text">Login</span>
-              </NavLink>
+            {token ? (
+           <NavLink to="/MyProfile" className="side-menu-login" onClick={toggleMenu}>
+           <i className="uil uil-user"></i>
+           <span className="side-menu-login-text">Account</span>
+           </NavLink>
+             ) : (
+         <NavLink to="/Login" className="side-menu-login" onClick={toggleMenu}>
+          <i className="uil uil-user"></i>
+           <span className="side-menu-login-text">Login</span>
+            </NavLink>
+             )}
             </li>
             <li>
               <div className="close-menu" onClick={toggleMenu}>
