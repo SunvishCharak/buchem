@@ -120,3 +120,21 @@
   margin-top: var(--mb-2);
   padding: 0.75rem 2rem;
 }
+
+/* empty message */
+.empty-cart {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.empty-cart p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.empty-cart-image {
+  width: 150px;
+  margin-bottom: 10px;
+}

@@ -4,8 +4,8 @@ import "../Styles/SizeChart.css";
 const LengthChartModal = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+  const openModal = () => {setIsOpen(true);}
+  const closeModal = () => {setIsOpen(false);}
 
   return (
     <div>

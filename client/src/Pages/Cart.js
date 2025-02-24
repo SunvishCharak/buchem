@@ -36,12 +36,23 @@ const Cart = () => {
   return (
     <div className="cart-container container">
       <h2 className="section-title">Your Cart</h2>
-      <div>
+      
+
+        {/* Display message when cart is empty */}
+       {cartData.length === 0 ? (
+       <div className="empty-cart">
+         
+         <p>Your cart is empty</p>
+       </div>
+
+       ):(
+        <>
+
+        <div>
         {cartData.map((item, index) => {
           const productData = products.find(
             (product) => product.name === item._id
             
-
           );
 
           return (
@@ -102,6 +113,8 @@ const Cart = () => {
           </div>
         </div>
       </div>
+      </>
+       )}
     </div>
   );
 };
