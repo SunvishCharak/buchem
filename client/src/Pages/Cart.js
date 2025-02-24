@@ -6,6 +6,7 @@ import QuantitySelector from "../Components/QuantitySelector.js";
 import "../Styles/Cart.css";
 import CartSummary from "../Components/cartsummary.js";
 
+
 const Cart = () => {
   const { products, currency, cartItems, updateQuantity, navigate } =
     useContext(ShopContext);

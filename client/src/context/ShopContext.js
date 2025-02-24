@@ -138,16 +138,20 @@ const ShopContextProvider = (props) => {
   const getUserCart = async (token) => {
     try {
       const response = await axios.post(
-        backendUrl + "/api/cart/get",
+        `${backendUrl}/api/getUserCart/get`,
         {},
-        { headers: { token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (response.data.success) {
         setCartItems(response.data.cartData);
-      }
+       } else{
+        toast.error(response.data.message);
+       }
+
+
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      console.log("Error fetching cart:", error.response?.data || error.message);
+      toast.error(error.response?.data?.message || "Failed to fetch cart");
     }
   };
 
