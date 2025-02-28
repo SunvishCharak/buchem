@@ -91,7 +91,7 @@
   left: -350px;
   width: 350px;
   height: 100vh;
-  background-color: var(--body-color);
+  background-color: hsl(0, 0%, 96%);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: left 0.3s ease-in-out;
   padding: 1.5rem 1rem;
@@ -212,8 +212,8 @@
 }
 
 .announcement-bar {
-  background-color: #ae71ae;
-  color: white;
+  background-color: #ecd0ec;
+  color: black;
   text-align: center;
   padding: 10px;
   font-size: 14px;
@@ -233,5 +233,9 @@
 .shrink-nav .nav {
   height: 60px;
   padding: 15px;
+}
+
+.announcement-bar p {
+  font-weight: 500;
 }
 

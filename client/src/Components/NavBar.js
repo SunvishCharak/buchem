@@ -58,7 +58,7 @@ const NavBar = () => {
     <header className={`header ${scrolling ? "shrink-nav": ""}`}>
             {/* Announcement Bar */}
             <div className={`announcement-bar ${scrolling ? "hide-announcement" : ""}`}>
-        <p>🔥 Limited Time Offer: Get 20% OFF on your first order! 🔥</p>
+        <p> Limited Time Offer: Get 20% OFF on your first order! </p>
       </div>
 
 
