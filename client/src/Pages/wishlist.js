@@ -7,7 +7,7 @@ const Wishlist = ({smallView = false}) => {
   const { wishlist, addToCart, removeFromWishlist, getUserWishlist } =
     useContext(ShopContext);
 
-  console.log("Wishlist Data:", wishlist);
+  
 
   const handleRemoveFromWishlist = async (itemId) => {
     await removeFromWishlist(itemId);
@@ -36,8 +36,8 @@ const Wishlist = ({smallView = false}) => {
                   price={item.price}
                   className="wishlist-product"
                 />
-                <button onClick={() => addToCart(item._id)}>Add to Cart</button>
-                <button onClick={() => handleRemoveFromWishlist(item._id)}>
+                <button onClick={() => addToCart(item._id)} className="wishlist-add-to-cart">Add to Cart</button>
+                <button onClick={() => handleRemoveFromWishlist(item._id)} className="wishlist-remove">
                   Remove
                 </button>
               </div>
