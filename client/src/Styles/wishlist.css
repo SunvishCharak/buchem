@@ -69,6 +69,7 @@
 }
 
 .wishlist-item .wishlist-add-to-cart {
+  width: 100%;
   padding: 8px 12px;
   font-size: 14px;
   font-weight: bold;
@@ -89,6 +90,7 @@
 }
 
 .wishlist-item .wishlist-remove {
+  width: 100%;
   padding: 8px 12px;
   font-size: 14px;
   font-weight: bold;
