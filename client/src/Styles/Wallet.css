@@ -1,0 +1,81 @@
+/* Wallet.css */
+.wallet-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .wallet-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .wallet-balance {
+    font-size: 1.7rem;
+    color: #47785c;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .wallet-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 10px
+
+  }
+  
+  .wallet-button{
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    /* transition: background 0.3s ease; */
+    justify-content: space-between;
+  }
+  
+  .wallet-button.add-money {
+    background: linear-gradient(135deg, #759cb8, #ad82e1);
+    color: white;
+    padding: 15px 20px;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: none;
+    font-size: 1.3rem;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .wallet-button.add-money:hover {
+    background: linear-gradient(135deg, #759cb8, #ad82e1);
+    transform: scale(1.05);
+     box-shadow: 0 5px 10px rgba(52, 152, 219, 0.3); 
+  }
+  
+  /* .wallet-button.withdraw {
+    background: #e74c3c;
+    color: white;
+  }
+  
+  .wallet-button.withdraw:hover {
+    background: #c0392b;
+  } */
+
+  .transaction-history {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #555;
+}
+
+.enter-amount-tab{
+  height: 40px;
+}
+  

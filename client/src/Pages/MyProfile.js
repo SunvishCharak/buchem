@@ -3,6 +3,7 @@ import Wishlist from "./wishlist";
 import Orders from "./Orders";
 import { ShopContext } from "../context/ShopContext";
 import "../Styles/MyProfile.css"; // Import the CSS file
+import Wallet from "../Components/Wallet";
 
 const ProfilePage = () => {
   const { user } = useContext(ShopContext); // Get user data from context
@@ -11,7 +12,7 @@ const ProfilePage = () => {
   return (
     <div className="profile-container">
       {user ? (
-        <div className="profile-content">
+        <div className="profile-content container">
           <div className="profile-header">
             <img
               src={user.profilePicture || "/default-avatar.png"}
@@ -38,12 +39,22 @@ const ProfilePage = () => {
             >
               Orders
             </button>
+
+            <button 
+              className={`tab-button ${tabIndex === 2 ? "active" : ""}`} 
+              onClick={() => setTabIndex(2)}
+            >
+              Wallet
+            </button>
+          
           </div>
 
           <div className="tab-content">
             {tabIndex === 0 && <Wishlist smallView={true}/>}
             {tabIndex === 1 && <Orders />}
+            {tabIndex === 2 && <Wallet balance={user.walletBalance || 0}/>}
           </div>
+
         </div>
       ) : (
         <p className="loading-text">Loading...</p>
