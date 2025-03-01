@@ -1,6 +1,11 @@
-const express = require("express");
-const Wallet = require("../models/walletModel");
-const authMiddleware = require("../middleware/auth"); // Middleware for authentication
+// const express = require("express");
+// const Wallet = require("../models/walletModel");
+// const authMiddleware = require("../middleware/auth"); // Middleware for authentication
+
+import express from "express";
+import Wallet from "../models/walletModel.js";
+import {protect as authMiddleware} from "../middleware/auth.js";
+
 const router = express.Router();
 
 // 🟢 Fetch User Wallet Balance
@@ -64,4 +69,4 @@ router.post("/deduct-money", authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -9,6 +9,7 @@ import userRouter from "./routes/UserRoute.js";
 import productRouter from "./routes/ProductRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import wishlistRouter from "./routes/wishlistRoute.js";
+import walletRouter from "./routes/walletRoute.js";
 
 // app setup
 const app = express();
@@ -27,6 +28,7 @@ app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/wishlist", wishlistRouter);
+app.use("/api/wallet", walletRouter);
 
 app.get("/", (req, res) => {
   res.send("API is Working...");

@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "../Styles/Wallet.css";
+import { ShopContext } from "../context/ShopContext";
 
 const Wallet = () => {
   const [balance, setBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
   const [amount, setAmount] = useState("");
+
+  const {backendUrl} = useContext(ShopContext);
 
   useEffect(() => {
     fetchWalletBalance();
@@ -13,13 +16,14 @@ const Wallet = () => {
 
   const fetchWalletBalance = async () => {
     try {
-      const res = await axios.get("/api/wallet/balance", {
+      const res = await axios.get(`${backendUrl}/api/wallet/balance`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      setBalance(res.data.balance);
-      setTransactions(res.data.transactions);
+      setBalance(res.data.balance || 0);
+      setTransactions(res.data.transactions || []);
     } catch (error) {
       console.error("Error fetching wallet:", error);
+      setTransactions([]);
     }
   };
 
@@ -31,7 +35,7 @@ const Wallet = () => {
 
     try {
       await axios.post(
-        "/api/wallet/add-money",
+        `${backendUrl}/api/wallet/add-money`,
         { amount, paymentMethod: "Google Pay" },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -59,7 +63,7 @@ const Wallet = () => {
 
       <h3 className="transaction-history">Transaction History</h3>
       <ul>
-        {transactions.map((tx, index) => (
+        {transactions?.map((tx, index) => (
           <li key={index}>
             {tx.type === "credit" ? "➕" : "➖"} ₹{tx.amount} via {tx.paymentMethod}
           </li>
