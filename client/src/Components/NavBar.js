@@ -29,6 +29,7 @@ const NavBar = () => {
   };
 
   const [scrolling, setScrolling] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,9 +58,11 @@ const NavBar = () => {
   return (
     <header className={`header ${scrolling ? "shrink-nav": ""}`}>
             {/* Announcement Bar */}
+            {location.pathname === "/" && (
             <div className={`announcement-bar ${scrolling ? "hide-announcement" : ""}`}>
         <p> Limited Time Offer: Get 20% OFF on your first order! </p>
       </div>
+            )}
 
 
       <nav className="nav container">

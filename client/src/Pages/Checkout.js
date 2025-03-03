@@ -164,6 +164,18 @@ const Checkout = () => {
           placeholder="Street Address"
           className="input-field"
         />
+
+         <input
+          required
+          onChange={onChangeHandler}
+          name="landmark"
+          value={formData.landmark}
+          type="text"
+          placeholder="Land Mark"
+          className="input-field"
+         />
+
+
         <div className="address-fields">
           <input
             required

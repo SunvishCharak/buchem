@@ -6,6 +6,8 @@ const CartTotal = () => {
   const { currency, getCartAmount, delivery_fee, cartItems, products } =
     useContext(ShopContext);
 
+    
+
   // Helper function to get product details by ID
   const getProductDetails = (itemId) => {
     return products.find((product) => product.name === itemId);
@@ -18,6 +20,14 @@ const CartTotal = () => {
         {/* Loop through the cart items */}
         {Object.keys(cartItems).map((itemId) => {
           const product = getProductDetails(itemId);
+
+          if(!product){
+            return(
+              <div className="cart-item-checkout" key={itemId}>
+                <p className="error-message">Product not found</p>
+              </div>
+            );
+          }
           return (
             <div className="cart-item-checkout" key={itemId}>
               {/* Product Image */}
@@ -27,17 +37,17 @@ const CartTotal = () => {
               {/* Product Details */}
               <div className="cart-item-detail">
                 <p className="cart-item-checkout-name">{product.name}</p>
-                <p className="cart-item-checkout-price">
-                  {currency} {product.price}
-                </p>
+               
                 <p className="cart-item-checkout-size">
                   Size: {Object.keys(cartItems[itemId]).join(", ")}
                 </p>
                 <p className="cart-item-checkout-quantity">
-                  Quantity:{" "}
-                  {Object.values(cartItems[itemId]).reduce((a, b) => a + b, 0)}
+                  Quantity: {Object.values(cartItems[itemId]).reduce((a, b) => a + b, 0)}
                 </p>
               </div>
+              <p className="cart-item-checkout-price">
+                  {currency} {product.price}
+                </p>
             </div>
           );
         })}
