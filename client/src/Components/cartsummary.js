@@ -29,6 +29,7 @@ const CartSummary = () => {
           {currency} {getCartAmount() + delivery_fee}.00
         </b>
       </div>
+      <p>Taxes, Discounts and <a href="/shipping-policy" className="shipping-link">shipping </a>calculated at checkout</p>
     </div>
   );
 };

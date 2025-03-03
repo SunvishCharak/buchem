@@ -7,7 +7,7 @@ import "../Styles/Cart.css";
 import CartSummary from "../Components/cartsummary.js";
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, navigate } =
+  const { products, currency, cartItems, updateQuantity,addToWishlist, navigate } =
     useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
 
@@ -66,21 +66,24 @@ const Cart = () => {
                   src={productData.image[0] || "fallback-image.jpg"}
                   alt=""
                 />
-                <div>
+                  <div className="cart-item-info">
                   <p className="cart-item-name">{productData.name}</p>
+                  <div className="cart-item-meta-container">
+
                   <div className="cart-item-meta">
-                    <p>
+                    <p className="cart-item-price">
                       {currency}
                       {productData.price}
                     </p>
-                    <p className="cart-item-size">{item.size}</p>
+                    <p className="cart-item-size">size: {item.size}</p>
                   </div>
-                </div>
-                </>
+                
+                {/* </>
                 ):(
                  <p>Product not found</p> 
-                )}
-              </div>
+                )} */}
+              
+              <div className="cart-item-quantity">
               <QuantitySelector
                 quantity={item.quantity}
                 onIncrease={() =>
@@ -90,12 +93,35 @@ const Cart = () => {
                   updateQuantity(item._id, item.size, item.quantity - 1)
                 }
               />
-              <img
+              </div>
+              </div>
+              
+              </div>
+              
+              </>
+                ):(
+                  <p>Product not found</p>
+                )}
+                </div>
+             
+              <div className="cart-item-actions">
+               <i
+               className="uil uil-heart cart-item-wishlist"
+                 onClick={() => {
+                    addToWishlist(item._id, item.size);
+                    updateQuantity(item._id, item.size, 0);
+                  }}
+                     
+                      title="Move to Wishlist"
+                    ></i>
+               <img
                 onClick={() => updateQuantity(item._id, item.size, 0)}
                 className="cart-item-delete"
                 src={assets.bin_icon}
-                alt=""
+                alt="Remove"
               />
+              </div>
+              
             </div>
           );
         })}
