@@ -1,27 +1,36 @@
 import React, { useState, useContext } from "react";
 import Wishlist from "./wishlist";
-import Orders from "./Orders";
+// import Orders from "./Orders";
+import { useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import "../Styles/MyProfile.css"; // Import the CSS file
 import Wallet from "../Components/Wallet";
 
 const ProfilePage = () => {
-  const { user } = useContext(ShopContext); // Get user data from context
+  
+  const { user, setUser } = useContext(ShopContext); // Get user data from context
   const [tabIndex, setTabIndex] = useState(0);
+  const navigate = useNavigate();
+
+   // Logout function
+   const handleLogout = () => {
+    localStorage.removeItem("token"); // Clear stored authentication token
+    setUser(null); // Reset user state in context
+    navigate("/login"); // Redirect to login page
+  };
 
   return (
-    <div className="profile-container">
+    <div className="profile-container container">
       {user ? (
         <div className="profile-content container">
           <div className="profile-header">
-            <img
-              src={user.profilePicture || "/default-avatar.png"}
-              alt="Profile"
-              className="profile-image"
-            />
+          {/* <i class="uis uis-user-circle"></i> */}
             <div>
               <h2 className="profile-name">{user.name}</h2>
               <p className="profile-email">{user.email}</p>
+              <button className="logout-button" onClick={handleLogout}>
+                Logout
+              </button>
             </div>
           </div>
 
@@ -33,16 +42,16 @@ const ProfilePage = () => {
             >
               Wishlist
             </button>
-            <button 
+            {/* <button 
               className={`tab-button ${tabIndex === 1 ? "active" : ""}`} 
               onClick={() => setTabIndex(1)}
             >
               Orders
-            </button>
+            </button> */}
 
             <button 
-              className={`tab-button ${tabIndex === 2 ? "active" : ""}`} 
-              onClick={() => setTabIndex(2)}
+              className={`tab-button ${tabIndex === 1 ? "active" : ""}`} 
+              onClick={() => setTabIndex(1)}
             >
               Wallet
             </button>
@@ -51,8 +60,8 @@ const ProfilePage = () => {
 
           <div className="tab-content">
             {tabIndex === 0 && <Wishlist smallView={true}/>}
-            {tabIndex === 1 && <Orders />}
-            {tabIndex === 2 && <Wallet balance={user.walletBalance || 0}/>}
+            {/* {tabIndex === 1 && <Orders />} */}
+            {tabIndex === 1 && <Wallet balance={user.walletBalance || 0}/>}
           </div>
 
         </div>

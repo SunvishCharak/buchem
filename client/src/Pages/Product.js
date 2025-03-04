@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, usNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { assets } from "../Assets/assets";
 import RelatedProducts from "../Components/RelatedProducts";
@@ -9,6 +9,7 @@ import LengthChartModal from "../Components/lengthchart";
 
 const Product = () => {
   const { productName } = useParams();
+  const navigate = useNavigate();
   const {
     products,
     currency,
@@ -52,6 +53,20 @@ const Product = () => {
       console.error("Product not found!");
     }
   }, [productName, products]);
+
+  const handleAddToCart = () => {
+    if(!size){
+      alert("Please select a size before adding to cart.");
+      return;
+    }
+    addToCart(productData.name, size);
+    navigate("/cart"); // Redirect to Cart Page
+  };
+
+  const handleAddToWishlist = () => {
+    addToWishlist(productData._id);
+    navigate("/wishlist"); // Redirect to Wishlist Page
+  };
 
   return productData ? (
     <div className="product container">
@@ -129,13 +144,13 @@ const Product = () => {
             </div>
           </div>
           <button
-            onClick={() => addToCart(productData.name, size)}
+            onClick={handleAddToCart}
             className="add-to-cart"
           >
             Add to Cart
           </button>
           <button
-            onClick={() => addToWishlist(productData._id)}
+            onClick={handleAddToWishlist}
             className="add-to-cart"
           >
             Move to Wishlist
