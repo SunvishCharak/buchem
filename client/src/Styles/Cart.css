@@ -78,6 +78,7 @@
    display: flex;
   align-items: center;
   margin-left: auto;
+ 
 }
 
 @media (min-width: 640px) {
@@ -160,6 +161,8 @@
 
 
 
+
+
 /* Show it only on smaller screens */
 @media (max-width: 768px) {
   .cart-item-meta-container {
@@ -167,6 +170,7 @@
     flex-direction: row; /* Keep price, size & quantity in a row */
     justify-content: space-between;
     gap:15px;
+  
   }
 
   .cart-item-meta {
@@ -190,6 +194,9 @@
     gap:12px;
     left: 0;
     bottom: 8px;
+    margin-bottom: 80px;
+    margin-top: 20px;
+    
     
   }
   .cart-checkout-button{
@@ -210,6 +217,7 @@
   font-size: 25px; /* Match remove button size */
   height: 25px;
   color: #2f282a; /* Wishlist icon color */
+  margin-bottom: 3px;
 }
 
 .cart-item-actions {
@@ -220,10 +228,6 @@
   left: 0; /* Push to extreme left */
   padding-left: 5px ;
   bottom: 10px;
-  margin-top: 80px;
-  padding-left: 70px; /* Add slight padding to avoid sticking to the edge */
+  
+  padding-left: 70px; /* Add slight padding to avoid sticking to the edge */
 }
-
-
-
-

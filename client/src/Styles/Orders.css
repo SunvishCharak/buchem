@@ -1,5 +1,6 @@
 .orders-container {
-  margin-top: calc(var(--header-height) + 2rem);
+  margin-top: calc(var(--header-height) + 3rem);
+  margin-bottom: 50px;
 }
 
 .orders-header-title {
@@ -58,7 +59,7 @@
 }
 
 .order-price {
-  font-size: var(--h2-font-size);
+  font-size: 400;
 }
 
 .order-date {
@@ -66,7 +67,7 @@
 }
 
 .order-date-value {
-  color: #9ca3af;
+  color: #42474f;
 }
 
 .order-actions {

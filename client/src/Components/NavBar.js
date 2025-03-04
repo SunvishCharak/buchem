@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, Suspense, lazy } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import axios from "axios";
 import "../Styles/NavBar.css";
 import Logo from "./Logo.js";
 import { Link } from "react-router-dom";
@@ -221,6 +222,18 @@ const NavBar = () => {
               >
                 Orders
               </NavLink>
+            </li>
+
+            <li>
+              <a 
+              href={`https://shiprocket.co/tracking`}
+              className="side-menu-link"
+              target="_blank"
+              rel= "noopener noreferrer"
+              onClick={toggleMenu}
+              >
+                Track Your Order
+                </a>
             </li>
           </div>
         </ul>

@@ -13,13 +13,27 @@ const CartTotal = () => {
     return products.find((product) => product.name === itemId);
   };
 
+    // Filter out products where all sizes have quantity 0
+    const filteredCartItems = Object.keys(cartItems).filter((itemId) => 
+       Object.values(cartItems[itemId]).some((quantity) => quantity > 0)
+    );
+
   return (
     <div className="cart-total-container container">
       <h2 className="section-title">Cart Total</h2>
       <div className="cart-total-content">
-        {/* Loop through the cart items */}
+        {/* Loop through the cart items
         {Object.keys(cartItems).map((itemId) => {
-          const product = getProductDetails(itemId);
+          const product = getProductDetails(itemId); */}
+
+          {filteredCartItems.length === 0 ? (
+            <p className="empty-cart-message"></p>
+          ):(
+            filteredCartItems.map((itemId)=>{
+              const product = getProductDetails(itemId);
+            
+          
+      
 
           if(!product){
             return(
@@ -50,7 +64,11 @@ const CartTotal = () => {
                 </p>
             </div>
           );
-        })}
+        })
+      )}
+
+        {filteredCartItems.length > 0 && (
+          <>
 
         <hr />
         {/* Subtotal */}
@@ -75,7 +93,10 @@ const CartTotal = () => {
             {currency} {getCartAmount() + delivery_fee}.00
           </b>
         </div>
+        </>
+        )}
       </div>
+    
     </div>
   );
 };
