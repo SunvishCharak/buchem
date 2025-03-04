@@ -21,6 +21,7 @@ import Wishlist from "./Pages/wishlist.js";
 import Account from "./Pages/Account.js";
 import PrivacyPolicy from "./Pages/PrivacyPolicy.js";
 import ScrollToTop from "./Components/scrolltotop.js";
+import ShippingPolicy from "./Pages/ShippingPolicy.js";
 
 const App = () => {
   
@@ -49,6 +50,7 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/shipping-policy" element={<ShippingPolicy/>}/>
       </Routes>
       <WhatsApp />
       <Footer />
