@@ -1,0 +1,90 @@
+/* Account Page Styles */
+
+.account-page {
+  display: flex;
+  min-height: 100vh;
+  margin-top: 6rem;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+.sidebar h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #fff;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar-button {
+  width: 100%;
+  padding: 10px;
+  color: white;
+  background-color: #555;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.sidebar-button.active,
+.sidebar-button:hover {
+  background-color: #1e90ff;
+}
+
+/* Content Styles */
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.content-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  margin-top: 0;
+  font-size: 1.5em;
+}
+
+/* Loading Styles */
+.loading {
+  color: #888;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .account-page {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .sidebar-button {
+    font-size: 1em;
+  }
+}

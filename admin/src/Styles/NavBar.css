@@ -1,0 +1,29 @@
+/* Container styling */
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 4%;
+}
+
+/* Logo styling */
+.navbar-logo {
+  width: max(10%, 80px);
+}
+
+/* Logout button styling */
+.logout-button {
+  background-color: #4b5563; /* Gray 600 */
+  color: white;
+  padding: 0.5rem 1.25rem; /* Default padding */
+  border-radius: 9999px; /* Fully rounded */
+  font-size: 0.75rem; /* Text size for xs */
+}
+
+@media (min-width: 640px) {
+  /* Adjust button padding and font size for larger screens */
+  .logout-button {
+    padding: 0.5rem 1.75rem; /* sm:px-7 sm:py-2 */
+    font-size: 0.875rem; /* Text size for sm */
+  }
+}

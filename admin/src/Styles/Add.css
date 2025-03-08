@@ -1,0 +1,127 @@
+.add-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+}
+
+.add-label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.image-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.uploaded-image {
+  width: 5rem;
+  cursor: pointer;
+}
+
+.input-group {
+  width: 100%;
+}
+
+.input-field {
+  width: 100%;
+  max-width: 500px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.price-input {
+  max-width: 120px;
+}
+
+.select-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Updated styles for size selection */
+.sizes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.size-stock-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.size-stock-box label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.stock-input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.submit-button {
+  width: 7rem;
+  padding: 0.75rem;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.Category-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  /* Equivalent to sm: in Tailwind (640px breakpoint) */
+  .flex-container {
+    flex-direction: row;
+    gap: 32px; /* sm:gap-8 */
+  }
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group p {
+  margin-bottom: 8px; /* Equivalent to mb-2 */
+}
+
+.input-group select,
+.input-group input {
+  width: 100%;
+  padding: 8px 12px; /* Equivalent to px-3 py-2 */
+}
+
+@media (min-width: 640px) {
+  .product-price-input {
+    width: 120px; /* Equivalent to sm:w-[120px] */
+  }
+}

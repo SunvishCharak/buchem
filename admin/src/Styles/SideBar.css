@@ -1,0 +1,50 @@
+/* Container for the sidebar */
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  width: 18%;
+  min-height: 100vh;
+  border-right: 2px solid #e5e7eb; /* Gray-300 */
+  padding: 1rem;
+}
+
+/* Links container */
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Gap between links */
+  padding-top: 1.5rem;
+  padding-left: -20%;
+  font-size: 15px;
+}
+
+/* Sidebar link styles */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Gap between icon and text */
+  border: 1px solid #d1d5db; /* Gray-300 */
+  border-right: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Icon styles inside links */
+.sidebar-icon {
+  width: 1.25rem; /* w-5 */
+  height: 1.25rem; /* h-5 */
+}
+
+/* Text styles inside links */
+.sidebar-text {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  /* Show text on medium screens and larger */
+  .sidebar-text {
+    display: block;
+  }
+}

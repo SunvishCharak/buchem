@@ -1,0 +1,136 @@
+.orders-container {
+  margin-top: calc(var(--header-height) + 2rem);
+}
+
+.orders-header-title {
+  font-size: var(--h2-font-size);
+  text-align: center;
+  margin-bottom: var(--mb-1);
+  margin-top: var(--mb-1);
+}
+
+.order-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid #e5e7eb;
+  color: #4b5563;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .order-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.order-details {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  font-size: var(--small-font-size);
+}
+
+.order-image {
+  width: 4rem;
+}
+
+@media (min-width: 640px) {
+  .order-image {
+    width: 5rem;
+  }
+}
+
+.order-name {
+  font-size: var(--normal-font-size);
+  font-weight: var(--font-medium);
+}
+
+.order-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: #4b5563;
+}
+
+.order-price {
+  font-size: var(--h2-font-size);
+}
+
+.order-date {
+  margin-top: var(--mb-0-25);
+}
+
+.order-date-value {
+  color: #9ca3af;
+}
+
+.order-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: 50%;
+  }
+}
+
+.order-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-indicator {
+  min-width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background-color: #10b981;
+}
+
+.status-text {
+  font-size: var(--small-font-size);
+}
+
+@media (min-width: 768px) {
+  .status-text {
+    font-size: var(--normal-font-size);
+  }
+}
+
+.track-order-button {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 1rem;
+  font-size: var(--small-font-size);
+  font-weight: 500;
+  border-radius: 0.125rem;
+}
+
+.return-order-button,
+.exchange-order-button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.return-order-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.exchange-order-button {
+  background-color: #2196f3;
+  color: white;
+}
+
+.return-order-button:hover,
+.exchange-order-button:hover {
+  opacity: 0.8;
+}

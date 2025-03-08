@@ -1,0 +1,51 @@
+/* Small screens (sm in Tailwind) - 3 columns */
+@media (min-width: 640px) {
+  .order-item {
+    grid-template-columns: 0.5fr 2fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .order-item {
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
+  }
+}
+
+/* Styling for each order */
+.order-item {
+  display: grid;
+  grid-template-columns: 1;
+  gap: 12px;
+  align-items: start;
+  border: 2px solid #e5e7eb;
+  padding: 20px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.order-item img {
+  width: 50px;
+}
+
+.order-text {
+  margin: 4px 0;
+  font-weight: 500;
+}
+
+.order-address {
+  margin-bottom: 10px;
+}
+
+.order-details {
+  font-size: 15px;
+}
+
+.order-amount {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.order-status {
+  padding: 8px;
+  font-weight: bold;
+}
