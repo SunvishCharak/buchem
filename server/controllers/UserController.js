@@ -113,9 +113,6 @@ const getUserAccount = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
     }
-
-    console.log("User fetched from the database:", user);
-
     res.json({ success: true, data: user });
   } catch (error) {
     console.error("Error in getUserAccount:", error.message);

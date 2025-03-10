@@ -10,7 +10,6 @@ import {
   addReview,
   getReviews,
 } from "../controllers/ProductController.js";
-
 const productRouter = express.Router();
 
 productRouter.post(
@@ -27,7 +26,7 @@ productRouter.post(
 productRouter.post("/remove", AdminAuth, removeProduct);
 productRouter.post("/single", singleProduct);
 productRouter.get("/list", listProduct);
-productRouter.post("/addReview", addReview);
+productRouter.post("/addReview", upload.array("images", 4), addReview);
 productRouter.get("/reviews/:productId", getReviews);
 
 export default productRouter;

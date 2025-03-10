@@ -6,14 +6,9 @@ import ProductModel from "../models/ProductModel.js";
 const addProduct = async (req, res) => {
   try {
     const { name, price, description, category, sizes, bestseller } = req.body;
-
-    console.log("Raw sizes received:", sizes);
-
     let parsedSizes = [];
     try {
       parsedSizes = typeof sizes === "string" ? JSON.parse(sizes) : sizes;
-      console.log("Parsed sizes:", parsedSizes);
-
       if (!Array.isArray(parsedSizes)) {
         throw new Error("Invalid sizes format");
       }
@@ -26,8 +21,8 @@ const addProduct = async (req, res) => {
     }
 
     parsedSizes = parsedSizes.map((item) => ({
-      size: item.size || "M", // Default size if missing
-      stock: Number(item.stock) || 0, // Default stock to 0 if missing
+      size: item.size || "M",
+      stock: Number(item.stock) || 0,
     }));
 
     console.log("Final sizes array before saving:", parsedSizes);
@@ -59,10 +54,8 @@ const addProduct = async (req, res) => {
       bestseller: bestseller === "true" ? true : false,
       image: imagesUrl,
       date: Date.now(),
+      reviews: [],
     };
-
-    console.log("Product Data Before Saving:", ProductData);
-
     const product = new Product(ProductData);
     await product.save();
 
@@ -108,30 +101,122 @@ const singleProduct = async (req, res) => {
 };
 
 // function to add a review to a product
+//
+
+// const addReview = async (req, res) => {
+//   try {
+//     const { productId, user, rating, comment } = req.body;
+
+//     if (!productId || !user || !rating || !comment) {
+//       return res.json({ success: false, message: "All fields are required" });
+//     }
+
+//     let imagesUrl = [];
+//     if (req.files && req.files.length > 0) {
+//       imagesUrl = await Promise.all(
+//         req.files.map(async (file) => {
+//           const result = await cloudinary.uploader.upload(file.path, {
+//             resource_type: "image",
+//           });
+//           return result.secure_url;
+//         })
+//       );
+//     }
+
+//     const review = {
+//       user,
+//       rating: Number(rating),
+//       comment,
+//       date: new Date(),
+//       images: imagesUrl,
+//     };
+
+//     // Use findByIdAndUpdate to only update the reviews field
+//     const updatedProduct = await ProductModel.findByIdAndUpdate(
+//       productId,
+//       { $push: { reviews: review } },
+//       { new: true, runValidators: true }
+//     );
+
+//     if (!updatedProduct) {
+//       return res.json({ success: false, message: "Product not found" });
+//     }
+
+//     res.json({ success: true, message: "Review added successfully" });
+//   } catch (error) {
+//     console.log(error);
+//     res.json({ success: false, message: error.message });
+//   }
+// };
+
 const addReview = async (req, res) => {
   try {
+    // Log the request body and files for debugging
+    console.log("Request Body:", req.body);
+    console.log("Uploaded Files:", req.files);
+
+    // Extracting data from the request body
     const { productId, user, rating, comment } = req.body;
 
-    const product = await ProductModel.findById(productId);
-
-    if (!product) {
-      return res.json({ success: false, message: "Product not found" });
+    // Validate all fields are present
+    if (!productId || !user || !rating || !comment) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
     }
 
+    // Handle image uploads to Cloudinary
+    let imagesUrl = [];
+    if (req.files && req.files.length > 0) {
+      imagesUrl = await Promise.all(
+        req.files.map(async (file) => {
+          try {
+            const result = await cloudinary.uploader.upload(file.path, {
+              resource_type: "image",
+            });
+            return result.secure_url;
+          } catch (uploadError) {
+            console.error("Image Upload Error:", uploadError);
+            throw new Error("Failed to upload image");
+          }
+        })
+      );
+    }
+
+    // Create the review object
     const review = {
       user,
       rating: Number(rating),
       comment,
       date: new Date(),
+      images: imagesUrl,
     };
 
-    product.reviews.push(review);
-    await product.save();
+    // Push the review into the product's reviews array
+    const updatedProduct = await ProductModel.findByIdAndUpdate(
+      productId,
+      { $push: { reviews: review } },
+      { new: true, runValidators: true }
+    );
 
-    res.json({ success: true, message: "Review added successfully" });
+    if (!updatedProduct) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Review added successfully",
+    });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
+    console.error("Add Review Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to add review",
+    });
   }
 };
 
@@ -139,15 +224,23 @@ const addReview = async (req, res) => {
 const getReviews = async (req, res) => {
   try {
     const { productId } = req.params;
+    console.log("Received productId in getReviews:", productId); // ✅ New Log
 
-    const product = await Product.findById(productId);
+    if (!productId || productId === "undefined") {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid product ID" });
+    }
+
+    const product = await ProductModel.findById(productId);
+
     if (!product) {
       return res
         .status(404)
         .json({ success: false, message: "Product not found" });
     }
 
-    return res.json({ success: true, reviews: product.reviews || [] });
+    res.json({ success: true, reviews: product.reviews || [] });
   } catch (error) {
     console.error("Error fetching reviews:", error);
     res.status(500).json({ success: false, message: "Server error" });

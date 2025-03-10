@@ -6,6 +6,7 @@ import RelatedProducts from "../Components/RelatedProducts";
 import SizeChartModal from "../Components/SizeChart";
 import "../Styles/Product.css";
 import LengthChartModal from "../Components/lengthchart";
+import Reviews from "../Components/Reviews";
 
 const Product = () => {
   const { productName } = useParams();
@@ -22,29 +23,13 @@ const Product = () => {
   const [size, setSize] = useState("");
   const [pincode, setPincode] = useState("");
 
-  const fetchProductData = async () => {
-    const formattedName = productName.replace(/-/g, " ").toLowerCase();
-    const product = products.find(
-      (item) => item.name.trim().toLowerCase() === formattedName
-    );
-
-    if (product) {
-      setProductData(product);
-      setImage(product.image[0]);
-    } else {
-      console.error("Product not found!");
-    }
-  };
-
   useEffect(() => {
     if (products.length === 0) return;
 
     const formattedName = productName.replace(/-/g, " ").toLowerCase();
-
     const product = products.find(
       (item) => item.name.replace(/-/g, " ").toLowerCase() === formattedName
     );
-
     if (product) {
       setProductData(product);
       setImage(product.image[0]);
@@ -172,6 +157,8 @@ const Product = () => {
           <p className="product-description">{productData.description}</p>
         </div>
       </div>
+
+      <Reviews productId={productData._id} />
 
       {/* Similar Products */}
       <RelatedProducts category={productData.category} />

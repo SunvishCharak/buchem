@@ -1,24 +1,26 @@
-/* Account Page Styles */
-
+/* General Styles */
 .account-page {
   display: flex;
   min-height: 100vh;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
   margin-top: 6rem;
 }
 
 /* Sidebar Styles */
 .sidebar {
-  width: 250px;
-  background-color: #333;
-  color: white;
+  width: 280px;
+  background-color: #fff;
   padding: 20px;
-  flex-shrink: 0;
+  border-right: 1px solid #ddd;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar h1 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #fff;
+.welcome {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
 }
 
 .sidebar ul {
@@ -32,45 +34,69 @@
 
 .sidebar-button {
   width: 100%;
-  padding: 10px;
-  color: white;
-  background-color: #555;
+  padding: 12px;
+  text-align: left;
+  background-color: #ecd0ec;
   border: none;
   cursor: pointer;
-  text-align: left;
-  border-radius: 4px;
-  transition: background-color 0.3s;
+  font-size: 16px;
+  transition: background 0.3s;
+  border-radius: 6px;
 }
 
-.sidebar-button.active,
-.sidebar-button:hover {
-  background-color: #1e90ff;
+.sidebar-button:hover,
+.sidebar-button.active {
+  background-color: #c994c9;
+  color: #333;
 }
 
-/* Content Styles */
+/* Content Section */
 .content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
+  flex-grow: 1;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
 }
 
 .content-card {
-  background-color: white;
+  background: #fff;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  width: 100%;
 }
 
-h3 {
-  margin-top: 0;
-  font-size: 1.5em;
+/* Account Details */
+.content-card h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
-/* Loading Styles */
-.loading {
-  color: #888;
-  text-align: center;
-  margin-top: 50px;
+.content-card p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Wallet Section */
+.wallet p {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Wishlist & Orders Section */
+.wishlist.container,
+.orders.container {
+  margin-top: 15px;
+}
+
+.wishlist.container h2,
+.orders.container h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 /* Responsive Styles */
@@ -81,10 +107,27 @@ h3 {
 
   .sidebar {
     width: 100%;
-    padding: 10px;
+    padding: 15px;
+    box-shadow: none;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .sidebar ul {
+    display: flex;
+    justify-content: space-around;
   }
 
   .sidebar-button {
-    font-size: 1em;
+    width: auto;
+    padding: 10px;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .content-card {
+    padding: 15px;
   }
 }

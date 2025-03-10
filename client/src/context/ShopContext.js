@@ -21,6 +21,7 @@ const ShopContextProvider = (props) => {
   const [trackingNumber, setTrackingNumber] = useState("");
   const [estimatedDelivery, setEstimatedDelivery] = useState(null);
   const [userAccount, setUserAccount] = useState(null);
+  const [productReviews, setProductReviews] = useState({});
 
   const saveCartToLocalStorage = (cart) => {
     localStorage.setItem("cartItems", JSON.stringify(cart));
@@ -314,10 +315,6 @@ const ShopContextProvider = (props) => {
 
   const fetchUserAccount = async () => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Please log in to view your account details.");
-      return;
-    }
     try {
       const response = await axios.get(`${backendUrl}/api/user/account`, {
         headers: { token },
@@ -419,6 +416,97 @@ const ShopContextProvider = (props) => {
     }
   };
 
+  // reviews
+  // const fetchProductReviews = async (productId) => {
+  //   try {
+  //     console.log("Fetching reviews for product ID:", productId);
+  //     const response = await axios.get(
+  //       `${backendUrl}/api/product/reviews/${productId}`
+  //     );
+  //     console.log("Review API Response:", response.data);
+  //     if (response.data.success) {
+  //       setProductReviews((prev) => ({
+  //         ...prev,
+  //         [productId]: response.data.reviews,
+  //       }));
+  //       console.log("Updated Reviews State:", {
+  //         ...productReviews,
+  //         [productId]: response.data.reviews,
+  //       });
+  //     } else {
+  //       console.error("No success in response:", response.data);
+  //     }
+  //   } catch (error) {
+  //     console.error(
+  //       "Failed to fetch product reviews:",
+  //       error.response?.data || error.message
+  //     );
+  //     toast.error("Failed to fetch reviews.");
+  //   }
+  // };
+
+  // ShopContext.js
+  const fetchProductReviews = async (productId) => {
+    console.log("Fetching reviews for product ID:", productId);
+    try {
+      const response = await fetch(
+        `${backendUrl}/api/product/reviews/${productId}`
+      );
+      const data = await response.json();
+      console.log("Review API Response:", data);
+
+      if (data.success) {
+        setProductReviews((prevReviews) => ({
+          ...prevReviews,
+          [productId]: data.reviews,
+        }));
+        console.log("Updated Reviews State:", data.reviews);
+        return data; // Return the data explicitly!
+      } else {
+        console.error("Failed to fetch reviews");
+        return { success: false, reviews: [] };
+      }
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      return { success: false, reviews: [] };
+    }
+  };
+
+  const submitProductReview = async (formData) => {
+    if (!token) {
+      toast.error("You need to be logged in to submit a review");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/product/addReview`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            token,
+          },
+        }
+      );
+
+      console.log("Backend Response:", response.data);
+
+      if (response.data.success) {
+        toast.success("Review submitted successfully!");
+        fetchProductReviews(formData.get("productId"));
+      } else {
+        toast.error(response.data.message);
+      }
+
+      return response.data; // Add this return to ensure the response is handled
+    } catch (error) {
+      console.error("Failed to submit product review:", error);
+      toast.error("Failed to submit review.");
+      return { success: false, message: error.message };
+    }
+  };
+
   const value = {
     products,
     currency,
@@ -457,6 +545,8 @@ const ShopContextProvider = (props) => {
     exchangeOrder,
     userAccount,
     fetchUserAccount,
+    fetchProductReviews,
+    submitProductReview,
   };
 
   return (
