@@ -14,7 +14,7 @@ const CartSummary = () => {
         </p>
       </div>
 
-      {/* Shipping Fee */}
+      {/* Shipping Fee
       <div className="cart-row">
         <p>Shipping</p>
         <p>
@@ -23,13 +23,13 @@ const CartSummary = () => {
       </div>
 
       {/* Total */}
-      <div className="cart-row cart-total">
+      {/* <div className="cart-row cart-total">
         <b>Total</b>
         <b>
           {currency} {getCartAmount() + delivery_fee}.00
         </b>
-      </div>
-    </div>
+      </div> */}
+    </div>  
   );
 };
 

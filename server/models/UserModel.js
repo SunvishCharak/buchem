@@ -34,8 +34,15 @@ const UserSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "product",
       },
+
     ],
+
+    otp: { type: String},
+
+    otpExpires: {type: Date},
   },
+
+  
   { minimize: false }
 );
 

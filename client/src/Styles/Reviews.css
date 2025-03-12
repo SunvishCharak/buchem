@@ -1,7 +1,14 @@
-.reviews-container {
+/* .reviews-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+} */
+
+.reviews-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 h2 {
@@ -10,11 +17,21 @@ h2 {
   color: #333;
 }
 
-.review-form {
+/* .review-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 30px;
+}
+
+.review-form-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out;
+}
+
+.review-form-container.show{
+  max-height: 600px;
 }
 
 .review-form input[type="text"],
@@ -50,19 +67,100 @@ h2 {
 
 .review-form button:hover:not(:disabled) {
   background-color: #0056b3;
+} */
+
+.reviews-header {
+  
+  
+ 
+  width: 100%;
+  padding: 10px;
 }
 
-.reviews-list {
+.left-section {
+  display: flex;
+
+}
+
+.write-review-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ecd0ec;
+  color: #333;
+  border: none;
+  cursor: pointer;
+ 
+}
+
+@media (max-width: 768px) {
+  .reviews-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .write-review-btn {
+    justify-content: center;
+    display: flex;
+    width: 200px;
+  }
+}
+
+.right-section {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+}
+
+.placeholder-image {
+  width: 100px;
+  height: 50px;
+  background-color: #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.left-section{
+  display: flex;
+  justify-content: flex-start;
+}
+
+.show-reviews-btn {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+.reviews-list {
+width: 100%;
+margin-top: 10px;
+}
+
+.reviews-list.show{
+  max-height: 500px;
+}
+
+.toggle-reviews-btn{
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding : 10px;
+  transition: background 0.3s;
+}
+
+.toggle-reviews-btn:hover{
+  background-color: #0056b3;
 }
 
 .review-card {
+  width: 100%;
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #f9f9f9;
+  margin-bottom: 5px;
 }
 
 .review-card h4 {
@@ -85,3 +183,129 @@ h2 {
   margin-top: 10px;
   border-radius: 5px;
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  width: 400px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.modal-step {
+  margin-bottom: 15px;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.modal-step input{
+  
+    width: auto;
+    align-content:center ;
+    height: 40px;
+    margin-top: 0.5rem;
+}
+
+.modal-step select{
+  width:auto;
+  height: 40px;
+  margin-top: 0.5rem;
+}
+
+.modal-step textarea{
+  width:auto;
+  margin-top: 10px;
+  height: 4rem;
+}
+
+.modal-step button{
+  margin-top: 10px;
+  gap:10px
+}
+
+.close-modal-btn {
+  background: red;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.step-buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.step-buttons button{
+  cursor: pointer;
+  background-color: #555;
+  color: white;
+  width: 70px;
+  height: 40px;
+  padding: 10px;
+
+}
+
+.no-reviews {
+  text-align: center;
+  margin-top: 20px;
+  text-decoration: underline;
+  color: #333;
+}
+
+.file-upload-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.file-input {
+  display: none; /* Hide default file input */
+}
+
+.custom-file-label {
+  background-color: #ecd0ec;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.custom-file-label:hover {
+  background-color: #0056b3;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+}
+
+.close-modal-btn:hover {
+  color: rgb(104, 77, 77);
+}
+
+

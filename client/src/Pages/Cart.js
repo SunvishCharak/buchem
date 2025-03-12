@@ -10,6 +10,7 @@ const Cart = () => {
   const { products, currency, cartItems, updateQuantity, navigate } =
     useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
+  const [orderInstructions, setOrderInstructions] = useState("");
 
   useEffect(() => {
     if (products.length > 0) {
@@ -29,6 +30,8 @@ const Cart = () => {
     }
   }, [cartItems, products]);
 
+ 
+
   return (
     <div className="cart-container container">
       <h2 className="section-title">Your Cart</h2>
@@ -46,6 +49,7 @@ const Cart = () => {
                   src={productData.image[0]}
                   alt=""
                 />
+                <div className="cart-item-right">
                 <div>
                   <p className="cart-item-name">{productData.name}</p>
                   <div className="cart-item-meta">
@@ -53,10 +57,11 @@ const Cart = () => {
                       {currency}
                       {productData.price}
                     </p>
-                    <p className="cart-item-size">{item.size}</p>
-                  </div>
+                    <p className="cart-item-size">Size: {item.size}</p>
+                  
                 </div>
               </div>
+              <div className="cart-item-actions">
               <QuantitySelector
                 quantity={item.quantity}
                 onIncrease={() =>
@@ -72,14 +77,36 @@ const Cart = () => {
                 src={assets.bin_icon}
                 alt=""
               />
-            </div>
+              </div>
+              </div>
+              </div>
+
+              </div>
           );
         })}
+
+           
+        
+        <div className="order-instruction"> 
+          <p>Add Order Note</p>
+          <input
+        type="text"
+        placeholder=""
+        value={orderInstructions}
+        onChange={(e) =>
+         setOrderInstructions( e.target.value)
+        }
+        className="order-instruction-input"
+        />
+        </div>
+       
+
       </div>
       <div className="cart-summary">
         <div className="cart-summary-wrapper">
           <CartSummary />
           <div className="cart-checkout">
+            <p>Taxes, Discounts and <a  className="shippingpolicy" href="/shipping-policy">shipping</a> calculated at checkout</p>
             <button
               onClick={() => navigate("/checkout")}
               className="cart-checkout-button"

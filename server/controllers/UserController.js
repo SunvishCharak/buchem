@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import UserModal from "../models/UserModel.js";
 import ProductModal from "../models/ProductModel.js";
+import nodemailer from "nodemailer";
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
@@ -47,7 +48,7 @@ const registerUser = async (req, res) => {
     res.json({ success: true, token });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "error.message" });
+    res.json({ success: false, message: error.message });
   }
 };
 
@@ -241,6 +242,92 @@ const creditWallet = async (req, res) => {
   }
 };
 
+
+
+
+const sendOTP = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await UserModal.findOne({ email });
+    if (!user) return res.status(400).json({ message: "User not found" });
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
+    const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // OTP expires in 10 minutes
+
+    user.otp = otp;
+    user.otpExpires = otpExpires;
+    await user.save();
+
+    // Send OTP via email
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.ADMIN_EMAIL, // Use your email
+        pass: process.env.ADMIN_PASSWORD, // Use your email app password
+      },
+    });
+
+    const mailOptions = {
+      from: "process.env ADMIN_EMAIL",
+      to: email,
+      subject: "Password Reset OTP",
+      text: `Your OTP for password reset is ${otp}. It is valid for 10 minutes.`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "OTP sent to email" });
+
+  } catch (error) {
+    res.status(500).json({ message: "Error sending OTP", error: error.message });
+  }
+};
+
+const verifyOTP = async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const user = await UserModal.findOne({ email });
+
+    if (!user || user.otp !== otp || user.otpExpires < new Date()) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    user.otp = null;
+    user.otpExpires = null;
+    await user.save();
+
+    res.status(200).json({ message: "OTP verified. Proceed to reset password." });
+
+  } catch (error) {
+    res.status(500).json({ message: "Error verifying OTP", error: error.message });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  try {
+    const user = await UserModal.findOne({ email });
+    if (!user) return res.status(400).json({ message: "User not found" });
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successful. You can now log in." });
+
+  } catch (error) {
+    res.status(500).json({ message: "Error resetting password", error: error.message });
+  }
+};
+
+
+
+
+
+
 export {
   loginUser,
   registerUser,
@@ -251,4 +338,7 @@ export {
   getUserAccount,
   redeemWallet,
   creditWallet,
+  sendOTP,
+  verifyOTP,
+  resetPassword,
 };

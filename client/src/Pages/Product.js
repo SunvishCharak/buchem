@@ -8,6 +8,7 @@ import "../Styles/Product.css";
 import LengthChartModal from "../Components/lengthchart";
 import Reviews from "../Components/Reviews";
 
+
 const Product = () => {
   const { productName } = useParams();
   const {
@@ -22,6 +23,7 @@ const Product = () => {
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
   const [pincode, setPincode] = useState("");
+  const [reviewCount, setReviewCount] = useState(0);
 
   useEffect(() => {
     if (products.length === 0) return;
@@ -37,6 +39,22 @@ const Product = () => {
       console.error("Product not found!");
     }
   }, [productName, products]);
+
+  useEffect(() => {
+    if (!productData) return;
+  
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch(`/api/reviews/${productData._id}`); // Adjust the API endpoint
+        const data = await response.json();
+        setReviewCount(data.length);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+  
+    fetchReviews();
+  }, [productData]);
 
   return productData ? (
     <div className="product container">
@@ -151,7 +169,7 @@ const Product = () => {
       <div className="product-extra">
         <div className="tabs">
           <b className="tab">Description</b>
-          <b className="tab">Reviews (12)</b>
+          <b className="tab">Reviews ({reviewCount})</b>
         </div>
         <div className="tab-content">
           <p className="product-description">{productData.description}</p>
