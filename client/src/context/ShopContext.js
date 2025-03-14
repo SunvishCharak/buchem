@@ -379,9 +379,9 @@ const ShopContextProvider = (props) => {
     }
     try {
       const response = await axios.post(
-        `${backendUrl}/api/order/return-order`,
+        backendUrl + "/api/order/return-order",
         { orderId, reason },
-        { headers: { token } }
+        { headers: { "Content-Type": "application/json", token } }
       );
       if (response.data.success) {
         toast.success("Order return initiated successfully!");

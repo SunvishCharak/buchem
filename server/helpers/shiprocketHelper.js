@@ -29,14 +29,14 @@ const getShiprocketToken = async () => {
 const createOrder = async (order) => {
   try {
     const token = await getShiprocketToken();
-    if (!token) throw new Error("❌ Shiprocket Token is missing!");
+    if (!token) throw new Error(" Shiprocket Token is missing!");
 
     if (
       !order.items ||
       !Array.isArray(order.items) ||
       order.items.length === 0
     ) {
-      throw new Error("❌ Order items are missing!");
+      throw new Error("Order items are missing!");
     }
 
     const formattedOrderItems = order.items.map((item) => ({
@@ -69,27 +69,18 @@ const createOrder = async (order) => {
       billing_email: order.address.email || "test@example.com",
       billing_phone: String(order.address.phone || "0000000000"),
       shipping_is_billing: true,
-
-      // Order Items
       order_items: formattedOrderItems,
-
       payment_method: "Prepaid",
       shipping_charges: order.delivery_fee || 0,
       giftwrap_charges: order.giftwrap_charges || 0,
       transaction_charges: order.transaction_charges || 0,
       total_discount: order.total_discount || 0,
       sub_total: subTotal,
-      // Dimensions & Weight
       length: 10,
       breadth: 10,
       height: 10,
       weight: order.weight || 0.5,
     };
-
-    console.log(
-      "🚀 Order Data Before API Call:",
-      JSON.stringify(orderData, null, 2)
-    );
     var config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -102,11 +93,10 @@ const createOrder = async (order) => {
     };
 
     const response = await axios(config);
-    console.log("🚀 Shiprocket Response:", response.data);
     return response.data;
   } catch (error) {
     console.error(
-      "❌ Shiprocket API Error:",
+      "Shiprocket API Error:",
       error.response?.data || error.message
     );
     throw new Error(
@@ -119,12 +109,10 @@ const createOrder = async (order) => {
 const fetchAvailableCouriers = async (order) => {
   try {
     const token = await getShiprocketToken();
-    console.log("📌 Order object:", order);
-
-    const pickupPincode = "122002"; // Change this to your actual pickup pincode
+    const pickupPincode = "122002";
     const billingPincode = order.address.zipcode;
     const weight = order.items.reduce((total, item) => {
-      return total + (item.weight || 0.5); // Default weight = 0.5kg if not provided
+      return total + (item.weight || 0.5);
     }, 0);
 
     if (!pickupPincode || !billingPincode || !weight) {
@@ -132,10 +120,6 @@ const fetchAvailableCouriers = async (order) => {
         "Missing required parameters: pickupPincode, billingPincode, or weight"
       );
     }
-
-    console.log("📌 Pickup Pincode:", pickupPincode);
-    console.log("📌 Billing Pincode:", billingPincode);
-    console.log("📌 Weight:", weight);
 
     const response = await axios.get(
       `https://apiv2.shiprocket.in/v1/external/courier/serviceability/?pickup_postcode=${pickupPincode}&delivery_postcode=${billingPincode}&cod=0&weight=${weight}`,
@@ -145,21 +129,16 @@ const fetchAvailableCouriers = async (order) => {
         },
       }
     );
-
-    console.log("🚀 Courier Response:", response.data);
-
     const recommendedCourierId =
       response.data?.data?.recommended_courier_company_id;
     if (!recommendedCourierId) {
-      console.error("❌ No recommended courier found");
+      console.error("No recommended courier found");
       return null;
     }
-
-    console.log("🚚 Selected Courier ID:", recommendedCourierId);
     return { courier_company_id: recommendedCourierId };
   } catch (error) {
     console.error(
-      "❌ Error fetching couriers:",
+      "Error fetching couriers:",
       error.response?.data || error.message
     );
     return null;
@@ -170,12 +149,10 @@ const fetchAvailableCouriers = async (order) => {
 const assignCourier = async (shipment_id, courier_id) => {
   try {
     if (!shipment_id || !courier_id) {
-      console.error("❌ shipment_id or courier_id is missing");
+      console.error(" shipment_id or courier_id is missing");
       return null;
     }
     const token = await getShiprocketToken();
-    console.log("📦 Assigning Courier:", { shipment_id, courier_id });
-
     const response = await axios.post(
       "https://apiv2.shiprocket.in/v1/external/courier/assign/awb",
       { shipment_id, courier_id },
@@ -186,12 +163,10 @@ const assignCourier = async (shipment_id, courier_id) => {
         },
       }
     );
-
-    console.log("🚀 Courier Assigned Successfully:", response.data);
     return response.data;
   } catch (error) {
     console.error(
-      "❌ Error assigning courier:",
+      "Error assigning courier:",
       error.response?.data || error.message
     );
     return null;
@@ -201,42 +176,35 @@ const assignCourier = async (shipment_id, courier_id) => {
 // Pickup Shipment
 const schedulePickup = async (shipment_id, order) => {
   try {
-    const token = await getShiprocketToken(); // Retrieve Shiprocket token
-
-    // Calculate pickup date (1 day ahead)
+    const token = await getShiprocketToken();
     const pickupDate = new Date();
-    pickupDate.setDate(pickupDate.getDate() + 1); // Add 1 day
-    const formattedDate = pickupDate.toISOString().split("T")[0]; // Format as YYYY-MM-DD
-
-    // Set pickup time to 6:00 PM (18:00)
-    const pickupTime = "18:00"; // You can adjust this to any other evening time if needed
-
-    // Fetch address from the order data
+    pickupDate.setDate(pickupDate.getDate() + 1);
+    const formattedDate = pickupDate.toISOString().split("T")[0];
+    const pickupTime = "18:00";
     const pickupAddress =
       order.pickup_location ||
       "Building no.1326, Room no 303 Third Floor, Sector 43, Sushant lok, Phase 1, Opp Shalom Hills International School, Gurgaon, Haryana, India, 122002"; // Assuming address is available in the order data
-    const contactNumber = "6284987504"; // Replace with actual contact number from order data
+    const contactNumber = "6284987504";
 
-    // API call to schedule pickup
     const response = await axios.post(
-      "https://apiv2.shiprocket.in/v1/external/courier/generate/pickup", // Correct API endpoint
+      "https://apiv2.shiprocket.in/v1/external/courier/generate/pickup",
       {
         shipment_id,
-        pickup_date: formattedDate, // Use dynamically calculated date
-        pickup_time: pickupTime, // Evening pickup time
-        contact_number: contactNumber, // Use contact number from order
-        pickup_address: pickupAddress, // Use address from order
+        pickup_date: formattedDate,
+        pickup_time: pickupTime,
+        contact_number: contactNumber,
+        pickup_address: pickupAddress,
       },
-      { headers: { Authorization: `Bearer ${token}` } } // Add Authorization header with token
+      { headers: { Authorization: `Bearer ${token}` } }
     );
 
-    return response.data; // Return response data to proceed with further steps
+    return response.data;
   } catch (error) {
     console.error(
-      "❌ Error scheduling pickup:",
+      " Error scheduling pickup:",
       error.response?.data || error.message
     );
-    return null; // Return null in case of error
+    return null;
   }
 };
 
@@ -244,13 +212,10 @@ const schedulePickup = async (shipment_id, order) => {
 const getEstimatedDelivery = async (req, res) => {
   try {
     const { pincode } = req.body;
-
     if (!pincode) {
       return res.json({ success: false, message: "Pincode is required" });
     }
-
     const token = await getShiprocketToken();
-
     const response = await axios.get(
       `https://apiv2.shiprocket.in/v1/external/courier/serviceability/`,
       {
@@ -294,8 +259,6 @@ const trackShipment = async (awb_code) => {
       `https://apiv2.shiprocket.in/v1/external/courier/track/awb/${awb_code}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
-
-    console.log("Shipment tracking response:", response.data);
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -309,22 +272,96 @@ const trackShipment = async (awb_code) => {
   }
 };
 
-const returnOrder = async (returnOrderData) => {
+const returnOrder = async (req, res) => {
   try {
     const token = await getShiprocketToken();
-    const response = await axios.post(
-      "https://apiv2.shiprocket.in/v1/external/orders/create/return",
-      returnOrderData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return response.data;
+    if (!token) throw new Error("Shiprocket Token is missing!");
+
+    const { orderId, reason } = req.body;
+    const order = await orderModel.findById(orderId).populate("userId");
+    if (!order) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+    }
+
+    const formattedOrderItems = order.items.map((item) => ({
+      name: item.name,
+      sku: item.sku || item._id,
+      units: item.quantity || 1,
+      selling_price: item.price,
+      discount: 0,
+      tax: 0,
+    }));
+
+    const { _id, address, paymentMethod, amount } = order;
+    const returnOrderPayload = {
+      order_id: _id.toString(),
+      order_date: new Date().toISOString().split("T")[0],
+      channel_id: "1",
+      pickup_customer_name: address.firstName,
+      pickup_last_name: address.lastName || "",
+      pickup_address: address.street,
+      pickup_address_2: "",
+      pickup_city: address.city,
+      pickup_state: address.state,
+      pickup_country: address.country,
+      pickup_pincode: address.zipcode,
+      pickup_email: address.email,
+      pickup_phone: address.phone,
+      pickup_isd_code: "91",
+      shipping_customer_name: "Ankur",
+      shipping_last_name: "Mittal",
+      shipping_address:
+        "Building No. 1326, Sushant lok phase 1, Block C, Sector 43 service road, Gurgaon",
+      shipping_address_2: "",
+      shipping_city: "Gurgaon",
+      shipping_state: "Harayana",
+      shipping_country: "India",
+      shipping_pincode: "122002",
+      shipping_email: "buchemindia@gmail.com",
+      shipping_phone: "6284987504",
+      shipping_isd_code: "91",
+      order_items: formattedOrderItems,
+      payment_method: paymentMethod.toUpperCase(),
+      sub_total: amount,
+      length: 10,
+      breadth: 10,
+      height: 10,
+      weight: 0.5,
+      reason,
+    };
+    const config = {
+      method: "post",
+      url: "https://apiv2.shiprocket.in/v1/external/orders/create/return",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: returnOrderPayload,
+    };
+    const response = await axios(config);
+    if (response.data.status_code === 1) {
+      await orderModel.findByIdAndUpdate(orderId, {
+        status: "Return Initiated",
+      });
+      return res.json({
+        success: true,
+        message: "Return order created successfully",
+        data: response.data,
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ success: false, message: response.data.message });
+    }
   } catch (error) {
-    console.error("Failed to create return order:", error.message);
-    throw error;
+    console.error("Error creating return order:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 

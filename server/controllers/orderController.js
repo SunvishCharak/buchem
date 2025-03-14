@@ -11,7 +11,6 @@ import {
   exchangeOrder,
 } from "../helpers/shiprocketHelper.js";
 dotenv.config();
-import { inspect } from "util";
 
 const razorpayInstance = new razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -93,7 +92,6 @@ const verifyRazorpay = async (req, res) => {
             message: "No available courier found",
           });
         }
-        // Assign the courier to the shipment
         const assignCourierResponse = await assignCourier(
           shiprocketResponse.shipment_id,
           courierResponse.courier_company_id
@@ -107,10 +105,7 @@ const verifyRazorpay = async (req, res) => {
             message: "Failed to assign courier",
           });
         }
-        console.log("✅ Courier Assigned Successfully");
-
         const awbCode = assignCourierResponse.response?.data?.awb_code;
-        console.log("🚀 AWB Code:", awbCode);
         if (awbCode) {
           await orderModel.findByIdAndUpdate(order._id, {
             awbNumber: awbCode,
@@ -118,17 +113,13 @@ const verifyRazorpay = async (req, res) => {
             status: "Order Placed",
           });
         } else {
-          console.log("AWB Code not found in the response");
           return res.json({
             success: false,
             message: "Failed to retrieve AWB Code",
           });
         }
-        // Track the shipment using the AWB number
         const shipmentTracking = await trackShipment(awbCode);
-        console.log("Shipment tracking data:", shipmentTracking);
         if (shipmentTracking) {
-          console.log("🚚 Shipment Tracking Info:", shipmentTracking);
           await orderModel.findByIdAndUpdate(order._id, {
             shipmentStatus: shipmentTracking.status,
           });
@@ -158,7 +149,7 @@ const verifyRazorpay = async (req, res) => {
       res.json({ success: false, message: "Payment failed" });
     }
   } catch (error) {
-    console.error("❌ Error in verifyRazorpay:", error.message);
+    console.error("Error in verifyRazorpay:", error.message);
     res.json({ success: false, message: error.message });
   }
 };
@@ -167,7 +158,6 @@ const trackOrderStatus = async (req, res) => {
   try {
     const { orderId } = req.body;
 
-    // Fetch order details from the database
     const order = await orderModel.findById(orderId);
     if (!order || !order.awbNumber) {
       return res.json({
@@ -175,10 +165,7 @@ const trackOrderStatus = async (req, res) => {
         message: "Order not found or AWB missing",
       });
     }
-
-    // Fetch shipment tracking data from Shiprocket
     const trackingInfo = await trackShipment(order.awbNumber);
-    console.log("🚚 Shipment tracking response:", trackingInfo); // Debugging
 
     if (!trackingInfo || !trackingInfo.tracking_data) {
       return res.json({
@@ -187,12 +174,9 @@ const trackOrderStatus = async (req, res) => {
       });
     }
 
-    const trackUrl = trackingInfo.tracking_data.track_url;
-    console.log("✅ Tracking URL:", trackUrl); // Debugging
-
     res.json({ success: true, trackingInfo: trackingInfo.tracking_data });
   } catch (error) {
-    console.error("❌ Error in trackOrderStatus:", error.message);
+    console.error(" Error in trackOrderStatus:", error.message);
     res.json({ success: false, message: error.message });
   }
 };
@@ -232,124 +216,27 @@ const updateStatus = async (req, res) => {
   }
 };
 
-// const createReturnOrderController = async (req, res) => {
-//   try {
-//     const { orderId, reason } = req.body;
-//     const order = await orderModel.findById(orderId);
-//     if (!order) {
-//       return res.json({ success: false, message: "Order not found" });
-//     }
-
-//     const response = await returnOrder(order, reason);
-//     if (response.success) {
-//       await orderModel.findByIdAndUpdate(orderId, {
-//         status: "Return Initiated",
-//       });
-//       res.json({ success: true, message: "Return order created successfully" });
-//     } else {
-//       res.json({ success: false, message: response.message });
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     res.json({ success: false, message: error.message });
-//   }
-// };
-
-const createReturnOrderController = async (createOrderPayload) => {
+const createReturnOrderController = async (req, res) => {
   try {
-    console.log(
-      "📦 Original Create Order Payload:",
-      inspect(createOrderPayload, { depth: null, colors: true })
-    );
+    const { orderId, reason } = req.body;
+    const order = await orderModel.findById(orderId);
 
-    console.log("🛠️ Create Order Payload:", createOrderPayload);
-    console.log("🆔 Order ID:", createOrderPayload?._id);
-    // Function to auto-fill pickup details using shipping address
-    const getPickupDetails = (shippingAddress) => {
-      return {
-        pickup_customer_name: shippingAddress.firstName,
-        pickup_last_name: shippingAddress.lastName || "",
-        company_name: "Your Company Name", // Set a default or fetch dynamically
-        pickup_address: shippingAddress.street,
-        pickup_address_2: "",
-        pickup_city: shippingAddress.city,
-        pickup_state: shippingAddress.state,
-        pickup_country: shippingAddress.country,
-        pickup_pincode: shippingAddress.zipcode,
-        pickup_email: shippingAddress.email,
-        pickup_phone: shippingAddress.phone,
-        pickup_isd_code: "91", // Default country code (adjust if needed)
-      };
-    };
-
-    // Build the return order payload
-    const returnOrderPayload = {
-      ...createOrderPayload,
-      order_id: createOrderPayload?._id?.toString() || "N/A", // Safe access // Convert ObjectId to string if needed
-      order_date: new Date().toISOString().split("T")[0], // Format to YYYY-MM-DD
-
-      // Automatically fill pickup details
-      ...getPickupDetails(createOrderPayload.address),
-
-      order_items: createOrderPayload.items.map((item) => ({
-        name: item.name,
-        qc_enable: true, // Enable QC
-        qc_product_name: item.name,
-        sku: item._id, // Assuming the item ID serves as SKU
-        units: item.quantity,
-        selling_price: item.price,
-        discount: 0, // Default to no discount (or calculate if needed)
-        qc_brand: "Your Brand", // Set a default or fetch dynamically
-        qc_product_image: item.image[0], // Use the first image in the array
-      })),
-
-      payment_method: createOrderPayload.paymentMethod.toUpperCase(),
-      total_discount: "0",
-      sub_total: createOrderPayload.amount,
-
-      // Placeholder dimensions & weight (set dynamically if possible)
-      length: 11,
-      breadth: 11,
-      height: 11,
-      weight: 0.5,
-    };
-
-    console.log(
-      "🚀 Final Return Order Payload:",
-      JSON.stringify(returnOrderPayload, null, 2)
-    );
-
-    // Shiprocket API request configuration
-    const config = {
-      method: "post",
-      maxBodyLength: Infinity,
-      url: "https://apiv2.shiprocket.in/v1/external/orders/create/return",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer {{token}}`, // Replace {{token}} with actual token
-      },
-      data: returnOrderPayload,
-    };
-
-    // Send request to Shiprocket
-    const response = await axios(config);
-    console.log(
-      "✅ Return Order Created Successfully:",
-      JSON.stringify(response.data, null, 2)
-    );
-    return response.data;
-  } catch (error) {
-    if (error.response && error.response.data) {
-      console.error(
-        "❌ Error Details:",
-        JSON.stringify(error.response.data, null, 2)
-      );
-    } else {
-      console.error("❌ Error:", error.message);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
     }
-    throw error;
+
+    const returnOrderResponse = await returnOrder({ order, reason });
+
+    res.status(200).json({
+      message: "Return order created successfully",
+      data: returnOrderResponse,
+    });
+  } catch (error) {
+    console.error("Error in returnOrderController:", error.message);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
+
 const createExchangeOrderController = async (req, res) => {
   try {
     const { orderId, exchangeItem } = req.body;
