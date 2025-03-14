@@ -320,10 +320,13 @@ const ShopContextProvider = (props) => {
       });
 
       if (response.data.success) {
-        setUserAccount(response.data.data);
+        if (response.data.data) {
+          setUserAccount(response.data.data);
+        }
       } else {
-        toast.error(
-          response.data.message || "Failed to fetch account details."
+        console.error(
+          "Failed to fetch account details:",
+          response.data.message
         );
       }
     } catch (error) {

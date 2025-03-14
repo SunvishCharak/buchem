@@ -99,9 +99,7 @@ const adminLogin = async (req, res) => {
 const getUserAccount = async (req, res) => {
   try {
     if (!req.body.userId) {
-      return res
-        .status(401)
-        .json({ success: false, message: "User ID not found" });
+      return res.json({ success: true, data: null });
     }
 
     // Fetch the user data excluding the password field
