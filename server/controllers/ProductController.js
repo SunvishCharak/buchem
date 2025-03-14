@@ -24,9 +24,6 @@ const addProduct = async (req, res) => {
       size: item.size || "M",
       stock: Number(item.stock) || 0,
     }));
-
-    console.log("Final sizes array before saving:", parsedSizes);
-
     const image1 = req.files.image1 && req.files.image1[0];
     const image2 = req.files.image2 && req.files.image2[0];
     const image3 = req.files.image3 && req.files.image3[0];
@@ -100,73 +97,16 @@ const singleProduct = async (req, res) => {
   }
 };
 
-// function to add a review to a product
-//
-
-// const addReview = async (req, res) => {
-//   try {
-//     const { productId, user, rating, comment } = req.body;
-
-//     if (!productId || !user || !rating || !comment) {
-//       return res.json({ success: false, message: "All fields are required" });
-//     }
-
-//     let imagesUrl = [];
-//     if (req.files && req.files.length > 0) {
-//       imagesUrl = await Promise.all(
-//         req.files.map(async (file) => {
-//           const result = await cloudinary.uploader.upload(file.path, {
-//             resource_type: "image",
-//           });
-//           return result.secure_url;
-//         })
-//       );
-//     }
-
-//     const review = {
-//       user,
-//       rating: Number(rating),
-//       comment,
-//       date: new Date(),
-//       images: imagesUrl,
-//     };
-
-//     // Use findByIdAndUpdate to only update the reviews field
-//     const updatedProduct = await ProductModel.findByIdAndUpdate(
-//       productId,
-//       { $push: { reviews: review } },
-//       { new: true, runValidators: true }
-//     );
-
-//     if (!updatedProduct) {
-//       return res.json({ success: false, message: "Product not found" });
-//     }
-
-//     res.json({ success: true, message: "Review added successfully" });
-//   } catch (error) {
-//     console.log(error);
-//     res.json({ success: false, message: error.message });
-//   }
-// };
-
+// Add a review to a product
 const addReview = async (req, res) => {
   try {
-    // Log the request body and files for debugging
-    console.log("Request Body:", req.body);
-    console.log("Uploaded Files:", req.files);
-
-    // Extracting data from the request body
     const { productId, user, rating, comment } = req.body;
-
-    // Validate all fields are present
     if (!productId || !user || !rating || !comment) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
       });
     }
-
-    // Handle image uploads to Cloudinary
     let imagesUrl = [];
     if (req.files && req.files.length > 0) {
       imagesUrl = await Promise.all(
@@ -183,8 +123,6 @@ const addReview = async (req, res) => {
         })
       );
     }
-
-    // Create the review object
     const review = {
       user,
       rating: Number(rating),
@@ -192,21 +130,17 @@ const addReview = async (req, res) => {
       date: new Date(),
       images: imagesUrl,
     };
-
-    // Push the review into the product's reviews array
     const updatedProduct = await ProductModel.findByIdAndUpdate(
       productId,
       { $push: { reviews: review } },
       { new: true, runValidators: true }
     );
-
     if (!updatedProduct) {
       return res.status(404).json({
         success: false,
         message: "Product not found",
       });
     }
-
     res.json({
       success: true,
       message: "Review added successfully",
@@ -224,8 +158,6 @@ const addReview = async (req, res) => {
 const getReviews = async (req, res) => {
   try {
     const { productId } = req.params;
-    console.log("Received productId in getReviews:", productId); // ✅ New Log
-
     if (!productId || productId === "undefined") {
       return res
         .status(400)

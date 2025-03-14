@@ -87,7 +87,7 @@ const ShopContextProvider = (props) => {
         if (trackUrl) {
           window.location.href = trackUrl;
         } else {
-          console.error("❌ Tracking URL is missing in response.");
+          console.error("Tracking URL is missing in response.");
           alert("Tracking information is not available.");
         }
       } else {
@@ -95,7 +95,7 @@ const ShopContextProvider = (props) => {
         alert(response.data.message || "Tracking information not available.");
       }
     } catch (error) {
-      console.error("❌ Error tracking order:", error);
+      console.error("Error tracking order:", error);
       alert("Failed to track the order. Please try again later.");
     }
   };
@@ -253,7 +253,6 @@ const ShopContextProvider = (props) => {
       );
 
       if (response.data.success) {
-        console.log("Updated Wishlist Response:", response.data.wishlist);
         setWishlist(response.data.wishlist.items || []);
         toast.success("Item added to wishlist");
       }
@@ -416,52 +415,19 @@ const ShopContextProvider = (props) => {
     }
   };
 
-  // reviews
-  // const fetchProductReviews = async (productId) => {
-  //   try {
-  //     console.log("Fetching reviews for product ID:", productId);
-  //     const response = await axios.get(
-  //       `${backendUrl}/api/product/reviews/${productId}`
-  //     );
-  //     console.log("Review API Response:", response.data);
-  //     if (response.data.success) {
-  //       setProductReviews((prev) => ({
-  //         ...prev,
-  //         [productId]: response.data.reviews,
-  //       }));
-  //       console.log("Updated Reviews State:", {
-  //         ...productReviews,
-  //         [productId]: response.data.reviews,
-  //       });
-  //     } else {
-  //       console.error("No success in response:", response.data);
-  //     }
-  //   } catch (error) {
-  //     console.error(
-  //       "Failed to fetch product reviews:",
-  //       error.response?.data || error.message
-  //     );
-  //     toast.error("Failed to fetch reviews.");
-  //   }
-  // };
-
-  // ShopContext.js
   const fetchProductReviews = async (productId) => {
-    console.log("Fetching reviews for product ID:", productId);
     try {
       const response = await fetch(
         `${backendUrl}/api/product/reviews/${productId}`
       );
       const data = await response.json();
-      console.log("Review API Response:", data);
 
       if (data.success) {
         setProductReviews((prevReviews) => ({
           ...prevReviews,
           [productId]: data.reviews,
         }));
-        console.log("Updated Reviews State:", data.reviews);
-        return data; // Return the data explicitly!
+        return data;
       } else {
         console.error("Failed to fetch reviews");
         return { success: false, reviews: [] };
@@ -489,17 +455,13 @@ const ShopContextProvider = (props) => {
           },
         }
       );
-
-      console.log("Backend Response:", response.data);
-
       if (response.data.success) {
         toast.success("Review submitted successfully!");
         fetchProductReviews(formData.get("productId"));
       } else {
         toast.error(response.data.message);
       }
-
-      return response.data; // Add this return to ensure the response is handled
+      return response.data;
     } catch (error) {
       console.error("Failed to submit product review:", error);
       toast.error("Failed to submit review.");

@@ -12,8 +12,6 @@ const ReviewModal = ({ onClose, productId }) => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  console.log("Received productId in Modal:", productId);
-
   // Handle image selection
   const handleImageChange = (e) => {
     setImages(e.target.files);
@@ -23,7 +21,6 @@ const ReviewModal = ({ onClose, productId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     const formData = new FormData();
     formData.append("productId", productId);
     formData.append("user", user);
@@ -36,7 +33,6 @@ const ReviewModal = ({ onClose, productId }) => {
 
     try {
       const response = await submitProductReview(formData);
-
       if (response?.success) {
         fetchProductReviews(productId);
         setUser("");
@@ -44,7 +40,7 @@ const ReviewModal = ({ onClose, productId }) => {
         setComment("");
         setImages([]);
         toast.success("Review submitted successfully");
-        onClose(); // Close the modal after successful submission
+        onClose();
       } else {
         toast.error(response?.message || "Failed to submit review");
       }

@@ -227,15 +227,13 @@ const NavBar = () => {
             </li>
 
             <li>
-              <a
-                href={`https://shiprocket.co/tracking`}
+              <NavLink
+                to="/track-order"
                 className="side-menu-link"
-                target="_blank"
-                rel="noopener noreferrer"
                 onClick={toggleMenu}
               >
                 Track Your Order
-              </a>
+              </NavLink>
             </li>
           </div>
         </ul>

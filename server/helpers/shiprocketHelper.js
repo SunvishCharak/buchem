@@ -14,7 +14,6 @@ const getShiprocketToken = async () => {
         password: SHIPROCKET_PASSWORD,
       }
     );
-
     shiprocketToken = response.data.token;
     return shiprocketToken;
   } catch (error) {
@@ -25,12 +24,10 @@ const getShiprocketToken = async () => {
     throw new Error("Shiprocket Authentication Failed");
   }
 };
-
 const createOrder = async (order) => {
   try {
     const token = await getShiprocketToken();
     if (!token) throw new Error(" Shiprocket Token is missing!");
-
     if (
       !order.items ||
       !Array.isArray(order.items) ||
@@ -38,7 +35,6 @@ const createOrder = async (order) => {
     ) {
       throw new Error("Order items are missing!");
     }
-
     const formattedOrderItems = order.items.map((item) => ({
       name: item.name,
       sku: item.sku || item._id,
@@ -51,7 +47,6 @@ const createOrder = async (order) => {
       (total, item) => total + item.price * item.quantity,
       0
     );
-
     const orderData = {
       order_id: String(order._id),
       order_date: new Date().toISOString(),
@@ -284,7 +279,6 @@ const returnOrder = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Order not found" });
     }
-
     const formattedOrderItems = order.items.map((item) => ({
       name: item.name,
       sku: item.sku || item._id,
@@ -293,7 +287,6 @@ const returnOrder = async (req, res) => {
       discount: 0,
       tax: 0,
     }));
-
     const { _id, address, paymentMethod, amount } = order;
     const returnOrderPayload = {
       order_id: _id.toString(),

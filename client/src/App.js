@@ -21,6 +21,7 @@ import Account from "./Pages/Account.js";
 import PrivacyPolicy from "./Pages/PrivacyPolicy.js";
 import ScrollToTop from "./Components/scrolltotop.js";
 import ShopContextProvider from "./context/ShopContext.js";
+import TrackOrder from "./Pages/TrackOrder.js";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/track-order" element={<TrackOrder />} />
       </Routes>
       <WhatsApp />
       <Footer />

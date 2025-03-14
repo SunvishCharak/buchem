@@ -6,10 +6,10 @@
   --title-color: #333333;
   --title-color-dark: #000000;
   --text-color: #595959;
-  --body-color: hsl(0, 0%, 96%);
+  --body-color: hsl(0, 0%, 100%);
   --card-title: black;
   --card-border: black;
-  --container-color: hsl(345, 100%, 91%);
+  --container-color: #ffd3de;
 
   /* ----font and typo---- */
   --body-font: "Montserrat", "Poppins", sans-serif;

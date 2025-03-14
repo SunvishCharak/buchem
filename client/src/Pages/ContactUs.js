@@ -9,14 +9,14 @@ const Contact = () => {
 
       <div className="contact-container container grid">
         <div className="contact-content">
-          <h3 className="contact-title">Talk to me</h3>
+          <h3 className="contact-title">Talk to Us</h3>
 
           <div className="contact-info">
             <div className="contact-card">
               <i className="bx bx-mail-send contact-card-icon"></i>
 
               <h3 className="contact-card-title">Email</h3>
-              <span className="contact-card-data">tishasingla10@gmail.com</span>
+              <span className="contact-card-data">buchemindia@gmail.com</span>
 
               <a
                 href="mailto:tishasingla10@gmail.com"
@@ -28,28 +28,13 @@ const Contact = () => {
             </div>
 
             <div className="contact-card">
-              <i className="bx bxl-linkedin contact-card-icon"></i>
-
-              <h3 className="contact-card-title">Linkedin</h3>
-              <span className="contact-card-data">@tisha10</span>
-
-              <a
-                href="https://www.linkedin.com/in/tisha10/"
-                className="contact-button"
-              >
-                Write Me{" "}
-                <i className="bx bx-right-arrow-alt contact-button-icon"></i>
-              </a>
-            </div>
-
-            <div className="contact-card">
               <i className="bx bxl-instagram contact-card-icon"></i>
 
               <h3 className="contact-card-title">Instagram</h3>
-              <span className="contact-card-data">@singla_10</span>
+              <span className="contact-card-data">@buchem.india</span>
 
               <a
-                href="https://www.instagram.com/charaksunvish"
+                href="https://www.instagram.com/buchem.india"
                 className="contact-button"
               >
                 Write Me{" "}
@@ -60,7 +45,7 @@ const Contact = () => {
         </div>
 
         <div className="contact-content">
-          <h3 className="contact-title">Write me your Message</h3>
+          <h3 className="contact-title">Write us your Message</h3>
 
           <form className="contact-form">
             <div className="contact-form-div">

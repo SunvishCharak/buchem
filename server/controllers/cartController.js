@@ -112,7 +112,6 @@ const applyCoupon = async (req, res) => {
         message: "Coupon has already been used",
       });
     }
-
     // Apply the coupon to the user
     await UserModel.findByIdAndUpdate(userId, { appliedCoupon: couponCode });
 
