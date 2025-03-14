@@ -85,7 +85,7 @@
 
 .size-label {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
 }
 
 .size-options {
@@ -126,32 +126,6 @@
   width: 100%;
 }
 
-.product-info {
-  margin-top: 1.25rem;
-  color: #6b7280;
-}
-
-.product-extra {
-  margin-top: 2.5rem;
-}
-
-.tabs {
-  margin-top: 2.5rem;
-  display: flex;
-}
-
-.tab {
-  border: 1px solid #ddd;
-  padding: 0.75rem 1.25rem;
-  font-size: var(--small-font-size);
-}
-
-.tab-content {
-  padding: 1.5rem;
-  color: #6b7280;
-  font-size: 0.875rem;
-}
-
 .loading {
   opacity: 0;
 }
@@ -166,22 +140,6 @@
   font-weight: 600;
   margin-bottom: 15px;
 }
-
-/* .delivery-check input {
-  width: 100%;
-  max-width: 250px;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-right: 10px;
-  transition: border-color 0.3s ease;
-}
-
-.delivery-check input:focus {
-  outline: none;
-  border-color: black;
-} */
 
 .underline-input {
   width: 100%;
@@ -317,106 +275,5 @@
   .thumbnail {
     width: 60px;
     height: auto;
-  }
-}
-
-.review-section {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.average-rating {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
-.reviews-container {
-  margin-bottom: 20px;
-}
-
-.review-card {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.review-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-.review-rating {
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #ff9800;
-}
-
-.review-text {
-  color: #555;
-}
-
-.review-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.rating-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.review-textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  min-height: 80px;
-}
-
-.submit-button {
-  padding: 10px 20px;
-  border: none;
-  background-color: #28a745;
-  color: #fff;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.submit-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.submit-button:hover:not(:disabled) {
-  background-color: #218838;
-}
-
-/* Responsive Styles */
-@media (max-width: 600px) {
-  .section-title {
-    font-size: 1.5rem;
-  }
-  .review-card {
-    padding: 10px;
-  }
-  .rating-input,
-  .review-textarea {
-    padding: 8px;
-  }
-  .submit-button {
-    padding: 8px 15px;
   }
 }

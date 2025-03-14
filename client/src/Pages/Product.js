@@ -63,14 +63,6 @@ const Product = () => {
         {/* Product Details */}
         <div className="product-details">
           <h1 className="product-title">{productData.name}</h1>
-          <div className="product-rating">
-            <img src={assets.star_icon} alt="" className="star-icon" />
-            <img src={assets.star_icon} alt="" className="star-icon" />
-            <img src={assets.star_icon} alt="" className="star-icon" />
-            <img src={assets.star_icon} alt="" className="star-icon" />
-            <img src={assets.star_dull_icon} alt="" className="star-icon" />
-            <p className="rating-count">(12)</p>
-          </div>
           <p className="product-price">
             {currency}
             {productData.price}
@@ -126,6 +118,10 @@ const Product = () => {
             Move to Wishlist
           </button>
           <hr className="separator" />
+          <div className="description">
+            <p className="product-description">{productData.description}</p>
+          </div>
+
           {/* Estimated Delivery Check */}
           <div className="delivery-check">
             <h3>Check Estimated Delivery Time</h3>
@@ -147,17 +143,7 @@ const Product = () => {
         </div>
       </div>
 
-      {/* Product Description & Review Section */}
-      <div className="product-extra">
-        <div className="tabs">
-          <b className="tab">Description</b>
-          <b className="tab">Reviews (12)</b>
-        </div>
-        <div className="tab-content">
-          <p className="product-description">{productData.description}</p>
-        </div>
-      </div>
-
+      {/* Review Section */}
       <Reviews productId={productData._id} />
 
       {/* Similar Products */}
