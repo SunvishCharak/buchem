@@ -22,6 +22,8 @@ const ShopContextProvider = (props) => {
   const [estimatedDelivery, setEstimatedDelivery] = useState(null);
   const [userAccount, setUserAccount] = useState(null);
   const [productReviews, setProductReviews] = useState({});
+  const [otpSent, setOtpSent] = useState("");
+  const [userEmail, setUserEmail] = useState("");
 
   const saveCartToLocalStorage = (cart) => {
     localStorage.setItem("cartItems", JSON.stringify(cart));
@@ -472,6 +474,49 @@ const ShopContextProvider = (props) => {
     }
   };
 
+  const sendOtp = async (userEmail) => {
+    try {
+        const response = await axios.post(`${backendUrl}/api/send-otp`, { email: userEmail });
+        if (response.data.success) {
+            setOtpSent(true);
+            setUserEmail(userEmail); // Save email for verification step
+            return { success: true, message: "OTP sent to your email!" };
+        } else{
+          return { success: false, message: response.data.message};
+        }
+    } catch (error) {
+        return { success: false, message: error.response?.data?.message || "Failed to send OTP" };
+    }
+};
+
+const verifyOtp = async (otp) => {
+  try {
+      const response = await axios.post(`${backendUrl}/api/verify-otp`, { email: userEmail, otp });
+      if (response.data.success) {
+          return { success: true, message: response.data.message };
+      } else{
+        return { success: false, message: response.data.message };
+      }
+  } catch (error) {
+      return { success: false, message: error.response?.data?.message || "OTP verification failed" };
+  }
+};
+
+    // Reset password function
+    const resetPassword = async (newPassword) => {
+      try {
+          const response = await axios.post(`{backendUrl}/api/reset-password`, { email: userEmail, newPassword });
+          if (response.data.success) {
+              return { success: true, message: response.data.message };
+          }  else {
+            return { success: false, message: response.data.message };
+          }
+      } catch (error) {
+          return { success: false, message: error.response?.data?.message || "Failed to reset password" };
+      }
+  };
+
+
   const value = {
     products,
     currency,
@@ -512,6 +557,10 @@ const ShopContextProvider = (props) => {
     fetchUserAccount,
     fetchProductReviews,
     submitProductReview,
+    sendOtp,
+    verifyOtp,
+    resetPassword,
+    otpSent
   };
 
   return (

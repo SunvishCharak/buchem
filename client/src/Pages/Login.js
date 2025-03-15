@@ -12,6 +12,7 @@ const Login = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -61,9 +62,10 @@ const Login = () => {
         <p className="section-title">{currentState}</p>
         <hr className="header-line" />
       </div>
-      {currentState === "Login" ? (
-        ""
-      ) : (
+      {currentState === "Sign Up" &&  (
+        
+      
+        
         <input
           onChange={(e) => setName(e.target.value)}
           value={name}
@@ -89,24 +91,44 @@ const Login = () => {
         required
         className="input-field"
       />
+
+      {currentState  === "Sign Up" && (
+
+      <input
+      onChange={(e) => setConfirmPassword(e.target.value)}
+      value={confirmPassword}
+      type="password"
+      placeholder="Confirm Password"
+      required
+      className="input-field"
+      />
+
+      )}
+      
       <div className="options">
-        <p className="forgot-password">Forgot your password?</p>
-        {currentState === "Login" ? (
+        <p className="forgot-password" onClick={() => navigate("/reset-password")}>Forgot your password?</p>
+
+        </div>
+        <button className="submit-button">
+        {currentState === "Login" ? "Sign In" : "Sign up"}
+        </button> 
+         {/* Create Account button (only in Login mode, below Sign In) */}
+        {currentState === "Login" && (
+        
           <p
             onClick={() => setCurrentState("Sign Up")}
             className="toggle-state"
           >
             Create account
           </p>
-        ) : (
+        )}
+        
+        {currentState === "Sign Up" && (
           <p onClick={() => setCurrentState("Login")} className="toggle-state">
             Login Here
           </p>
         )}
-      </div>
-      <button className="submit-button">
-        {currentState === "Login" ? "Sign In" : "Sign Up"}
-      </button>
+
     </form>
   );
 };
