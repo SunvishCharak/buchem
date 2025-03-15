@@ -42,7 +42,7 @@
   display: flex;
   justify-content: space-between;
   font-size: var(--small-font-size);
-  margin-top: -0.5rem;
+  margin-top: 0.5rem;
 }
 
 .forgot-password {
@@ -54,10 +54,24 @@
 }
 
 .submit-button {
-  background-color: #df97df;
-  color: #fff;
+  background-color: #ecd0ec;
+  color: #121212;
   font-weight: 300;
   padding: 0.5rem 2rem;
   margin-top: 1rem;
   cursor: pointer;
 }
+
+.cancel-button {
+  background-color: transparent;
+  color: #000;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: solid;
+}
+
+

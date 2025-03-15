@@ -130,9 +130,15 @@ const Login = () => {
   const [otp, setOtp] = useState(""); // Store the OTP
   const [isOtpSent, setIsOtpSent] = useState(false); // Track OTP step
   const [userEmail, setUserEmail] = useState(""); // Store email for OTP verification
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+
+    if (currentState === "Sign Up" && password !== confirmPassword) {
+      toast.error("Passwords do not match!");
+      return; // Stop execution if passwords don't match
+    }
 
     try {
       if (!isOtpSent) {
@@ -251,6 +257,16 @@ const Login = () => {
             required
             className="input-field"
           />
+
+          <input
+          onChange={ (e) => setPassword(e.target.value)}
+          value={password}
+          type="password"
+          placeholder="Password"
+          required
+          className="input-field"
+          />
+
           {currentState === "Sign Up" && (
             <input
               onChange={(e) => setPassword(e.target.value)}
@@ -260,7 +276,20 @@ const Login = () => {
               required
               className="input-field"
             />
+
           )}
+
+            {currentState === "Sign Up" && (
+              <input
+              onChange={ (e)=> setConfirmPassword(e.target.value)}
+              value={confirmPassword}
+              type="password"
+              placeholder="Confirm Password"
+              required
+              className="input-field"
+              />
+            )}
+          
         </>
       )}
 
@@ -299,7 +328,17 @@ const Login = () => {
           ? "Sign In"
           : "Sign Up"}
       </button>
+
+      <button 
+      className="cancel-button" 
+      onClick={() => navigate("/")} 
+      type="button"
+      >
+      Cancel
+     </button>
+      
     </form>
+   
   );
 };
 
