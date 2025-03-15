@@ -22,6 +22,7 @@ import PrivacyPolicy from "./Pages/PrivacyPolicy.js";
 import ScrollToTop from "./Components/scrolltotop.js";
 import ShopContextProvider from "./context/ShopContext.js";
 import TrackOrder from "./Pages/TrackOrder.js";
+import ForgotPassword from "./Pages/Forgotpassword.js";
 
 const App = () => {
   return (
@@ -46,6 +47,7 @@ const App = () => {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/track-order" element={<TrackOrder />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
       <WhatsApp />
       <Footer />

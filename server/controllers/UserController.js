@@ -3,52 +3,80 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import UserModal from "../models/UserModel.js";
 import ProductModal from "../models/ProductModel.js";
+import OTP from "../models/OtpModel.js";
+import { sendOTP, verifyOTP } from "../helpers/emailService.js";
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
 };
 
 // Route for user registration
-
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, otp } = req.body;
 
     const exists = await UserModal.findOne({ email });
     if (exists)
       return res.json({ success: false, message: "User already exists" });
 
     if (!validator.isEmail(email))
-      return res.json({
-        success: false,
-        message: "Invalid email! Please enter a valid email",
-      });
-
+      return res.json({ success: false, message: "Invalid email!" });
     if (password.length < 8)
       return res.json({
         success: false,
         message: "Password must be at least 8 characters",
       });
 
-    // to hash the password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // Verify OTP using MongoDB
+    const otpVerification = await verifyOTP(email, otp);
+    if (!otpVerification.success) return res.json(otpVerification);
 
-    const NewUser = new UserModal({
-      name,
-      email,
-      password: hashedPassword,
-    });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new UserModal({ name, email, password: hashedPassword });
+    const user = await newUser.save();
 
-    const User = await NewUser.save();
-
-    const token = createToken(User._id);
-
+    const token = createToken(user._id);
     res.json({ success: true, token });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: "error.message" });
+    console.error(error);
+    res.json({ success: false, message: "Error registering user" });
   }
+};
+
+// Send OTP for registration
+const sendRegistrationOTP = async (req, res) => sendOTP(req, res);
+
+// Send OTP for login
+const sendLoginOTP = async (req, res) => sendOTP(req, res);
+
+// Login using OTP
+const loginWithOTP = async (req, res) => {
+  const { email, otp } = req.body;
+
+  const otpVerification = await verifyOTP(email, otp);
+  if (!otpVerification.success) return res.json(otpVerification);
+
+  const user = await UserModal.findOne({ email });
+  if (!user) return res.json({ success: false, message: "User doesn't exist" });
+
+  const token = createToken(user._id);
+  res.json({ success: true, token });
+};
+
+// Send OTP for password reset
+const sendResetOTP = async (req, res) => sendOTP(req, res);
+
+// Reset password using OTP
+const resetPassword = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  const otpVerification = await verifyOTP(email, otp);
+  if (!otpVerification.success) return res.json(otpVerification);
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  await UserModal.findOneAndUpdate({ email }, { password: hashedPassword });
+
+  res.json({ success: true, message: "Password reset successfully" });
 };
 
 // Route for user login
@@ -241,6 +269,8 @@ const creditWallet = async (req, res) => {
 
 export {
   loginUser,
+  sendLoginOTP,
+  loginWithOTP,
   registerUser,
   adminLogin,
   addToWishlist,
@@ -249,4 +279,7 @@ export {
   getUserAccount,
   redeemWallet,
   creditWallet,
+  sendRegistrationOTP,
+  sendResetOTP,
+  resetPassword,
 };
