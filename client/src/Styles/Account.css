@@ -3,7 +3,7 @@
   display: flex;
   min-height: 100vh;
   background-color: #f9f9f9;
-  font-family: Arial, sans-serif;
+  
   margin-top: 6rem;
 }
 
@@ -115,7 +115,7 @@
 
   .sidebar ul {
     display: flex;
-    justify-content: space-around;
+    gap:20px;
   }
 
   .sidebar-button {
@@ -130,4 +130,42 @@
   .content-card {
     padding: 15px;
   }
+}
+
+.user-detail {
+  
+  
+  padding: 20px;
+  max-width: 400px;
+  margin: 20px auto;
+  text-align: center;
+  
+  transition: transform 0.2s ease-in-out;
+}
+
+.user-detail:hover {
+  transform: scale(1.02);
+}
+
+.user-name {
+  font-size: 22px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* User Info */
+.user-info {
+  font-size: 16px;
+  color: #555;
+  margin: 5px 0;
+}
+
+.user-info a {
+  color: #4a90e2;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.user-info a:hover {
+  text-decoration: underline;
 }

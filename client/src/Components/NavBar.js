@@ -29,7 +29,9 @@ const NavBar = () => {
 
   const [scrolling, setScrolling] = useState(false);
   const location = useLocation();
-
+  const isAccountPage = location.pathname.startsWith ("/account");
+  const isOrdersPage = location.pathname.startsWith ("/orders");
+  const isWishlistPage = location.pathname.startsWith ("/wishlist");
   useEffect(() => {
     const handleScroll = () => {
       setScrolling(window.scrollY > 50);
@@ -123,6 +125,7 @@ const NavBar = () => {
       )}
 
       {/* Side Menu */}
+      {!isAccountPage && !isOrdersPage && !isWishlistPage && ( 
       <div className={`side-menu ${isMenuOpen ? "open" : ""}`}>
         <ul className="side-menu-items">
           <div className="side-menu-top">
@@ -238,9 +241,77 @@ const NavBar = () => {
           </div>
         </ul>
       </div>
+      )}
 
-      {/* Overlay for closing the menu */}
       {isMenuOpen && <div className="overlay" onClick={toggleMenu}></div>}
+      {(isAccountPage || isOrdersPage || isWishlistPage) && (
+        <div className={`side-menu ${isMenuOpen ? "open" : ""}`}>
+          <ul className="side-menu-items">
+            <div className="side-menu-top">
+              <header>
+                <li>
+                  <div className="profile-icon">
+
+                  </div>
+
+                  <div className="close-menu" onClick={toggleMenu}>
+                    &times;
+                  </div>
+                </li>
+              </header>
+            </div>
+
+            <div>
+              <li>
+                <NavLink to="/" className="side-menu-link" onClick={toggleMenu}>
+                Shop
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/orders"
+                className= "side-menu-link"
+                onClick={toggleMenu}
+                >
+                  Orders
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to = "/wishlist" 
+                className="side-menu-link"
+                onClick={toggleMenu}>Wishlist</NavLink>
+              </li>
+
+              <li>
+                <NavLink to= "/wishlist"
+                className="side-menu-link"
+                onClick={toggleMenu}>Wallet</NavLink>
+              </li>
+            </div>
+          </ul>
+
+          <footer>
+            <ul>
+
+              <li>
+              <NavLink to="/account"
+                  className="side-menu-link"
+                  onClick={toggleMenu}>Profile</NavLink>
+              </li>
+
+              <li className="side-menu-link"
+                onClick={logout}>
+                Log out
+                </li>
+
+            </ul>
+          </footer>
+        </div>
+      )}
+
+      {/* Overlay for closing the menu
+      {isMenuOpen && <div className="overlay" onClick={toggleMenu}></div>} */}
     </header>
   );
 };
