@@ -70,10 +70,21 @@
   margin-top: 1rem;
 }
 
-@media screen and (max-width:768px) {
+.star-rating-icon{
+  display: flex;
+  flex-direction:row;
+  
+  
+}
+
+@media screen and (max-width:768px){
+
   .star-rating{
     display: flex;
-    flex-direction: column;
+    flex-direction:column;
   }
   
 }
+
+
+

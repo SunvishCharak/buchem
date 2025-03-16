@@ -21,15 +21,23 @@
 }
 
 .star-rating {
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
   margin-bottom: 10px;
+  gap:1rem;
 }
 
 .star-rating span {
   margin: 0 2px;
   font-weight: 400;
  
+}
+
+.star-rating-icon{
+  display: flex;
+  flex-direction:row;
+  font-size:x-large;
+
 }
 
 .review-form {
@@ -98,12 +106,6 @@ input[type="file"] {
   display: none;
 }
 
-@media screen and (max-width:768px){
-.star-rating span{
-  font-size: 18px;
-  font-weight: 400;
-}
-}
-  
+
 
 

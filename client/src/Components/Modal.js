@@ -57,7 +57,7 @@ const ReviewModal = ({ onClose, productId }) => {
         <h3>Write a Review</h3>
 
         {/* Star Rating System */}
-        <div className="star-rating">
+        <div className="star-rating-icon">
           {[...Array(5)].map((_, i) => (
             <span key={i} onClick={() => setRating(i + 1)}>
               {i < rating ?"★" : "☆"}

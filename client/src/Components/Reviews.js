@@ -75,7 +75,7 @@ const Reviews = ({ productId }) => {
     <div className="reviews-container container">
       <div className="reviews-header">
         <div className="star-rating">
-          <div>
+          <div className="star-rating-icon">
           <FaStar className="star-icon" />
           <FaStar className="star-icon" />
           <FaStar className="star-icon" />
@@ -117,7 +117,7 @@ const Reviews = ({ productId }) => {
               <div className="review-content">
                 <h4>{review.username}</h4>
                 <p className="review-date">{review.date}</p>
-                <div className="star-rating">
+                <div className="star-rating-icon">
                   {[...Array(5)].map((_, i) =>
                     i < review.rating ? (
                       <FaStar key={i} className="star-icon" style={{ color: "black"}} />
