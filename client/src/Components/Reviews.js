@@ -75,13 +75,18 @@ const Reviews = ({ productId }) => {
     <div className="reviews-container container">
       <div className="reviews-header">
         <div className="star-rating">
+          <div>
           <FaStar className="star-icon" />
           <FaStar className="star-icon" />
           <FaStar className="star-icon" />
           <FaStar className="star-icon" />
           <FaStar className="star-icon" />
+          </div>
+          <div>
           <span>{reviews.length} Reviews</span>
+          </div>
         </div>
+        
         <div className="review-actions">
           <button
             className="write-review-btn"
@@ -115,9 +120,9 @@ const Reviews = ({ productId }) => {
                 <div className="star-rating">
                   {[...Array(5)].map((_, i) =>
                     i < review.rating ? (
-                      <FaStar key={i} className="star-icon" />
+                      <FaStar key={i} className="star-icon" style={{ color: "black"}} />
                     ) : (
-                      <FaRegStar key={i} className="star-icon" />
+                      <FaRegStar key={i} className="star-icon" style={{ color: "black"}} />
                     )
                   )}
                 </div>

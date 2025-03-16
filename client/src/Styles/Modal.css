@@ -28,11 +28,14 @@
 
 .star-rating span {
   margin: 0 2px;
+  font-weight: 400;
+ 
 }
 
 .review-form {
   display: flex;
   flex-direction: column;
+  gap:8px;
 }
 
 .review-form input,
@@ -57,11 +60,50 @@
 }
 
 .modal-actions button:first-child {
-  background: #28a745;
+  background: #476a47;
   color: white;
 }
 
 .modal-actions button:last-child {
-  background: #dc3545;
+  background: #121212;
   color: white;
 }
+
+.custom-file-upload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.upload-btn {
+  background-color: black;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.upload-btn:hover {
+  background-color: #333;
+}
+
+.file-name {
+  font-size: 14px;
+  color: gray;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+@media screen and (max-width:768px){
+.star-rating span{
+  font-size: 18px;
+  font-weight: 400;
+}
+}
+  
+
+

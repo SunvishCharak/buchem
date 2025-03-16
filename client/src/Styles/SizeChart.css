@@ -55,7 +55,7 @@
 }
 
 .size-chart-btn {
-  text-decoration: underline;
+  
   background-color: transparent;
   color: var(--title-color);
   cursor: pointer;

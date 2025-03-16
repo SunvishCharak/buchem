@@ -10,12 +10,14 @@
 
 .star-rating {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 5px;
+
 }
 
 .star-icon {
-  color: black;
+  color: black ;
 }
 
 .review-actions {
@@ -65,4 +67,13 @@
   text-align: center;
   font-size: 14px;
   color: gray;
+  margin-top: 1rem;
+}
+
+@media screen and (max-width:768px) {
+  .star-rating{
+    display: flex;
+    flex-direction: column;
+  }
+  
 }

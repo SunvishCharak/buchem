@@ -60,7 +60,7 @@ const ReviewModal = ({ onClose, productId }) => {
         <div className="star-rating">
           {[...Array(5)].map((_, i) => (
             <span key={i} onClick={() => setRating(i + 1)}>
-              {i < rating ? "⭐" : "☆"}
+              {i < rating ?"★" : "☆"}
             </span>
           ))}
         </div>
@@ -80,12 +80,24 @@ const ReviewModal = ({ onClose, productId }) => {
             onChange={(e) => setComment(e.target.value)}
             required
           />
+
+          <div className="custom-file-upload">
+           <label htmlFor="file-input" className="upload-btn">
+           Choose Files
+           </label>
+
+          <span className="file-name">
+          {images.length > 0 ? `${images.length} file(s) selected` : "No file chosen"}
+          </span>
+
           <input
+          id="file-input"
             type="file"
             multiple
             accept="image/*"
             onChange={handleImageChange}
           />
+          </div>
 
           {/* Modal Actions */}
           <div className="modal-actions">
