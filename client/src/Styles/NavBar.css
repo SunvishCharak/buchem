@@ -85,15 +85,18 @@
 /* Side Menu */
 .side-menu {
   display: flex;
+  flex-direction: column;
   position: fixed;
   top: 0;
-  left: -350px;
+  left: -100%;
   width: 350px;
   height: 100vh;
   background-color: hsl(0, 0%, 96%);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: left 0.3s ease-in-out;
   padding: 1.5rem 1rem;
+  justify-content:space-between;
+  padding-bottom: 20px;
 }
 
 .side-menu.open {
@@ -211,14 +214,21 @@
 }
 
 .announcement-bar {
-  background-color: #ecd0ec;
-  color: black;
+  background-color: rgb(244 239 239);
+  color: #121212;
   text-align: center;
   padding: 10px;
   font-size: 14px;
   font-weight: bold;
+ 
   transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
+
+/* .announcement-wrapper {
+  display: flex;
+  gap: 0px; /*uce this to decrease space */
+
+
 
 /* Hide Announcement Bar When Scrolling */
 .hide-announcement {
@@ -235,5 +245,40 @@
 }
 
 .announcement-bar p {
+  display: inline-block;
+  min-width: 100%;
   font-weight: 500;
+  animation: marquee 12s linear infinite;
+  margin-right: -30px;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+
+.account-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem 1rem;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(-100%); /* Initially hidden */
+}
+
+.account-sidebar.active {
+  transform: translateX(0); /* Slide in when active */
+}
+
+.side-menu footer {
+  background: #f8f8f8;
+  padding: 15px;
+  text-align: center;
+  position: relative;
 }

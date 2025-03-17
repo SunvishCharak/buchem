@@ -103,7 +103,7 @@ const Reviews = ({ productId }) => {
       {reviews.length === 0 ? (
         <p className="no-reviews">Be the first to write a review.</p>
       ) : (
-        <div className="reviews-grid">
+        <div className="reviews-box">
           {reviews.map((review, index) => (
             <div key={index} className="review-card">
               {review.images?.map((img, idx) => (

@@ -29,6 +29,9 @@ const NavBar = () => {
 
   const [scrolling, setScrolling] = useState(false);
   const location = useLocation();
+  const isAccountPage = location.pathname.startsWith("/account");
+  const isOrdersPage = location.pathname.startsWith("/orders");
+  const isWishlistPage = location.pathname.startsWith("/wishlist");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -123,6 +126,7 @@ const NavBar = () => {
       )}
 
       {/* Side Menu */}
+      {!isAccountPage && !isOrdersPage && !isWishlistPage && (
       <div className={`side-menu ${isMenuOpen ? "open" : ""}`}>
         <ul className="side-menu-items">
           <div className="side-menu-top">
@@ -175,6 +179,7 @@ const NavBar = () => {
                 className={`uil ${
                   isShopDropdownOpen ? "uil-minus" : "uil-plus"
                 }`}
+                
                 style={{ marginLeft: "10px" }}
               ></i>
             </li>
@@ -185,6 +190,7 @@ const NavBar = () => {
                   <NavLink
                     to="/products?category=dress"
                     className="dropdown-text"
+                    onClick={toggleMenu}
                   >
                     Dress
                   </NavLink>
@@ -193,6 +199,7 @@ const NavBar = () => {
                   <NavLink
                     to="/products?category=Top"
                     className="dropdown-text"
+                    onClick={toggleMenu}
                   >
                     Top
                   </NavLink>
@@ -201,6 +208,7 @@ const NavBar = () => {
                   <NavLink
                     to="/products?category=skirts"
                     className="dropdown-text"
+                    onClick={toggleMenu}
                   >
                     Skirt
                   </NavLink>
@@ -209,6 +217,7 @@ const NavBar = () => {
                   <NavLink
                     to="/products?category=co-ords"
                     className="dropdown-text"
+                    onClick={toggleMenu}
                   >
                     Co-ords
                   </NavLink>
@@ -238,10 +247,94 @@ const NavBar = () => {
           </div>
         </ul>
       </div>
+      )}
 
       {/* Overlay for closing the menu */}
       {isMenuOpen && <div className="overlay" onClick={toggleMenu}></div>}
-    </header>
+  
+
+     {(isAccountPage || isOrdersPage || isWishlistPage) && (
+        <div className={`side-menu ${isMenuOpen ? "open" : ""}`}>
+          <ul className="side-menu-items">
+            <div className="side-menu-top">
+              <header>
+              <li>
+                <div className="profile-icon">
+                👤
+                </div>
+                <div className="close-menu" onClick={toggleMenu}>
+                  &times;
+                </div>
+              </li>
+              </header>
+            </div>
+
+            <div>
+              <li>
+                <NavLink to="/" className="side-menu-link" onClick={toggleMenu}>
+                  Shop
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/Orders"
+                  className="side-menu-link"
+                  onClick={toggleMenu}
+                >
+                  Orders
+                </NavLink>
+              </li>
+
+              {/* <li>
+                <a
+                  href={`https://shiprocket.co/tracking`}
+                  className="side-menu-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={toggleMenu}
+                >
+                  Track Your Order
+                </a>
+              </li> */}
+
+              <li>
+                <NavLink to= "/wishlist" className="side-menu-link" 
+                onClick={toggleMenu}>Wishlist</NavLink>
+              </li>
+
+              <li>
+                <NavLink to= "/account" className="side-menu-link" 
+                onClick={toggleMenu}>Wallet</NavLink>
+              </li>
+            </div>
+          </ul>
+
+        
+
+          <footer>
+            
+              <ul>
+              
+                <li>
+                  <NavLink to="/account"
+                  className="side-menu-link"
+                  onClick={toggleMenu}>Profile</NavLink>
+                </li>
+
+                <li className="side-menu-link"
+                onClick={logout}>
+                Log out
+                </li>
+              </ul>
+            
+          </footer>
+          </div>
+        
+              )}
+          </header>
+
+
   );
 };
 

@@ -1,5 +1,6 @@
 .orders-container {
-  margin-top: calc(var(--header-height) + 2rem);
+  margin-top: calc(var(--header-height) + 4rem);
+  margin-bottom:6rem;
 }
 
 .orders-header-title {

@@ -33,14 +33,16 @@
   background: white;
 }
 
-.reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.reviews-box {
+  display: flex;
+  flex-direction:column;
   gap: 15px;
   margin-top: 20px;
 }
 
 .review-card {
+  display:flex;
+  gap: 20px;
   border: 1px solid #ddd;
   padding: 10px;
   border-radius: 5px;
@@ -48,9 +50,9 @@
 }
 
 .review-image {
-  width: 100%;
+  width: fit-content;
   height: 250px;
-  object-fit: cover;
+ 
   border-radius: 5px;
 }
 
