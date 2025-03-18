@@ -24,12 +24,13 @@
   font-size: 20px;
   cursor: pointer;
   margin-bottom: 10px;
-  gap:1rem;
+  
 }
 
 .star-rating span {
   margin: 0 2px;
-  font-weight: 400;
+  font-weight: 100;
+  font-size: var(--small-font-size);
  
 }
 
