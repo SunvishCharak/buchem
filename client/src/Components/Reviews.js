@@ -83,7 +83,7 @@ const Reviews = ({ productId }) => {
           <FaStar className="star-icon" />
           </div>
           <div>
-          <span>{reviews.length} Reviews</span>
+          <span>({reviews.length} Reviews)</span>
           </div>
         </div>
         

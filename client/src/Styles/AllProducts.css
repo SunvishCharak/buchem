@@ -55,9 +55,9 @@ label {
   gap: 1.5rem;
 }
 
-.close-btn {
+/* .close-btn {
   display: none;
-}
+} */
 
 /* sort dropdown */
 
@@ -76,10 +76,10 @@ label {
 .sort-button {
   background-color: #fff;
   border: 1px solid #ccc;
-  padding: 10px 15px;
+  padding:5px 15px;
   cursor: pointer;
-  border-radius: 5px;
-  font-size: 16px;
+  /* border-radius: 5px; */
+  font-size: 14px;
   display: flex;
   align-items: center;
 }
@@ -230,6 +230,8 @@ label {
     width: 50%;
     display: flex;
     align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 
   .sort-controls {
@@ -306,3 +308,16 @@ label {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+@media (max-width: 768px) {
+  .sort-button {
+    padding: 10px 10px;
+    width: 100%;
+    background: black !important;
+    color: white !important;
+    display: block;
+    border: none;
+    cursor: pointer;
+  }
+}
+
