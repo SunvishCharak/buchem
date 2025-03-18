@@ -18,6 +18,8 @@ const NavBar = () => {
     token,
     setToken,
     setCartItems,
+    userAccount,
+    setUserAccount
   } = useContext(ShopContext);
 
   const logout = () => {
@@ -25,12 +27,13 @@ const NavBar = () => {
     localStorage.removeItem("token");
     setToken("");
     setCartItems({});
+    setUserAccount(null);
   };
 
   const [scrolling, setScrolling] = useState(false);
   const location = useLocation();
   const isAccountPage = location.pathname.startsWith("/account");
-  const isOrdersPage = location.pathname.startsWith("/orders");
+  const isOrdersPage = location.pathname.includes("/orders");
   const isWishlistPage = location.pathname.startsWith("/wishlist");
 
   useEffect(() => {
@@ -260,7 +263,11 @@ const NavBar = () => {
               <header>
               <li>
                 <div className="profile-icon">
-                👤
+               {userAccount && userAccount.name ?
+                <p>
+                  
+                 {userAccount.name}
+                </p> : <p>Loading...</p>}
                 </div>
                 <div className="close-menu" onClick={toggleMenu}>
                   &times;
