@@ -11,6 +11,7 @@ import connectDB from "./config/mondodb.js";
 import userRouter from "./routes/UserRoute.js";
 import productRouter from "./routes/ProductRoute.js";
 import orderRouter from "./routes/orderRoute.js";
+import {uploadImage} from "./controllers/UploadController.js";
 
 await connectCloudinary();
 
@@ -28,7 +29,7 @@ const upload = multer({ storage });
 const app = express();
 const port = process.env.PORT || 4000;
 connectDB();
-connectCloudinary();
+// connectCloudinary();
 dotenv.config();
 
 // middleware
@@ -45,3 +46,9 @@ app.get("/", (req, res) => {
   res.send("API is Working...");
 });
 app.listen(port, () => console.log(`Server is running on port ${port}`));
+
+app.use("/api/upload", uploadImage);
+
+app.post("/api/customize", (req, res) => {
+  res.json({ message: "Custom order received!" });
+});
