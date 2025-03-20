@@ -22,6 +22,7 @@ const ShopContextProvider = (props) => {
   const [estimatedDelivery, setEstimatedDelivery] = useState(null);
   const [userAccount, setUserAccount] = useState(null);
   const [productReviews, setProductReviews] = useState({});
+  const [customOrders, setCustomOrders] = useState([]);
 
   const saveCartToLocalStorage = (cart) => {
     localStorage.setItem("cartItems", JSON.stringify(cart));
@@ -472,6 +473,17 @@ const ShopContextProvider = (props) => {
     }
   };
 
+  const submitCustomOrder = async (customData) => {
+    try {
+                  const response = await axios.post("http://localhost:4000/api/customize", customData);
+            setCustomOrders([...customOrders, response.data]); // Store order in context
+            return true;
+    } catch (error) {
+      console.error("Error submitting custom order:", error);
+      return false;
+    }
+  };
+
   const value = {
     products,
     currency,
@@ -512,6 +524,8 @@ const ShopContextProvider = (props) => {
     fetchUserAccount,
     fetchProductReviews,
     submitProductReview,
+    customOrders,
+    submitCustomOrder
   };
 
   return (

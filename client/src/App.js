@@ -23,6 +23,7 @@ import ScrollToTop from "./Components/scrolltotop.js";
 import ShopContextProvider from "./context/ShopContext.js";
 import TrackOrder from "./Pages/TrackOrder.js";
 import ForgotPassword from "./Pages/Forgotpassword.js";
+import Custom from "./Pages/Custombox.js";
 
 const App = () => {
   return (
@@ -48,6 +49,7 @@ const App = () => {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/track-order" element={<TrackOrder />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/custom-form" element={<Custom />} />
       </Routes>
       <WhatsApp />
       <Footer />

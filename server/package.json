@@ -24,6 +24,7 @@
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
     "razorpay": "^2.9.5",
+    "react-hook-form": "^7.54.2",
     "stripe": "^17.6.0",
     "twilio": "^5.4.4",
     "validator": "^13.12.0"

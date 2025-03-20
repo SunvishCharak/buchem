@@ -314,6 +314,11 @@ const NavBar = () => {
                 <NavLink to= "/account" className="side-menu-link" 
                 onClick={toggleMenu}>Wallet</NavLink>
               </li>
+
+              <li>
+                <NavLink to= "/custom-form" className="side-menu-link" 
+                onClick={toggleMenu}>Customize</NavLink>
+              </li>
             </div>
           </ul>
 

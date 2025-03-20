@@ -40,7 +40,7 @@
   outline: none;
   padding: 5px;
   font-size: 14px;
-  background-color: #f9d9e1;
+  background-color: var(--container-color);
 }
 
 .newsletter-icon {
