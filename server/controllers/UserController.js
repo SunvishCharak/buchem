@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import UserModal from "../models/UserModel.js";
 import ProductModal from "../models/ProductModel.js";
-import OTP from "../models/OtpModel.js";
 import { sendOTP, verifyOTP } from "../helpers/emailService.js";
 
 const createToken = (id) => {
@@ -267,6 +266,27 @@ const creditWallet = async (req, res) => {
   }
 };
 
+const verifyPassword = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await UserModal.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ success: false, message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ success: false, message: "Incorrect password" });
+    }
+
+    res.json({ success: true, message: "Password verified" });
+  } catch (error) {
+    console.error("Password verification error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 export {
   loginUser,
   sendLoginOTP,
@@ -282,4 +302,5 @@ export {
   sendRegistrationOTP,
   sendResetOTP,
   resetPassword,
+  verifyPassword,
 };

@@ -112,6 +112,8 @@
 
 .side-menu-login-text {
   margin-left: 6px;
+  color:#e196a9;
+  font-style:oblique;
 }
 
 .side-menu-items {
@@ -131,8 +133,9 @@
   padding: 15px;
   cursor: pointer;
   text-decoration: none;
-  color: var(--title-color);
+  color: #e196a9;
   transition: background 0.3s ease;
+  font-style: oblique;
 }
 
 .side-menu-link i {
@@ -211,6 +214,10 @@
   .nav-icons .uil-shopping-bag {
     display: inline-block !important;
   }
+
+  .side-menu{
+    width:290px
+  }
 }
 
 .announcement-bar {
@@ -286,4 +293,8 @@
 .profile-icon{
   font-size:x-large;
   font-weight:650px;
+}
+
+.uil-user-circle{
+  color:#e196a9;
 }

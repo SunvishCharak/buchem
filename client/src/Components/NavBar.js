@@ -140,7 +140,7 @@ const NavBar = () => {
                   className="side-menu-login"
                   onClick={toggleMenu}
                 >
-                  <i className="uil uil-user"></i>
+                  <i className="uis uil-user-circle"></i>
                   <span className="side-menu-login-text">Account</span>
                 </NavLink>
               ) : (
@@ -149,7 +149,7 @@ const NavBar = () => {
                   className="side-menu-login"
                   onClick={toggleMenu}
                 >
-                  <i className="uil uil-user"></i>
+                  <i className="uil uis-user-circle"></i>
                   <span className="side-menu-login-text">Login</span>
                 </NavLink>
               )}

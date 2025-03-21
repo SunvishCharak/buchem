@@ -15,12 +15,14 @@ import {
   loginWithOTP,
   sendResetOTP,
   resetPassword,
+  verifyPassword,
 } from "../controllers/UserController.js";
 import authUser from "../middleware/auth.js";
 
 const userRouter = express.Router();
 
 userRouter.post("/login", loginUser);
+userRouter.post("/verify-password", verifyPassword);
 userRouter.post("/login/otp/send", sendLoginOTP);
 userRouter.post("/login/otp/verify", loginWithOTP);
 userRouter.post("/register", registerUser);
@@ -36,6 +38,7 @@ userRouter.get("/wishlist", authUser, getUserWishlist);
 
 // Account route
 userRouter.get("/account", authUser, getUserAccount);
+
 
 // Wallet routes
 userRouter.post("/wallet/redeem", authUser, redeemWallet);
