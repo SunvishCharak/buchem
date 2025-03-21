@@ -91,7 +91,7 @@
   left: -100%;
   width: 350px;
   height: 100vh;
-  background-color: hsl(0, 0%, 96%);
+  background-color: var(--container-color);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: left 0.3s ease-in-out;
   padding: 1.5rem 1rem;
@@ -112,7 +112,7 @@
 
 .side-menu-login-text {
   margin-left: 6px;
-  color:#e196a9;
+  color:#121212;
   font-style:oblique;
 }
 
@@ -133,7 +133,7 @@
   padding: 15px;
   cursor: pointer;
   text-decoration: none;
-  color: #e196a9;
+  color: #121212;
   transition: background 0.3s ease;
   font-style: oblique;
 }
@@ -221,7 +221,7 @@
 }
 
 .announcement-bar {
-  background-color: #121212;
+  background-color: #333;
   color: white;
   text-align: center;
   padding: 10px;

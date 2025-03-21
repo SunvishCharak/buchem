@@ -16,9 +16,15 @@ const Login = () => {
   const [otp, setOtp] = useState(""); // Store the OTP
   const [isOtpSent, setIsOtpSent] = useState(false); // Track OTP step
   const [userEmail, setUserEmail] = useState(""); // Store email for OTP verification
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+
+    if (currentState === "Sign Up" && password !== confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
 
     try {
       if (!isOtpSent) {
@@ -129,37 +135,58 @@ const Login = () => {
         </>
       ) : (
         <>
-          {currentState === "Login" ? (
-            ""
-          ) : (
-            <input
-              onChange={(e) => setName(e.target.value)}
-              value={name}
-              type="text"
-              placeholder="Name"
-              required
-              className="input-field"
-            />
-          )}
-          <input
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            type="email"
-            placeholder="Enter your email"
-            required
-            className="input-field"
-          />
-          {currentState === "Sign Up" && (
-            <input
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              type="password"
-              placeholder="Enter your password"
-              required
-              className="input-field"
-            />
-            
-          )}
+         {currentState === "Sign Up" && (
+  <input
+    onChange={(e) => setName(e.target.value)}
+    value={name}
+    type="text"
+    placeholder="Name"
+    required
+    className="input-field"
+  />
+)}
+
+<input
+  onChange={(e) => setEmail(e.target.value)}
+  value={email}
+  type="email"
+  placeholder="Enter your email"
+  required
+  className="input-field"
+/>
+
+{currentState === "Login" && (
+  <input
+    onChange={(e) => setPassword(e.target.value)}
+    value={password}
+    type="password"
+    placeholder="Enter your password"
+    required
+    className="input-field"
+  />
+)}
+
+{currentState === "Sign Up" && (
+  <>
+    <input
+      onChange={(e) => setPassword(e.target.value)}
+      value={password}
+      type="password"
+      placeholder="Enter your password"
+      required
+      className="input-field"
+    />
+    <input
+      onChange={(e) => setConfirmPassword(e.target.value)}
+      value={confirmPassword}
+      type="password"
+      placeholder="Re-enter your password"
+      required
+      className="input-field"
+    />
+  </>
+)}
+
 
         
         </>
