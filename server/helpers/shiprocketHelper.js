@@ -269,6 +269,9 @@ const trackShipment = async (awb_code) => {
 
 const returnOrder = async (req, res) => {
   try {
+
+    console.log("🔥 Request Body:", req.body); // Debugging line
+    
     const token = await getShiprocketToken();
     if (!token) throw new Error("Shiprocket Token is missing!");
 

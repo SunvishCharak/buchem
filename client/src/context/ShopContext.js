@@ -380,10 +380,13 @@ const ShopContextProvider = (props) => {
       toast.error("Please login to return an order");
       return;
     }
+
+    console.log("🛒 Sending Return Order Data:", { orderId, reason });
+
     try {
       const response = await axios.post(
-        backendUrl + "/api/order/return-order",
-        { orderId, reason },
+        `${backendUrl}/api/order/return-order`,
+        { orderId, reason, },
         { headers: { "Content-Type": "application/json", token } }
       );
       if (response.data.success) {

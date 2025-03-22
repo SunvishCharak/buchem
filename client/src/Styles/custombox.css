@@ -15,10 +15,10 @@
 button {
     background-color: #ecd0ec;
     color: #121212;
-    padding: 10px;
+   
     border: none;
     cursor: pointer;
-    margin-top: 1rem;
+    
 }
 
 button:disabled {

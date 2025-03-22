@@ -1,6 +1,6 @@
 .orders-container {
-  margin-top: calc(var(--header-height) + 4rem);
-  margin-bottom:6rem;
+  margin-top: calc(var(--header-height) + 3rem);
+  margin-bottom: 48px;
 }
 
 .orders-header-title {
@@ -59,7 +59,7 @@
 }
 
 .order-price {
-  font-size: var(--h2-font-size);
+  font-size: medium;
 }
 
 .order-date {
@@ -72,7 +72,7 @@
 
 .order-actions {
   display: flex;
-  justify-content: space-between;
+  gap:10px;
   align-items: center;
   width: 100%;
 
@@ -106,10 +106,11 @@
 
 .track-order-button {
   border: 1px solid #e5e7eb;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.5rem;
   font-size: var(--small-font-size);
-  font-weight: 500;
+  font-weight: 400;
   border-radius: 0.125rem;
+  background-color: #c5c9d1;
 }
 
 .return-order-button,
@@ -122,16 +123,29 @@
 }
 
 .return-order-button {
-  background-color: #f44336;
-  color: white;
+  background-color: #ecd0ec;
+  color: #121212;
 }
 
 .exchange-order-button {
-  background-color: #2196f3;
-  color: white;
+  background-color: #ecd0ec;
+  color: #121212;
 }
 
 .return-order-button:hover,
 .exchange-order-button:hover {
   opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+
+  .track-order-button{
+    border-radius: 3rem;
+  }
+
+  .return-order-button,
+  .exchange-order-button{
+    border-radius: 1rem;
+  }
+  
 }

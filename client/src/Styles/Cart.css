@@ -132,22 +132,51 @@
   }
 
   .cart-checkout-button:hover {
-    background-color: #333;
+    background-color: #cb8bcb;
   }
 
   .order-instruction {
+    margin: 20px 0;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    margin-top: 20px;
+    align-items: flex-start;
+    
+  }
+
+  .order-note-toggle {
+    font-weight: bold;
+    cursor: pointer;
+     display: flex; 
+    text-align: left;
+    justify-content: space-between;
+    padding: 10px;
+    /* border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9; */
+  }
+
+  .order-note-container {
+    display: flex;
+    justify-content: center;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+  }
+
+  .order-note-container.open {
+    max-height: 100px; /* Adjust height as needed */
+    padding-top: 10px;
+    display: block;  /* Ensure it is visible */
   }
 
   .order-instruction-input {
     width: fit-content;
     height: 3rem;
   }
+
   .order-instruction p {
     font-weight: 500;
+    text-decoration: underline;
   }
 
   .cart-info-icon {
@@ -289,6 +318,27 @@
     width: fit-content;
     gap: 5px;
   }
+
+  .order-note-toggle {
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+
+  }
+  
+  /* Smooth transition effect */
+  .order-note-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+  }
+  
+  /* When open, expand smoothly */
+  .order-note-container.open {
+    max-height: 100px; /* Adjust height as needed */
+    padding-top: 10px;
+  }
+  
 
   .order-instruction p {
     font-weight: 500;

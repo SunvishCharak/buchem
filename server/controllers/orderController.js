@@ -218,7 +218,9 @@ const updateStatus = async (req, res) => {
 
 const createReturnOrderController = async (req, res) => {
   try {
-    const { orderId, reason } = req.body;
+    console.log("🔥 Incoming Request Body:", req.body);
+
+    const { orderId, reason, }= req.body;
     const order = await orderModel.findById(orderId);
 
     if (!order) {

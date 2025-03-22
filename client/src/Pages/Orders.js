@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ShopContext } from "../context/ShopContext";
+
 import "../Styles/Orders.css";
 
 const Orders = () => {
@@ -13,6 +14,7 @@ const Orders = () => {
     trackShipment,
   } = useContext(ShopContext);
   const [orderData, setOrderData] = useState([]);
+  
 
   // Function to load user orders
   const loadOrders = async () => {
@@ -127,12 +129,12 @@ const Orders = () => {
                 <p className="status-text">{item.status}</p>
               </div>
 
-              <button
+              {/* <button
                 onClick={() => trackShipment(item._id)}
                 className="track-order-button"
               >
                 Track Order
-              </button>
+              </button> */}
 
               <button
                 onClick={() => handleReturnOrder(item._id, item.name)}
@@ -146,6 +148,13 @@ const Orders = () => {
                 className="exchange-order-button"
               >
                 Exchange
+              </button>
+
+              <button
+                onClick={() => trackShipment(item._id)}
+                className="track-order-button"
+              >
+                Track Order
               </button>
             </div>
           </div>

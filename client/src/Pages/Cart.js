@@ -11,6 +11,7 @@ const Cart = () => {
     useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
   const [orderInstructions, setOrderInstructions] = useState("");
+  const [showOrderNote, setShowOrderNote] = useState(false); // Toggle dropdown
 
   useEffect(() => {
     if (products.length > 0) {
@@ -108,14 +109,21 @@ const Cart = () => {
 
             <footer className="cart-footer">
               <div className="order-instruction">
-                <p>Add Order Note</p>
+                <p className="order-note-toggle"
+                onClick={()=> setShowOrderNote(!showOrderNote)}>
+                  Add Order Note
+                  {/* <span className={`dropdown-arrow ${showOrderNote ? "open" : ""}`}>&#9660;</span> */}
+                  </p>
+
+                  <div className={`order-note-container ${showOrderNote ? "open" : ""}`}>
                 <input
                   type="text"
-                  placeholder=""
+                  placeholder="Enter your note..."
                   value={orderInstructions}
                   onChange={(e) => setOrderInstructions(e.target.value)}
                   className="order-instruction-input"
                 />
+                 </div> 
               </div>
 
               <div className="cart-summary">

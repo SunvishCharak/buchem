@@ -69,7 +69,7 @@ const CartTotal = () => {
             {currency} {getCartAmount()}.00
           </p>
         </div>
-        <hr />
+        
         {/* Shipping Fee */}
         <div className="cart-row">
           <p>Shipping</p>

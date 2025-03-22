@@ -52,3 +52,9 @@ app.use("/api/upload", uploadImage);
 app.post("/api/customize", (req, res) => {
   res.json({ message: "Custom order received!" });
 });
+
+// app.use((err, req, res, next) => {
+//   console.error("🔥 ERROR:", err.stack);
+//   res.status(500).json({ success: false, message: "Something went wrong!" });
+// });
+

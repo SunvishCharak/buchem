@@ -105,6 +105,9 @@ const Product = () => {
               )}
             </div>
           </div>
+
+          <p ><a className="customline" href="/custom-form">Customise Your Product</a></p>
+
           <button
             onClick={() => addToCart(productData.name, size)}
             className="add-to-cart"

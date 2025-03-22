@@ -61,9 +61,9 @@
   padding: 12px 30px;
   font-size: 1rem;
   font-weight: bold;
-  border: 1px solid black;
-  background: black;
-  color: white;
+  /* border: 1px solid ; */
+  background: #ecd0ec;
+  color: black;
   cursor: pointer;
   overflow: hidden;
   transition: color 0.3s ease-in-out;
@@ -86,13 +86,13 @@
   z-index: -1;
 }
 
-.order-btn:hover::before {
+/* .order-btn:hover::before {
   transform: scaleX(1);
-}
+} */
 
-.order-btn:hover {
+/* .order-btn:hover {
   color: rgb(21, 9, 9);
-}
+} */
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
