@@ -19,7 +19,7 @@ const LengthChartModal = () => {
             <button className="close-btn" onClick={closeModal}>
               X
             </button>
-            <h2 className="section-title">Dress Length Guide</h2>
+            <h2 className="chart-section-title">Dress Length Guide</h2>
             <div className="size-chart">
               <table>
                 <thead>

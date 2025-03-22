@@ -24,10 +24,53 @@ const SizeChartModal = () => {
             <button className="close-btn" onClick={closeModal}>
               X
             </button>
-            <h2 className="section-title">Size Chart</h2>
+            <h2 className="chart-section-title">Size Chart</h2>
             <div className="size-chart">
               <table>
-                <thead>
+
+              <thead>
+                  <tr>
+                    <th></th>
+                    <th>XS</th>
+                    <th>S</th>
+                    <th>M</th>
+                    <th>L</th>
+                    <th>XL</th>
+                    <th>XXL</th>
+                  </tr>
+
+                  </thead>
+                <tbody>
+                  <tr>
+                    <td>Bust (in)</td>
+                    <td>31</td>
+                    <td>33</td>
+                    <td>35</td>
+                    <td>37</td>
+                    <td>39</td>
+                    <td>41</td>
+                  </tr>
+                  <tr>
+                    <td>Waist (in)</td>
+                    <td>25</td>
+                    <td>27</td>
+                    <td>29</td>
+                    <td>31</td>
+                    <td>33</td>
+                    <td>35</td>
+                  </tr>
+                  <tr>
+                    <td>Hip (in)</td>
+                    <td>34</td>
+                    <td>36</td>
+                    <td>38</td>
+                    <td>40</td>
+                    <td>42</td>
+                    <td>44</td>
+                  </tr>
+                </tbody>
+
+                {/* <thead>
                   <tr>
                     <th>Size</th>
                     <th>Bust(in)</th>
@@ -72,12 +115,12 @@ const SizeChartModal = () => {
                     <td>35</td>
                     <td>44</td>
                   </tr>
-                </tbody>
+                </tbody> */}
               </table>
             </div>
 
             <hr />
-            <p>If you're in-between sizes, we recommend sizing up.</p>
+            <p className="size-chart-note">If you're in-between sizes, we recommend sizing up.</p>
           </div>
         </div>
       )}
