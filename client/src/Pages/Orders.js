@@ -48,12 +48,16 @@ const Orders = () => {
 
   // Handle return order using context function
   const handleReturnOrder = async (orderId, itemName) => {
+    debugger;
     const reason = prompt(`Why do you want to return ${itemName}?`);
 
     if (!reason) return;
 
     try {
+      debugger;
       const success = await returnOrder(orderId, reason);
+
+      debugger;
       if (success) {
         console.log("🛒 Return Order ID:", orderId);
         alert("Order return request submitted successfully.");

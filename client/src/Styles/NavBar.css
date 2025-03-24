@@ -143,7 +143,7 @@
 }
 
 .side-menu-link:hover {
-  background: #f4f4f4;
+  background: #f6c6d2;
 }
 
 .side-menu-top {
@@ -167,12 +167,13 @@
 }
 
 .dropdown-content li {
-  font-size: 1.4rem;
+  font-size: 1rem;
   font-weight: 200;
   padding: 15px;
   cursor: pointer;
   transition: background 0.3s ease;
   border-bottom: 1px solid grey;
+  font-family: Helvetica, sans-serif;
 }
 .dropdown-text {
   text-decoration: none;

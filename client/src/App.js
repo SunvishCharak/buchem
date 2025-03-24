@@ -24,6 +24,7 @@ import ShopContextProvider from "./context/ShopContext.js";
 import TrackOrder from "./Pages/TrackOrder.js";
 import ForgotPassword from "./Pages/Forgotpassword.js";
 import Custom from "./Pages/Custombox.js";
+import ReturnPolicy from "./Pages/ReturnPolicy.js";
 
 const App = () => {
   return (
@@ -50,6 +51,7 @@ const App = () => {
         <Route path="/track-order" element={<TrackOrder />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/custom-form" element={<Custom />} />
+        <Route path="/return-policy" element={<ReturnPolicy/>} />
       </Routes>
       <WhatsApp />
       <Footer />

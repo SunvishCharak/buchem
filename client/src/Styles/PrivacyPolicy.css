@@ -1,4 +1,4 @@
-.privacy-policy {
+/* .privacy-policy {
   align-items: center;
   margin-top: calc(var(--header-height) + 2rem);
 }
@@ -15,7 +15,7 @@
 
 /* ---- BREAKPOINTS ---- */
 /* For large devices */
-@media screen and (max-width: 992px) {
+/* @media screen and (max-width: 992px) {
   .privacy-policy {
     grid-template-columns: (2, 1fr);
     row-gap: 2.5rem;
@@ -27,9 +27,101 @@
   }
 }
 
-/* For medium devices */
+/* For medium devices 
 @media screen and (max-width: 576px) {
   .privacy-description {
     padding: 0;
   }
+} */ 
+
+.privacy-policy-container {
+  max-width: 100%;
+  margin: 78px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.policy-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: white;
+  border-left: 5px solid #d99bd9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #121212;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #555;
+  line-height: 1.6;
+}
+
+.note {
+  font-style: italic;
+  color: hsl(6deg 80.28% 61.21%);
+}
+
+.contact-section {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.contact-section a {
+  color: #121212;
+  text-decoration: none;
+}
+
+.contact-section a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .privacy-policy-container {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .privacy-policy-container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  p {
+    font-size: 13px;
+  }
+}
+

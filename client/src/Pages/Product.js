@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { assets } from "../Assets/assets";
 import RelatedProducts from "../Components/RelatedProducts";
@@ -10,6 +10,7 @@ import Reviews from "../Components/Reviews";
 
 const Product = () => {
   const { productName } = useParams();
+  const navigate = useNavigate();
   const {
     products,
     currency,
@@ -37,6 +38,11 @@ const Product = () => {
       console.error("Product not found!");
     }
   }, [productName, products]);
+
+    // Navigate to Customization Page with Product Details
+    const handleCustomize = () => {
+      navigate(`/custom-form/${productData._id}`, { state: { product: productData } });
+    };
 
   return productData ? (
     <div className="product container">
@@ -106,9 +112,12 @@ const Product = () => {
             </div>
           </div>
 
-          <p ><a className="customline" href="/custom-form">Customise Your Product</a></p>
+          <p ><a className="customline" href="/custom-form"
+          onClick={handleCustomize}>
+            Customise Your Product</a></p>
 
           <button
+           to="/cart"
             onClick={() => addToCart(productData.name, size)}
             className="add-to-cart"
           >

@@ -11,50 +11,54 @@ import connectDB from "./config/mondodb.js";
 import userRouter from "./routes/UserRoute.js";
 import productRouter from "./routes/ProductRoute.js";
 import orderRouter from "./routes/orderRoute.js";
-import {uploadImage} from "./controllers/UploadController.js";
+import customBoxRouter from "./routes/CustomRoute.js"
+import mongoose from "mongoose";
 
+dotenv.config();
 await connectCloudinary();
 
-// Multer Storage for Cloudinary
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: "uploads",
-    allowed_formats: ["jpg", "jpeg", "png", "webp"],
-  },
-});
-const upload = multer({ storage });
+
+// // Multer Storage for Cloudinary
+// const storage = new CloudinaryStorage({
+//   cloudinary,
+//   params: {
+//     folder: "uploads",
+//     allowed_formats: ["jpg", "jpeg", "png", "webp"],
+//   },
+// // });
+// const upload = multer({ storage });
 
 // app setup
 const app = express();
 const port = process.env.PORT || 4000;
+
 connectDB();
-// connectCloudinary();
-dotenv.config();
 
 // middleware
 app.use(express.json());
 app.use(cors());
+
 
 // api endpoints
 app.use("/api/cart", cartRouter);
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/order", orderRouter);
+app.use("/api/custom-box", customBoxRouter);
 
 app.get("/", (req, res) => {
   res.send("API is Working...");
 });
-app.listen(port, () => console.log(`Server is running on port ${port}`));
+// app.listen(port, () => console.log(`Server is running on port ${port}`));
 
-app.use("/api/upload", uploadImage);
+// app.use("/api/upload", uploadImage);
 
-app.post("/api/customize", (req, res) => {
-  res.json({ message: "Custom order received!" });
+
+
+app.use((err, req, res, next) => {
+  console.error("🔥 ERROR:", err.stack);
+  res.status(500).json({ success: false, message: "Something went wrong!" });
 });
 
-// app.use((err, req, res, next) => {
-//   console.error("🔥 ERROR:", err.stack);
-//   res.status(500).json({ success: false, message: "Something went wrong!" });
-// });
+app.listen(port, () => console.log(`Server is running on port ${port}`));
 

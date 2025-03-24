@@ -1,129 +1,100 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import axios from "axios";
+import React, { useCallback, useContext, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import "../Styles/custombox.css";
 
-const Custom = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const { submitCustomOrder } = useContext(ShopContext);
-    const [image, setImage] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [orderConfirmed, setOrderConfirmed] = useState(false);
+const CustomBox = () => {
+  const {handleCustomBoxData} = useContext(ShopContext);
 
-    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const {productId} = useParams();
+  const {products} = useContext(ShopContext);
+  const [product, setProduct] = useState(null);
+  const [formData, setFormData] = useState({
+    size: "",
+    specialRequest: "",
+  });
+//   const product = products.find((item) => item._id === productId);
 
-    // Handle image upload & preview
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImage(file);
-            const reader = new FileReader();
-            reader.onloadend = () => setImagePreview(reader.result);
-            reader.readAsDataURL(file);
-        }
-    };
+useEffect(() => {
 
-    // Form submission
-    const onSubmit = async (data) => {
-        setLoading(true);
+    console.log("Products in CustomBox:", products);
+    console.log("Product ID from URL:", productId); 
 
-        try {
-            let imageUrl = null;
-            if (image) {
-                const formData = new FormData();
-                formData.append("file", image);
+    if (products?.length > 0) {
+      const foundProduct = products.find((item) => String(item._id)=== String(productId));
+      console.log("Found Product:", foundProduct); 
+      if (foundProduct) {
+      setProduct(foundProduct);
+      }
+    }
+  }, [products, productId]);
 
-                // Upload image to backend (Cloudinary)
-                const imageResponse = await axios.post(`${BACKEND_URL}/api/upload`, formData, {
-                    headers: { "Content-Type": "multipart/form-data" }
-                });
-                console.log("Image Upload Response:", imageResponse.data);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
-                imageUrl = imageResponse.data.imageUrl;
-            }
+  };
 
-            const customData = { 
-                ...data, 
-                image: imageUrl, 
-                status: "pending" // Default status
-            };
-            console.log("Final Custom Order Data:", customData);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
 
-            // Send order details to backend
-            const response = await axios.post(`${BACKEND_URL}/api/customize`, customData);
+    // const formObject = {};
+    // formData.forEach((value, key) => {
+    //     formObject[key]= value;
+    // });
+     
 
-            if (response.status === 200) {
-                setOrderConfirmed(true);
-            }
-        } catch (error) {
-            console.error("Error submitting custom order:", error);
-        }
+    // if (Object.values(formData).every((value) => value.trim() === "")) {
+    //   alert("Please enter your custom size.");
+    //   return;
+    // }
+    if (!formData.size.trim() && !formData.specialRequest.trim()) {
+        alert("Please enter your custom size or special request.");
+        return;
+      }
 
-        setLoading(false);
-    };
+    handleCustomBoxData({ ...formData, productId: product?._id}); // Save to backend
+    alert("Your custom request has been saved!");
+    setFormData({ size: "", specialRequest: "" }); // Reset form
 
-    // useEffect(() => {
-    //     console.log("Image Preview:", imagePreview);
-    // }, [imagePreview]);
+    // console.log("Custom Size Submitted:", customSize);
+    // alert(`Your custom size "${customSize}" has been noted!`);
+    // setCustomSize(""); // Reset field after submission
+  };
+  if (!products) return <p>Loading products...</p>; // ✅ Show loading until products are available
+  return (
+    <div className="custom-box-container">
 
-    return (
-        <div className="custom-container">
-            <h2>Customize Your Product</h2>
-
-            {orderConfirmed ? (
-                <div className="order-confirmation">
-                    <h3>Order Confirmed!</h3>
-                    <p>We have received your custom order. We will contact you soon.</p>
-                </div>
-            ) : (
-                <form onSubmit={handleSubmit(onSubmit)} className="custom-form">
-                    
-                    {/* Show Preview */}
-                    {imagePreview && (
-                        <div className="image-preview">
-                            <img src={imagePreview} alt="Preview" />
-                        </div>
-                    )} 
-                    
-
-                    {/* Custom Text */}
-                    <label>Custom Text:</label>
-                    <input {...register("text", { required: true })} placeholder="Enter custom text"  
-                    className="custom-field"/>
-                    {errors.text && <span className="error">This field is required</span>}
-
-                    {/* Contact Details */}
-                    <label>Email:</label>
-                    <input {...register("email", { required: true })} placeholder="Enter your email" 
-                    className="custom-field"/>
-                    {errors.email && <span className="error">Email is required</span>}
-
-                    <label>Phone Number:</label>
-                    <input {...register("phone", { required: true })} placeholder="Enter your phone number"
-                    className="custom-field" />
-                    {errors.phone && <span className="error">Phone number is required</span>}
-
-                    {/* Image Upload */}
-                    <div className="custom-upload-image">
-                    <label>Upload Image:</label>
-                    <div className="custom-file-upload">
-                    <label htmlFor="file-input" className="upload-btn">
-                     Choose Files
-                      </label>
-                    <input id="file-input" type="file" multiple accept="image/*" onChange={handleImageChange} />
-                    </div>
-                    </div>
-
-                    {/* Submit Button */}
-                    <button  type="submit" disabled={loading}>
-                        {loading ? "Submitting..." : "Submit"}
-                    </button>
-                </form>
-            )}
+       {product ? (
+        <div className="product-preview">
+          <img src={Array.isArray(product?.image) ? product.image[0]: product?.image} 
+          alt={product?.name} 
+          />
+          <h3>{product?.name}</h3>
+          <p>Price: ₹{product?.price}</p>
         </div>
-    );
+       ):(
+        <p> loading product details...</p>
+      )}
+
+      <h2>Customize Your Order</h2>
+      <form onSubmit={handleSubmit}>
+        <label>Size:</label>
+        <input type="text" name="size" placeholder="Enter size" value={formData.size} onChange={handleChange} />
+
+        {/* <label>Height (cm):</label>
+        <input type="number" name="height" placeholder="Enter height" value={formData.height} onChange={handleChange} />
+
+        <label>Weight (kg):</label>
+        <input type="number" name="weight" placeholder="Enter weight" value={formData.weight} onChange={handleChange} /> */}
+
+        <label>Special Request:</label>
+        <textarea name="specialRequest" placeholder="Any specific request?" value={formData.specialRequest} onChange={handleChange}></textarea>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
 };
 
-export default Custom;
+export default CustomBox;

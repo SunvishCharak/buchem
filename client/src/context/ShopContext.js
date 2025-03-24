@@ -22,7 +22,7 @@ const ShopContextProvider = (props) => {
   const [estimatedDelivery, setEstimatedDelivery] = useState(null);
   const [userAccount, setUserAccount] = useState(null);
   const [productReviews, setProductReviews] = useState({});
-  const [customOrders, setCustomOrders] = useState([]);
+  const [customBoxData, setCustomBoxData] = useState({});
 
   const saveCartToLocalStorage = (cart) => {
     localStorage.setItem("cartItems", JSON.stringify(cart));
@@ -476,16 +476,37 @@ const ShopContextProvider = (props) => {
     }
   };
 
-  const submitCustomOrder = async (customData) => {
+  // const submitCustomOrder = async (customData) => {
+  //   try {
+  //                 const response = await axios.post("http://localhost:4000/api/customize", customData);
+  //           setCustomOrders([...customOrders, response.data]); // Store order in context
+  //           return true;
+  //   } catch (error) {
+  //     console.error("Error submitting custom order:", error);
+  //     return false;
+  //   }
+  // };
+
+   // Function to update custom data
+   const handleCustomBoxData = async (data) => {
+    setCustomBoxData(data); // Update state
+
     try {
-                  const response = await axios.post("http://localhost:4000/api/customize", customData);
-            setCustomOrders([...customOrders, response.data]); // Store order in context
-            return true;
+      const response = await fetch(`${backendUrl}/api/custom-box`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        console.error("Error:", result.message);
+      }
     } catch (error) {
-      console.error("Error submitting custom order:", error);
-      return false;
+      console.error("Failed to send custom box data:", error);
     }
   };
+
 
   const value = {
     products,
@@ -527,8 +548,9 @@ const ShopContextProvider = (props) => {
     fetchUserAccount,
     fetchProductReviews,
     submitProductReview,
-    customOrders,
-    submitCustomOrder
+    customBoxData,
+    handleCustomBoxData,
+    
   };
 
   return (

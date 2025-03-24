@@ -267,15 +267,17 @@ const trackShipment = async (awb_code) => {
   }
 };
 
-const returnOrder = async (req, res) => {
+const returnOrder = async (order, reason) => {
   try {
 
-    console.log("🔥 Request Body:", req.body); // Debugging line
+    console.log("order recieved:", order);
+    console.log("reson recieved:", reason);
+    console.log("reson Recieved:",order.reason); // Debugging line
     
     const token = await getShiprocketToken();
     if (!token) throw new Error("Shiprocket Token is missing!");
 
-    const { orderId, reason } = req.body;
+    // const { orderId, reason } = req.body;
     const order = await orderModel.findById(orderId).populate("userId");
     if (!order) {
       return res

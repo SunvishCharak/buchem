@@ -3,8 +3,11 @@ import "../Styles/Terms.css";
 
 const TermsConditions = () => {
   return (
-    <div className="terms container">
-      <h2 className="section-title">Terms of Services</h2>
+    <div className="terms-container">
+      <h1> Terms Of Services</h1>
+      
+      <section className="policy-section">
+      
       <p className="terms-description">
         Welcome to <span className="highlight-text">Buchem!</span> These Terms
         of Service (&quot;Terms&quot;) govern your use of our website, services,
@@ -12,17 +15,9 @@ const TermsConditions = () => {
         comply with these Terms. Please read them carefully before making a
         purchase or using our services.
       </p>
-      <h3 className="sub-heading">1.General Information</h3>
-      <p className="terms-description">
-        Buchem is located at{" "}
-        <span className="highlight-text">Dimapur, India.</span> The following
-        terminology applies to these Terms of Service, Privacy Statement and
-        Disclaimer Notice and any or all Agreements: &quot;Client&quot;,
-        &quot;You&quot; and &quot;Your&quot; refers to you, the person accessing
-        this website and accepting the Company&#39;s terms of service. &quot;The
-        Company&quot;, &quot;Ourselves&quot;, &quot;We&quot;, &quot;Our&quot;
-        and &quot;Us&quot;, refers to our Company.
-      </p>
+      </section>
+
+      <section className="policy-section">
       <h3 className="sub-heading">2.Acceptance of Terms</h3>
       <p className="terms-description">
         By accessing or using the website, services, or any products provided by
@@ -34,6 +29,7 @@ const TermsConditions = () => {
         changes. It is your responsibility to review these Terms periodically to
         stay informed of any updates.
       </p>
+      
       <p className="terms-description">
         This site may contain certain historical information. Historical
         information, necessarily, is not current and is provided for your
@@ -42,6 +38,8 @@ const TermsConditions = () => {
         site. You agree that it is your responsibility to monitor changes to our
         site.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">3.Eligibility to Use</h3>
       <p className="terms-description">
         By using this website, you confirm that you are at least the age of
@@ -49,6 +47,7 @@ const TermsConditions = () => {
         of majority in your state or province of residence and you have given us
         your consent to allow any of your minor dependents to use this site.
       </p>
+      
       <p className="terms-description">
         You agree to provide accurate and up-to-date information during
         registration, purchasing, or using other services on our website.
@@ -58,6 +57,8 @@ const TermsConditions = () => {
         login credentials. We are not liable for any unauthorized access to your
         account.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">4.User Conduct</h3>
       <p className="terms-description">
         You agree not to:Use the website for fraudulent purposes. Engage in
@@ -69,6 +70,8 @@ const TermsConditions = () => {
         material from Buchen.in Redistribute content from Buchem (unless content
         is specifically made for redistribution).
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">5.Products or Services (If applicable)</h3>
       <h3 className="sub-heading">Product Descriptions and Accuracy</h3>)
       <p className="terms-description">
@@ -87,6 +90,8 @@ const TermsConditions = () => {
         discontinue any product or service without notice, or refuse an order
         for any reason.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">
         6.Accuracy of Billing and Account Information
       </h3>
@@ -105,6 +110,8 @@ const TermsConditions = () => {
         inaccurate, incomplete, or fraudulent, we may cancel the order or
         contact you for clarification.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">7.Account Responsibility</h3>
       <p className="terms-description">
         If you create an account on our website, you are responsible for
@@ -120,6 +127,8 @@ const TermsConditions = () => {
         and email addresses to ensure proper communication and delivery of your
         orders.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">8.Payment Authorization</h3>
       <p className="terms-description">
         By submitting a payment, you confirm that:  You are authorized to use
@@ -127,6 +136,8 @@ const TermsConditions = () => {
         accurate and valid.  Sufficient funds are available to complete the
         transaction.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">9.Taxes and Fees</h3>
       <p className="terms-description">
         {" "}
@@ -134,6 +145,8 @@ const TermsConditions = () => {
         your purchase, which will be calculated at checkout based on the
         information provided.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">10.User Comments and Feedback</h3>
       <h3 className="sub-heading">Submission of Comments</h3>
       <p className="terms-description">
@@ -163,6 +176,8 @@ const TermsConditions = () => {
         in Comments are solely those of the users and do not reflect our
         official policies or views.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">11.Optional Tools</h3>
       <h3 className="sub-heading">Third-Party Tools</h3>
       <p className="terms-description">
@@ -207,6 +222,8 @@ const TermsConditions = () => {
         policies of these tools or services before using them, as they may
         differ from our Privacy Policy.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">
         12.Modifications to the Service and Prices
       </h3>
@@ -228,6 +245,8 @@ const TermsConditions = () => {
         and conditions. We reserve the right to modify or withdraw these offers
         without notice.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">13.Errors and Omissions</h3>
       <p className="terms-description">
         Occasionally, there may be information on our website that contains
@@ -262,12 +281,16 @@ const TermsConditions = () => {
         We do not guarantee the continued availability of any product or
         service. Items may sell out or be discontinued without prior notice.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">14.Changes to Content</h3>
       <p className="terms-description">
         We may update, modify, or remove content from our website at any time
         without notice. This includes, but is not limited to, prices, product
         details, or promotional offers.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">15.Prohibited Uses</h3>
       <h3 className="sub-heading">General Restrictions</h3>
       <p className="terms-description">
@@ -334,6 +357,8 @@ const TermsConditions = () => {
         with all applicable local, state, national, and international laws and
         regulations.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">16. Limitation of Liability</h3>
       <p className="terms-description">
         We are not liable for: Indirect, incidental, or consequential damages
@@ -341,12 +366,16 @@ const TermsConditions = () => {
         interruptions in website functionality. Our total liability is limited
         to the amount you paid for the product or service that caused the claim.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">17.Privacy Policy</h3>
       <p className="terms-description">
         Your use of our website is subject to our Privacy Policy, which outlines
         how we collect, store, and use your personal data. You can view our
         Privacy Policy [insert link].
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">18.INDEMNIFICATION</h3>
       <p className="terms-description">
         You agree to indemnify, defend, and hold harmless Buchem and its
@@ -357,6 +386,8 @@ const TermsConditions = () => {
         actions. This indemnification obligation will survive the termination of
         these Terms.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">19.SEVERABILITY</h3>
       <p className="terms-description">
         If any provision of these Terms of Service is held to be invalid,
@@ -370,6 +401,8 @@ const TermsConditions = () => {
         provision that most closely reflects the original intent of the
         unenforceable provision.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">20.Termination</h3>
       <p className="terms-description">
         The obligations and liabilities of the parties incurred prior to the
@@ -390,6 +423,8 @@ const TermsConditions = () => {
         and/or accordingly may deny you access to our Services (or any part
         thereof).
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">21.Entire Agreement</h3>
       <p className="terms-description">
         These Terms of Service, together with our Privacy Policy, Return Policy,
@@ -423,6 +458,8 @@ const TermsConditions = () => {
         the website or services, unless terminated by either party in accordance
         with these Terms of Service.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">22.Governing Law:</h3>
       <p className="terms-description">
         These Terms of Service and your use of the website and services will be
@@ -435,6 +472,8 @@ const TermsConditions = () => {
         location outside of India, you are responsible for compliance with any
         applicable local laws.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">23.Changes to Terms of Service:</h3>
       <p className="terms-description">
         Buchem may update or modify these Terms of Service at any time, and any
@@ -445,6 +484,8 @@ const TermsConditions = () => {
         acceptance of the revised Terms. If you do not agree with the changes,
         you must stop using the website and services.
       </p>
+      </section>
+      <section className="policy-section">
       <h3 className="sub-heading">24.Contact Information</h3>
       <p className="terms-description">
         If you have any questions or concerns regarding these Terms of Service,
@@ -453,6 +494,7 @@ const TermsConditions = () => {
         strive to respond to all inquiries promptly and will do our best to
         assist you.
       </p>
+      </section>
     </div>
   );
 };
