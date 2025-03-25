@@ -278,11 +278,13 @@ const returnOrder = async (order, reason) => {
     if (!token) throw new Error("Shiprocket Token is missing!");
 
     // const { orderId, reason } = req.body;
-    const order = await orderModel.findById(orderId).populate("userId");
-    if (!order) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Order not found" });
+
+   //const order = await orderModel.findById(order._Id).populate("userId");
+    if (!order || !Array.isArray(order.items)) {
+      throw new Error("Order is not valid or does not contain items array");
+      // return res
+      //   .status(404)
+      //   .json({ success: false, message: "Order not found" });
     }
     const formattedOrderItems = order.items.map((item) => ({
       name: item.name,
@@ -292,11 +294,13 @@ const returnOrder = async (order, reason) => {
       discount: 0,
       tax: 0,
     }));
+    console.log("Formatted order items:", formattedOrderItems);
+
     const { _id, address, paymentMethod, amount } = order;
     const returnOrderPayload = {
       order_id: _id.toString(),
       order_date: new Date().toISOString().split("T")[0],
-      channel_id: "1",
+      
       pickup_customer_name: address.firstName,
       pickup_last_name: address.lastName || "",
       pickup_address: address.street,
@@ -338,28 +342,36 @@ const returnOrder = async (order, reason) => {
       },
       data: returnOrderPayload,
     };
+
+    console.log("Config => ", config);
+
     const response = await axios(config);
     if (response.data.status_code === 1) {
-      await orderModel.findByIdAndUpdate(orderId, {
+      await orderModel.findByIdAndUpdate(order._id, {
         status: "Return Initiated",
       });
-      return res.json({
+      return ({
         success: true,
         message: "Return order created successfully",
         data: response.data,
       });
     } else {
-      return res
-        .status(400)
-        .json({ success: false, message: response.data.message });
+      return {
+        success:false,
+        message: response.data.message,
+
+      };
+      // return res
+      //   .status(400)
+      //   .json({ success: false, message: response.data.message });
     }
   } catch (error) {
     console.error("Error creating return order:", error);
-    return res.status(500).json({
+    return {
       success: false,
       message: "Internal Server Error",
       error: error.message,
-    });
+    };
   }
 };
 
