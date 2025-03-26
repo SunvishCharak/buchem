@@ -41,6 +41,10 @@ const Product = () => {
 
     // Navigate to Customization Page with Product Details
     const handleCustomize = () => {
+      if (!productData){
+      console.log("Product Data:", productData);
+      return;
+      }
       navigate(`/custom-form/${productData._id}`, { state: { product: productData } });
     };
 
@@ -112,9 +116,10 @@ const Product = () => {
             </div>
           </div>
 
-          <p ><a className="customline" href="/custom-form"
-          onClick={handleCustomize}>
-            Customise Your Product</a></p>
+          <p ><button className="customline" onClick={handleCustomize}>
+            Customize Your Product
+          </button>
+       </p>
 
           <button
            to="/cart"

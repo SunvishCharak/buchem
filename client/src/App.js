@@ -50,7 +50,7 @@ const App = () => {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/track-order" element={<TrackOrder />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/custom-form" element={<Custom />} />
+        <Route path="/custom-form/:productId" element={<Custom />} />
         <Route path="/return-policy" element={<ReturnPolicy/>} />
       </Routes>
       <WhatsApp />

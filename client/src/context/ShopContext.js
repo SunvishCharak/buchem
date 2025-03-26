@@ -489,6 +489,7 @@ const ShopContextProvider = (props) => {
 
    // Function to update custom data
    const handleCustomBoxData = async (data) => {
+    setCartItems((prev) => {})
     setCustomBoxData(data); // Update state
 
     try {

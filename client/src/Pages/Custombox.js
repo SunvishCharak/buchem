@@ -20,11 +20,14 @@ useEffect(() => {
     console.log("Products in CustomBox:", products);
     console.log("Product ID from URL:", productId); 
 
-    if (products?.length > 0) {
+    if (products && products.length > 0) {
       const foundProduct = products.find((item) => String(item._id)=== String(productId));
       console.log("Found Product:", foundProduct); 
+
       if (foundProduct) {
       setProduct(foundProduct);
+      } else{
+        console.error("Product not found in products array!")
       }
     }
   }, [products, productId]);
