@@ -72,14 +72,6 @@ const Cart = () => {
                             </p>
                             <p className="cart-item-size">Size: {item.size}</p>
 
-                            {/* {item.customization && (
-                            <div className="cart-item-customization">
-                            <p><strong>Customization:</strong></p>
-                              {item.customization.size && <p>Custom Size: {item.customization.size}</p>}
-                              {item.customization.specialRequest && <p>Note: {item.customization.specialRequest}</p>}
-                              </div>
-                             )} */}
-
                           </div>
                         </div>
                         <div className="cart-item-actions">

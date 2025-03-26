@@ -27,6 +27,8 @@ const Orders = () => {
         { headers: { token } }
       );
 
+      console.log("API Response:", response.data);
+
       if (response.data.success) {
         let allOrdersItem = [];
         response.data.orders.forEach((order) => {
@@ -39,6 +41,7 @@ const Orders = () => {
             allOrdersItem.push(item);
           });
         });
+        console.log("Processed Orders:", allOrdersItem);
         setOrderData(allOrdersItem.reverse());
       }
     } catch (error) {
@@ -94,6 +97,7 @@ const Orders = () => {
   };
 
   useEffect(() => {
+    console.log("Token updated, loading orders...");
     loadOrders();
   }, [token]);
 
