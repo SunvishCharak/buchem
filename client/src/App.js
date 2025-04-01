@@ -25,6 +25,7 @@ import TrackOrder from "./Pages/TrackOrder.js";
 import ForgotPassword from "./Pages/Forgotpassword.js";
 import Custom from "./Pages/Custombox.js";
 import ReturnPolicy from "./Pages/ReturnPolicy.js";
+import ShippingPolicy from "./Pages/ShippingPolicy.js";
 
 const App = () => {
   return (
@@ -52,6 +53,7 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/custom-form/:productId" element={<Custom />} />
         <Route path="/return-policy" element={<ReturnPolicy/>} />
+        <Route path="/shipping-policy" element={<ShippingPolicy/>}/>
       </Routes>
       <WhatsApp />
       <Footer />

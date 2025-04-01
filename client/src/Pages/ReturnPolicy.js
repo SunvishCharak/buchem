@@ -18,6 +18,8 @@ const ReturnPolicy = () => {
           A nominal return fee of <strong>Rs.100</strong> will be charged to cover handling and logistics. Store credit will reflect in the <strong>"My Account"</strong> section and can be used for future purchases. <strong>Second-time returns are not available.</strong>
         </p>
         <p className="note">Items that have been worn, washed, or returned without tags will not be eligible for a refund or exchange.</p>
+        <p className="note">Please note customised products are made specifically to your measurements and preferences. Due to this personalised nature, we are unable to accept returns or exchanges for the customised products.
+        To ensure the perfect fit, please double-check your measurements before submitting them. If you need any guidance on how to measure correctly, feel free to reach out—we're happy to assist!</p>
       </section>
       
       <section className="policy-section">

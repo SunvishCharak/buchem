@@ -15,12 +15,17 @@ const CartTotal = () => {
     getFinalAmount,
   } = useContext(ShopContext);
 
+
   const [couponCode, setCouponCode] = useState("");
 
   // Helper function to get product details by ID
   const getProductDetails = (itemId) => {
     return products.find((product) => product.name === itemId);
   };
+
+  const filterCartItems = Object.keys (cartItems).filter((itemID) =>
+  Object.values(cartItems[itemID]).some((quantity) => quantity > 0)
+);
 
   const handleApplyCoupon = () => {
     if (couponCode.trim()) {
@@ -34,20 +39,41 @@ const CartTotal = () => {
     <div className="cart-total-container container">
       <h2 className="section-title">Cart Total</h2>
       <div className="cart-total-content">
-        {/* Loop through the cart items */}
-        {Object.keys(cartItems).map((itemId) => {
-          const product = getProductDetails(itemId);
+        {/* Loop through the cart items
+        {Object.keys(cartItems)?.map((itemId) => {
+          const product = getProductDetails(itemId); */}
+
+          {filterCartItems.length === 0 ? (
+            <p className="empty-cart-message"></p>
+
+          ):(
+            filterCartItems.map((itemId)=> {
+              const product = getProductDetails(itemId);
+
+              if(!product){
+                return(
+                  <div className="cart-item-checkout" key={itemId}>
+                    <p className="error-message">Product not found</p>
+          
+                  </div>
+                );
+              };
+            
+
+          
           return (
             <div className="cart-item-checkout" key={itemId}>
               {/* Product Image */}
               <div className="cart-item-checkout-image">
-                <img src={product.image[0]} alt={product.name} />
+                <img src={product?.image[0]} alt={product?.name} />
               </div>
               {/* Product Details */}
               <div className="cart-item-detail">
-                <p className="cart-item-checkout-name">{product.name}</p>
+                <p className="cart-item-checkout-name">{product?.name}</p>
+
+                
                 <p className="cart-item-checkout-price">
-                  {currency} {product.price}
+                  {currency} {product .price}
                 </p>
                 <p className="cart-item-checkout-size">
                   Size: {Object.keys(cartItems[itemId]).join(", ")}
@@ -59,10 +85,15 @@ const CartTotal = () => {
               </div>
             </div>
           );
-        })}
+        })
+      )}
 
-        <hr />
-        {/* Subtotal */}
+      { filterCartItems.length > 0 && (
+        <>
+
+        
+
+       {/* Subtotal */}
         <div className="cart-row">
           <p>Subtotal</p>
           <p>
@@ -106,6 +137,8 @@ const CartTotal = () => {
             {currency} {getFinalAmount()}.00
           </b>
         </div>
+        </>
+      )}
       </div>
     </div>
   );

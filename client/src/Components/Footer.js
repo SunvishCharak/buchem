@@ -58,6 +58,11 @@ const Footer = () => {
               </Link>
             </li>
             <li>
+              <Link to="/shipping-policy" className="footer-link">
+              Shipping Policy
+              </Link>
+            </li>
+            <li>
               <Link to="/return-policy" className="footer-link">
                 Return Policy
               </Link>

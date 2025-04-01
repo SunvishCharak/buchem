@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ShopContext } from "../context/ShopContext";
-
 import "../Styles/Orders.css";
+
 
 const Orders = () => {
   const {
@@ -14,7 +14,26 @@ const Orders = () => {
     trackShipment,
   } = useContext(ShopContext);
   const [orderData, setOrderData] = useState([]);
-  
+
+
+  // const handleRequest = async (data) => {
+  //   const endpoint = data.exchangeItem ? "/api/orders/exchange" : "/api/orders/return";
+
+  //   try {
+  //     const response = await fetch(endpoint, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
+  //       body: JSON.stringify(data),
+  //     });
+
+  //     const result = await response.json();
+  //     alert(result.message);
+  //     closeReturnModal();
+  //     closeExchangeModal();
+  //   } catch (error) {
+  //     console.error("Error submitting request:", error);
+  //   }
+  // };
 
   // Function to load user orders
   const loadOrders = async () => {
@@ -41,6 +60,7 @@ const Orders = () => {
             allOrdersItem.push(item);
           });
         });
+
         console.log("Processed Orders:", allOrdersItem);
         setOrderData(allOrdersItem.reverse());
       }
@@ -49,18 +69,18 @@ const Orders = () => {
     }
   };
 
+  useEffect(() => {
+    loadOrders();
+  }, [token]);
+
   // Handle return order using context function
   const handleReturnOrder = async (orderId, itemName) => {
-    
     const reason = prompt(`Why do you want to return ${itemName}?`);
 
     if (!reason) return;
 
     try {
-      
       const success = await returnOrder(orderId, reason);
-
-     
       if (success) {
         console.log("🛒 Return Order ID:", orderId);
         alert("Order return request submitted successfully.");
@@ -97,7 +117,6 @@ const Orders = () => {
   };
 
   useEffect(() => {
-    console.log("Token updated, loading orders...");
     loadOrders();
   }, [token]);
 
@@ -107,9 +126,9 @@ const Orders = () => {
         <h2 className="orders-header-title">My Orders</h2>
       </div>
       <div>
-        
-        {orderData.map((item, index) => (
-          <div key={index} className="order-item">
+        {orderData.map((item) => (
+          <div key={item._id} className="order-item">
+            
             <div className="order-details">
               <img className="order-image" src={item.image[0]} alt="" />
               <div>
@@ -137,37 +156,49 @@ const Orders = () => {
                 <p className="status-text">{item.status}</p>
               </div>
 
-              {/* <button
+              <button
                 onClick={() => trackShipment(item._id)}
                 className="track-order-button"
               >
                 Track Order
-              </button> */}
+              </button>
 
               <button
-                onClick={() => handleReturnOrder(item._id, item.name)}
+                onClick={() => handleReturnOrder(item)}
                 className="return-order-button"
               >
                 Return
               </button>
 
               <button
-                onClick={() => handleExchangeOrder(item._id, item.name)}
+                onClick={() => handleExchangeOrder(item)}
                 className="exchange-order-button"
               >
                 Exchange
-              </button>
-
-              <button
-                onClick={() => trackShipment(item._id)}
-                className="track-order-button"
-              >
-                Track Order
               </button>
             </div>
           </div>
         ))}
       </div>
+        {/* Modal for Return & Exchange
+        {returnmodalOpen && (
+        <ReturnExchangeForm
+          isOpen={openReturnModal}
+          onClose={closeReturnModal}
+          onSubmit={handleRequest}
+          orderId={selectedOrder?._id}
+        />
+      )}
+
+       {exchangeModalOpen && (
+        <exchangeOrderForm
+          isOpen={exchangeModalOpen}
+          onClose={closeExchangeModal}
+          onSubmit={handleRequest}
+          orderId={selectedOrder?._id}
+        />
+       )} */}
+
     </div>
   );
 };

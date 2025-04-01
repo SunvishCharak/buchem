@@ -267,7 +267,7 @@ const trackShipment = async (awb_code) => {
   }
 };
 
-const returnOrder = async (order, reason) => {
+const returnOrder = async ({order, reason}) => {
   try {
 
     console.log("order recieved:", order);

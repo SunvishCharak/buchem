@@ -1,0 +1,101 @@
+
+.shipping-policy-container {
+    max-width: 100%;
+    max-width: 800px;
+    margin: 78px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+  }
+  
+  .policy-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: white;
+    border-left: 5px solid #d99bd9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    color: #121212;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+  }
+  
+  p {
+    color: #555;
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+  
+  .note {
+    font-style: italic;
+    color: hsl(6deg 80.28% 61.21%);
+  }
+  
+  .contact-section {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+    font-size: 1.1rem;
+  }
+  
+  .contact-section a {
+    color: #121212;
+    text-decoration: none;
+  }
+  
+  .contact-section a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .shipping-policy-container {
+      padding: 15px;
+    }
+  
+    h1 {
+      font-size: 1.5rem;
+    }
+  
+    h2 {
+      font-size: 1.2rem;
+    }
+  
+    p {
+      font-size: 0.9rem;
+    }
+  
+    .policy-section {
+      padding: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .shipping-policy-container {
+      padding: 10px;
+    }
+  
+    h1 {
+      font-size: 1.3rem;
+    }
+  
+    h2 {
+      font-size: 1rem;
+    }
+  
+    p {
+      font-size: 0.85rem;
+    }
+  }
+  
