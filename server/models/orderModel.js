@@ -1,5 +1,13 @@
 import mongoose from "mongoose";
 
+const itemSchema = new mongoose.Schema({
+  productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+  quantity: { type: Number, required: true },
+  size: { type: String, required: false }, // Add size support
+  customization: { type: Object, required: false }, // Add customization support
+});
+
+
 const orderSchema = new mongoose.Schema({
   userId: { type: String, required: true },
   items: { type: Array, required: true },

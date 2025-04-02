@@ -38,9 +38,17 @@ const updateStock = async (items) => {
 const placeOrderRazorpay = async (req, res) => {
   try {
     const { userId, items, amount, address } = req.body;
+
+    const formattedItems = items.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+      size: item.size || null, // Store size if provided
+      customization: item.customization || null, // Store customization if provided
+    }));
+
     const orderData = {
       userId,
-      items,
+      items: formattedItems,
       amount,
       address,
       paymentMethod: "Razorpay",

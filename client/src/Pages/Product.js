@@ -23,6 +23,13 @@ const Product = () => {
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
   const [pincode, setPincode] = useState("");
+  const [customSize, setCustomSize] = useState({
+    shoulder: "",
+    chest: "",
+    waist: "",
+    hips: ""
+  });
+  const [useCustomSize, setUseCustomSize] = useState(false);
 
   useEffect(() => {
     if (products.length === 0) return;
@@ -40,13 +47,13 @@ const Product = () => {
   }, [productName, products]);
 
     // Navigate to Customization Page with Product Details
-    const handleCustomize = () => {
-      if (!productData){
-      console.log("Product Data:", productData);
-      return;
-      }
-      navigate(`/custom-form/${productData._id}`, { state: { product: productData } });
-    };
+    // const handleCustomize = () => {
+    //   if (!productData){
+    //   console.log("Product Data:", productData);
+    //   return;
+    //   }
+    //   navigate(`/custom-form/${productData._id}`, { state: { product: productData } });
+    // };
 
   return productData ? (
     <div className="product container">
@@ -116,14 +123,36 @@ const Product = () => {
             </div>
           </div>
 
-          <p ><button className="customline" onClick={handleCustomize}>
-            Customize Your Product
-          </button>
-       </p>
+          <div className="custom-size-container">
+            <label className="custom-size-label">Custom Size</label>
+            <div className="custom-size-grid">
+              {["shoulder", "chest", "waist", "hips"].map((key) => (
+                <input
+                key={key}
+                type="text"
+                placeholder={key.replace(/([A-Z])/g, " $1").trim()} // Formats label (e.g., "Upper Chest")
+                value={customSize[key]}
+                onChange={(e)=> setCustomSize({...customSize, [key]: e.target.value})}
+                className="custom-size-input"
+                />
+              ))}
+            </div>
+          </div>
 
           <button
            to="/cart"
-            onClick={() => addToCart(productData.name, size)}
+           // onClick={() => addToCart(productData.name, useCustomSize ? null : size, useCustomSize ? customSize : null)}
+           onClick={() => {
+            const hasStandardSize = size !== "";
+            const hasCustomSize = Object.values(customSize).some(value => value.trim() !== ""); 
+        
+            if (!hasStandardSize && !hasCustomSize) {
+              alert("Please select a standard size or enter a custom size!");
+              return;
+            }
+
+            addToCart(productData.name, hasStandardSize ? size : null, hasCustomSize ? customSize : null);
+          }}
             className="add-to-cart"
           >
             Add to Cart

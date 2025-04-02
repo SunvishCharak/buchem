@@ -42,18 +42,27 @@ const createOrder = async (order) => {
       selling_price: item.price,
       discount: 0,
       tax: 0,
+      size: item.size || "Standard" ,
+      
     }));
     const subTotal = order.items.reduce(
       (total, item) => total + item.price * item.quantity,
       0
     );
+
+        // Store custom size in the comment field
+        const customSizeComments = order.items
+        .filter((item) => item.custom_size)
+        .map((item) => `Custom Size for ${item.name}: ${item.custom_size}`)
+        .join(" | ");
+
     const orderData = {
       order_id: String(order._id),
       order_date: new Date().toISOString(),
       pickup_location: "Home",
       pickup_pincode: "122002",
       channel_id: "",
-      comment: "Order from MERN Store",
+      comment: `Order from MERN Store. ${customSizeComments}`,
       billing_customer_name: order.address.firstName || "Test",
       billing_last_name: order.address.lastName || "Test",
       billing_address: `${order.address.street}, ${order.address.city}, ${order.address.state}, ${order.address.zipcode}`,

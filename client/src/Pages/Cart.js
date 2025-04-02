@@ -54,6 +54,11 @@ const Cart = () => {
                   (product) => product.name === item._id
                 );
 
+                console.log("Cart Item:", item);
+                console.log("Cart Items Object:", cartItems);
+                console.log("Checking cartItems[item._id]:", cartItems[item._id]);
+                console.log("Checking custom size details:", cartItems[item._id]?.[`${item.size}-details`]);
+
                 return (
                   <div key={index} className="cart-item">
                     <div className="cart-item-details">
@@ -70,7 +75,20 @@ const Cart = () => {
                               {currency}
                               {productData.price}
                             </p>
-                            <p className="cart-item-size">Size: {item.size}</p>
+                            {/* <p className="cart-item-size">Size: {item.size}</p> */}
+                            <div className="cart-item-size">
+                              {item.size.startsWith("Custom-") && cartItems[item._id][`${item.size}-details`] ? (
+                               <div>
+                                <p><strong>Custom Size:</strong></p>
+                                <p>Shoulder: {cartItems[item._id][`${item.size}-details`].shoulder}</p>
+                                <p>Chest: {cartItems[item._id][`${item.size}-details`].chest}</p>
+                                <p>Waist: {cartItems[item._id][`${item.size}-details`].waist}</p>
+                                <p>Hips: {cartItems[item._id][`${item.size}-details`].hips}</p>
+                               </div>
+                            ) : (
+                                 <p><strong>Size:</strong> {item.size || "Not Selected"}</p>
+                              )}
+                              </div>
 
                           </div>
                         </div>

@@ -28,12 +28,13 @@ const ShopContextProvider = (props) => {
     localStorage.setItem("cartItems", JSON.stringify(cart));
   };
 
-  const addToCart = async (itemId, size) => {
-    if (!size) {
-      toast.error("Please select a size");
+  const addToCart = async (itemId, size, customSize = null) => {
+    if (!size && !customSize) {
+      toast.error("Please select a size or enter custom size details");
       return;
     }
     let cartData = structuredClone(cartItems);
+    let sizeKey = customSize ? `Custom-${itemId}-${Date.now()}` : size; // Unique key for custom sizes
 
     if (cartData[itemId]) {
       if (cartData[itemId][size]) {
@@ -45,6 +46,11 @@ const ShopContextProvider = (props) => {
       cartData[itemId] = {};
       cartData[itemId][size] = 1;
     }
+
+    if (customSize) {
+      cartData[itemId][`${sizeKey}-details`] = customSize; // Store custom size details
+    }
+    
     setCartItems(cartData);
     saveCartToLocalStorage(cartData);
 
