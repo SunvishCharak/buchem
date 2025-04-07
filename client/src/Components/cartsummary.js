@@ -13,20 +13,20 @@ const CartSummary = () => {
           {currency} {getCartAmount()}.00
         </p>
       </div>
-
+{/* 
       {/* Shipping Fee */}
-      <div className="cart-row">
+      {/* <div className="cart-row">
         <p>Shipping</p>
         <p>
           {currency} {delivery_fee}
         </p>
-      </div>
+      </div>  */}
 
       {/* Total */}
       <div className="cart-row cart-total">
         <b>Total</b>
         <b>
-          {currency} {getCartAmount() + delivery_fee}.00
+          {currency} {getCartAmount() }.00
         </b>
       </div>
     </div>

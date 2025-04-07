@@ -120,7 +120,7 @@ const Checkout = () => {
   return (
     <form onSubmit={onSubmitHandler} className="checkout-container container">
       <div className="delivery-info">
-        <h2 className="section-subtitle">Contact</h2>
+        <h2 className="check-section-subtitle">Contact</h2>
         <input
           required
           onChange={onChangeHandler}
@@ -134,7 +134,7 @@ const Checkout = () => {
           You will receive text messages & emails related to order confirmation
           and shipping updates.
         </p>
-        <h2 className="section-subtitle">Delivery Address</h2>
+        <h2 className="check-section-subtitle">Delivery Address</h2>
         <div className="name-fields">
           <input
             required
@@ -166,12 +166,12 @@ const Checkout = () => {
         />
 
         <input
-          required
+         
           onChange={onChangeHandler}
           name="landmark"
           value={formData.landmark}
           type="text"
-          placeholder="landmark"
+          placeholder="landmark(optional)"
           className="input-field"
         />
 

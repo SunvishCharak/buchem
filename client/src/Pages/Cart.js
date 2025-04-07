@@ -7,29 +7,71 @@ import "../Styles/Cart.css";
 import CartSummary from "../Components/cartsummary.js";
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, navigate } =
+  const { products, currency, cartItems, updateQuantity, navigate, setCartItems, saveCartToLocalStorage } =
     useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
   const [orderInstructions, setOrderInstructions] = useState("");
   const [showOrderNote, setShowOrderNote] = useState(false); // Toggle dropdown
+  const [openDropdown, setOpenDropdown] = useState({});
 
   useEffect(() => {
     if (products.length > 0) {
       const tempData = [];
-      for (const items in cartItems) {
-        for (const item in cartItems[items]) {
-          if (cartItems[items][item] > 0) {
+      const cleanedCart = structuredClone(cartItems);
+      let isCartModified = false;
+  
+      for (const productName in cartItems) {
+        const productExists = products.find((p) => p.name === productName);
+  
+        if (!productExists) {
+          // Product was deleted from the website, remove it from the cart
+          delete cleanedCart[productName];
+          isCartModified = true;
+          continue;
+        }
+  
+        // Now process valid product sizes
+        for (const sizeKey in cartItems[productName]) {
+          // Skip custom size details (we only want the quantity keys)
+          if (sizeKey.includes("-details")) continue;
+  
+          const quantity = cartItems[productName][sizeKey];
+          if (quantity > 0) {
             tempData.push({
-              _id: items,
-              size: item,
-              quantity: cartItems[items][item],
+              _id: productName, // name used as key
+              size: sizeKey,
+              quantity: quantity,
             });
           }
         }
       }
+  
       setCartData(tempData);
+  
+      if (isCartModified) {
+        setCartItems(cleanedCart);
+        saveCartToLocalStorage(cleanedCart);
+      }
     }
   }, [cartItems, products]);
+
+  // useEffect(() => {
+  //   if (products.length > 0) {
+  //     const tempData = [];
+  //     for (const items in cartItems) {
+  //       for (const item in cartItems[items]) {
+  //         if (cartItems[items][item] > 0) {
+  //           tempData.push({
+  //             _id: items,
+  //             size: item,
+  //             quantity: cartItems[items][item],
+  //           });
+  //         }
+  //       }
+  //     }
+  //     setCartData(tempData);
+  //   }
+  // }, [cartItems, products]);
 
   return (
     <div className="cart-page">
@@ -54,6 +96,10 @@ const Cart = () => {
                   (product) => product.name === item._id
                 );
 
+   
+                const isCustom = item.size.startsWith("Custom-");
+                const customDetails = cartItems[item._id]?.[`${item.size}-details`];
+
                 console.log("Cart Item:", item);
                 console.log("Cart Items Object:", cartItems);
                 console.log("Checking cartItems[item._id]:", cartItems[item._id]);
@@ -76,19 +122,47 @@ const Cart = () => {
                               {productData.price}
                             </p>
                             {/* <p className="cart-item-size">Size: {item.size}</p> */}
-                            <div className="cart-item-size">
+                            {/* <div className="cart-item-size">
                               {item.size.startsWith("Custom-") && cartItems[item._id][`${item.size}-details`] ? (
                                <div>
                                 <p><strong>Custom Size:</strong></p>
-                                <p>Shoulder: {cartItems[item._id][`${item.size}-details`].shoulder}</p>
-                                <p>Chest: {cartItems[item._id][`${item.size}-details`].chest}</p>
-                                <p>Waist: {cartItems[item._id][`${item.size}-details`].waist}</p>
-                                <p>Hips: {cartItems[item._id][`${item.size}-details`].hips}</p>
+                                <p>Bust: {cartItems[item._id][`${item.size}-details`].Bust}</p>
+                                <p>waist: {cartItems[item._id][`${item.size}-details`].waist}</p>
+                                <p>hips: {cartItems[item._id][`${item.size}-details`].hips}</p>
+                                <p>Height: {cartItems[item._id][`${item.size}-details`].Height}</p>
                                </div>
                             ) : (
                                  <p><strong>Size:</strong> {item.size || "Not Selected"}</p>
                               )}
-                              </div>
+                              </div> */}
+
+                             <div className="cart-item-size">
+                             {isCustom && customDetails ? (
+                              <div>
+                               <p 
+                               onClick={() =>
+                               setOpenDropdown((prev) => ({
+                               ...prev,
+                              [index]: !prev[index],
+                               }))
+                               }
+                               style={{ cursor: "pointer", fontWeight: "bold" }}
+                                  >
+                               Custom Size {openDropdown[index] ? "▲" : "▼"}
+                              </p>
+                        {openDropdown[index] && (
+                         <div className="custom-size-dropdown">
+                         <p>Bust: {customDetails.Bust}</p>
+                         <p>Waist: {customDetails.waist}</p>
+                         <p>Hips: {customDetails.hips}</p>
+                         <p>Height: {customDetails.Height}</p>
+                        </div>
+                        )}
+                        </div>
+                      ) : (
+                     <p><strong>Size:</strong> {item.size || "Not Selected"}</p>
+                      )}
+                     </div>
 
                           </div>
                         </div>

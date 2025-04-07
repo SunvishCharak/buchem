@@ -75,12 +75,36 @@ const CartTotal = () => {
                 <p className="cart-item-checkout-price">
                   {currency} {product .price}
                 </p>
+                
                 <p className="cart-item-checkout-size">
-                  Size: {Object.keys(cartItems[itemId]).join(", ")}
+                  Size: {Object.keys(cartItems[itemId]).map((sizeKey) => {
+                    const item = cartItems[itemId][sizeKey];
+
+                    if (typeof item === "object" && item.customSize) {
+                      const custom = item.customSize;
+                      return (
+                        <span key={sizeKey}>
+                          Custom - Bust: {custom.Bust}, Waist: {custom.waist}, Hips: {custom.hips}, Height: {custom.Height}
+                        </span>
+                      );
+                    } else {
+                      return <span key={sizeKey}>{sizeKey}</span>
+                  }
+                  }) }
                 </p>
+
                 <p className="cart-item-checkout-quantity">
-                  Quantity:{" "}
-                  {Object.values(cartItems[itemId]).reduce((a, b) => a + b, 0)}
+                Quantity: {
+                Object.entries(cartItems[itemId]).map(([sizeKey, item]) => {
+               if (typeof item === "object") {
+               return `${item.quantity}`;
+               } else {
+               return `${item}`;
+               }
+               }).reduce((a, b) => Number(a) + Number(b), 0)
+              }
+                  {/* Quantity:{" "}
+                  {Object.values(cartItems[itemId]).reduce((a, b) => a + b, 0)} */}
                 </p>
               </div>
             </div>

@@ -24,10 +24,10 @@ const Product = () => {
   const [size, setSize] = useState("");
   const [pincode, setPincode] = useState("");
   const [customSize, setCustomSize] = useState({
-    shoulder: "",
-    chest: "",
+    Bust: "",
     waist: "",
-    hips: ""
+    hips: "",
+    Height: ""
   });
   const [useCustomSize, setUseCustomSize] = useState(false);
 
@@ -107,7 +107,12 @@ const Product = () => {
                   return (
                     <button
                       key={index}
-                      onClick={() => !isOutOfStock && setSize(sizeValues)}
+                      onClick={() => {
+                        if(!isOutOfStock) {
+                          setSize(sizeValues);
+                         setUseCustomSize(false);
+                         setCustomSize({Bust: "", waist: "", hips: "", Height: ""});
+                      }}}
                       className={`size-button ${
                         sizeValues === size ? "size-selected" : ""
                       } ${isOutOfStock ? "size-outofstock" : ""}`}
@@ -123,7 +128,8 @@ const Product = () => {
             </div>
           </div>
 
-          <div className="custom-size-container">
+          
+          {/* <div className="custom-size-container">
             <label className="custom-size-label">Custom Size</label>
             <div className="custom-size-grid">
               {["shoulder", "chest", "waist", "hips"].map((key) => (
@@ -137,10 +143,64 @@ const Product = () => {
                 />
               ))}
             </div>
-          </div>
+          </div> */}
+
+          <div className="custom-size-dropdown">
+           <button
+            onClick={() => {setUseCustomSize((prev) => !prev);
+              setSize("");
+            }}
+            className={`size-button ${useCustomSize ? "size-selected" : ""}`}
+           >
+           Custom Size
+           </button>
+
+          {useCustomSize && (
+
+            <div className="custom-size-container">
+            <h2 className="custom-size-heading">Measurements</h2>
+           <div className="custom-size-grid">
+          <input
+          type="text"
+          placeholder="Enter Bust measurements in inches*"
+           value={customSize.Bust}
+           onChange={(e) => setCustomSize({ ...customSize, Bust: e.target.value })}
+           className="input-field"
+          />
+      
+         <input
+         type="text"
+         placeholder="Enter Waist measurements in inches*"
+         value={customSize.waist}
+         onChange={(e) => setCustomSize({ ...customSize, waist: e.target.value })}
+         className="input-field"
+         />
+        <input
+        type="text"
+        placeholder="Enter Hips measurements in inches*"
+        value={customSize.hips}
+        onChange={(e) => setCustomSize({ ...customSize, hips: e.target.value })}
+        className="input-field"
+        />
+      <input
+        type="text"
+        placeholder="Enter Length measurements in inches*"
+        value={customSize.Height}
+        onChange={(e) => setCustomSize({ ...customSize, Height: e.target.value })}
+        className="input-field"
+      />
+
+       </div>
+      {/* <p className="custom-size-info">
+      Our fashion consultants will get in touch with you to get your fit right.
+      Custom products are not returnable or exchangeable.
+      </p> */}
+     </div> 
+     )}
+     </div>
 
           <button
-           to="/cart"
+           
            // onClick={() => addToCart(productData.name, useCustomSize ? null : size, useCustomSize ? customSize : null)}
            onClick={() => {
             const hasStandardSize = size !== "";
@@ -152,13 +212,17 @@ const Product = () => {
             }
 
             addToCart(productData.name, hasStandardSize ? size : null, hasCustomSize ? customSize : null);
+            navigate("/cart");
           }}
             className="add-to-cart"
           >
             Add to Cart
           </button>
           <button
-            onClick={() => addToWishlist(productData._id)}
+            onClick={() => {addToWishlist(productData._id);
+              navigate("/wishlist");
+            }}
+            
             className="add-to-cart"
           >
             Move to Wishlist

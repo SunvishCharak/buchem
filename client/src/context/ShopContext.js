@@ -12,7 +12,7 @@ const ShopContextProvider = (props) => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+ 
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState("");
   const navigate = useNavigate();
@@ -24,8 +24,13 @@ const ShopContextProvider = (props) => {
   const [productReviews, setProductReviews] = useState({});
   const [customBoxData, setCustomBoxData] = useState({});
 
-  const saveCartToLocalStorage = (cart) => {
-    localStorage.setItem("cartItems", JSON.stringify(cart));
+  const [cartItems, setCartItems] = useState(()=> {
+     const savedCart = localStorage.getItem("cartItems");
+     return savedCart ? JSON.parse(savedCart) : {};
+  });
+
+  const saveCartToLocalStorage = (cartData) => {
+    localStorage.setItem("cartItems", JSON.stringify(cartData));
   };
 
   const addToCart = async (itemId, size, customSize = null) => {
@@ -36,15 +41,16 @@ const ShopContextProvider = (props) => {
     let cartData = structuredClone(cartItems);
     let sizeKey = customSize ? `Custom-${itemId}-${Date.now()}` : size; // Unique key for custom sizes
 
-    if (cartData[itemId]) {
-      if (cartData[itemId][size]) {
-        cartData[itemId][size] += 1;
-      } else {
-        cartData[itemId][size] = 1;
-      }
+    if (!cartData[itemId]){
+      cartData[itemId]= {};
+    }
+
+    if (cartData[itemId][sizeKey]) {
+      cartData[itemId][sizeKey] +=1;
+     
     } else {
-      cartData[itemId] = {};
-      cartData[itemId][size] = 1;
+      //cartData[itemId] = {};
+      cartData[itemId][sizeKey] = 1;
     }
 
     if (customSize) {
@@ -58,7 +64,7 @@ const ShopContextProvider = (props) => {
       try {
         await axios.post(
           backendUrl + "/api/cart/add",
-          { itemId, size },
+          { itemId, size: sizeKey, customSize },
           { headers: { token } }
         );
       } catch (error) {
@@ -525,6 +531,7 @@ const ShopContextProvider = (props) => {
     setShowSearch,
     cartItems,
     setCartItems,
+    saveCartToLocalStorage,
     addToCart,
     getCartCount,
     updateQuantity,

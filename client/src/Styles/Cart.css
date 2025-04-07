@@ -199,11 +199,11 @@
   }
 
   .section-title {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
-    text-align: left;
+  
     padding-bottom: 8px;
-    margin-top: 10px;
+    
   }
 
   /* Cart item container */
@@ -308,7 +308,7 @@
   }
 
   .cart-checkout-button:hover {
-    background-color: #333;
+    background-color: #ecd0ec;
   }
 
   .order-instruction {
@@ -385,4 +385,12 @@
   cursor: pointer;
   margin-top: 10px;
   border-radius: 5px;
+}
+
+.custom-size-dropdown {
+  padding: 6px 10px;
+
+  border-radius: 8px;
+  margin-top: 5px;
+  font-size: 14px;
 }
