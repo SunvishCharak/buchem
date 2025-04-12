@@ -1,10 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useEffect, useContext} from "react";
+import axios from "axios";
 import { ShopContext } from "../context/ShopContext";
 import "../Styles/CartTotal.css";
 import { toast } from "react-toastify";
 
 const CartTotal = () => {
   const {
+    backendUrl,
     currency,
     getCartAmount,
     delivery_fee,
@@ -13,8 +15,43 @@ const CartTotal = () => {
     applyCoupon,
     discount,
     getFinalAmount,
+    zipcode
   } = useContext(ShopContext);
 
+
+  const [deliveryCharges, setDeliveryCharges] = useState(0);
+
+ const fetchShippingCharge = async () => {
+  if (!zipcode || zipcode.length !== 6 || !/^\d{6}/.test(zipcode)) return;
+
+  try {
+    const response = await axios.get(
+      `${backendUrl}/api/order/shipping-charges?zipcode=${zipcode}`
+    );
+    const price = response.data?.data?.[0]?.rate || 0;
+    setDeliveryCharges(price);
+   // setShippingCharge(price);
+  } catch (error) {
+    console.error("Error fetching shipping charge:", error);
+    toast.error("Could not fetch shipping charges");
+  }
+};
+
+useEffect(() => {
+  if (zipcode.length === 6) {
+    fetchShippingCharge();
+  }
+}, [zipcode]);
+
+
+// useEffect(() => {
+//   if (zipcode.length === 6) {
+//     fetch(`/api/shipping?zipcode=${zipcode}`)
+//       .then((res) => res.json())
+//       .then((data) => setDeliveryCharges(data.shippingCharge))
+//       .catch((err) => console.error(err));
+//   }
+// }, [zipcode]);
 
   const [couponCode, setCouponCode] = useState("");
 
@@ -129,7 +166,7 @@ const CartTotal = () => {
         <div className="cart-row">
           <p>Shipping</p>
           <p>
-            {currency} {delivery_fee}
+            {currency} {deliveryCharges}
           </p>
         </div>
 

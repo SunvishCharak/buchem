@@ -9,6 +9,7 @@ import {
   trackShipment,
   returnOrder,
   exchangeOrder,
+  getShippingCharge as getDynamicCharge,
 } from "../helpers/shiprocketHelper.js";
 dotenv.config();
 
@@ -273,6 +274,32 @@ const createExchangeOrderController = async (req, res) => {
   }
 };
 
+// controllers/orderController.js
+
+const getShippingCharge = async (req, res) => {
+  const { zipcode, totalWeight, isCOD } = req.query;
+
+  if (!zipcode || zipcode.length !== 6) {
+    return res.status(400).json({ error: "Invalid zipcode" });
+  }
+
+  const weight = totalWeight ? parseFloat(totalWeight) : 0.5; // default 0.5 kg
+  const cod = isCOD === "true";
+
+  const charge = await getDynamicCharge(zipcode, weight, cod);
+  return res.json({ charge });
+};
+//  const getShippingCharge = async (req, res) => {
+//   const { zipcode } = req.query;
+//   if (!zipcode || zipcode.length !== 6) {
+//     return res.status(400).json({ error: "Invalid zipcode" });
+//   }
+
+//   // example static charge (replace with Shiprocket API call later)
+//   return res.json({ charge: 70 });
+// };
+
+
 export {
   verifyRazorpay,
   placeOrderRazorpay,
@@ -282,4 +309,5 @@ export {
   trackOrderStatus,
   createReturnOrderController,
   createExchangeOrderController,
+  getShippingCharge
 };

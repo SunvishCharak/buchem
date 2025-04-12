@@ -1,12 +1,23 @@
 import axios from "axios";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const SHIPROCKET_EMAIL = process.env.SHIPROCKET_EMAIL;
 const SHIPROCKET_PASSWORD = process.env.SHIPROCKET_PASSWORD;
 
 let shiprocketToken = null;
+let tokenExpiry = null;
 
 const getShiprocketToken = async () => {
   try {
+    const now = Date.now();
+
+    // Reuse token if it's still valid (Shiprocket tokens usually expire in 24 hours)
+    if (shiprocketToken && tokenExpiry && now < tokenExpiry) {
+      return shiprocketToken;
+    }
+
     const response = await axios.post(
       "https://apiv2.shiprocket.in/v1/external/auth/login",
       {
@@ -15,6 +26,9 @@ const getShiprocketToken = async () => {
       }
     );
     shiprocketToken = response.data.token;
+        // Shiprocket tokens are valid for 24 hours, setting expiry for 23 hours to be safe
+        tokenExpiry = now + 23 * 60 * 60 * 1000;
+
     return shiprocketToken;
   } catch (error) {
     console.error(
@@ -107,6 +121,104 @@ const createOrder = async (order) => {
       error.response?.data?.message || "Failed to create order on Shiprocket"
     );
   }
+};
+
+// 📦 Calculate Shipping Charges
+const calculateShippingCharges = async (zipcode, weight, isCOD = false) => {
+  const token = await getShiprocketToken();
+  const originPincode = "110086";
+
+  const response = await axios.get("https://apiv2.shiprocket.in/v1/external/courier/serviceability/", {
+    headers: { Authorization: `Bearer ${token}` },
+    params: {
+      pickup_postcode: originPincode,
+      delivery_postcode: zipcode,
+      cod: isCOD ? 1 : 0,
+      weight: weight,
+    },
+  });
+
+  const available = response.data.data.available_courier_companies;
+  const lowestCharge = available.reduce((min, courier) => {
+    return courier.rate < min ? courier.rate : min;
+  }, Infinity);
+
+  return lowestCharge !== Infinity ? lowestCharge : 70;
+};
+// const calculateShippingCharges = async (deliveryPincode, weight = 0.5) => {
+//   try {
+//     const token = await getShiprocketToken();
+
+//     const pickupPincode = "122002"; // your fixed warehouse/dispatch pincode
+
+//     const response = await axios.get(
+//       `https://apiv2.shiprocket.in/v1/external/courier/serviceability/?pickup_postcode=${pickupPincode}&delivery_postcode=${deliveryPincode}&cod=0&weight=${weight}`,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       }
+//     );
+
+    const getShippingCharge = async (destinationPincode, totalWeightInKg, isCOD = false) => {
+      try {
+        const token = await getShiprocketToken(); // Assuming this gets and returns the token
+        const originPincode = "110086"; // Replace with your warehouse pincode
+    
+        const response = await axios.get("https://apiv2.shiprocket.in/v1/external/courier/serviceability/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            pickup_postcode: originPincode,
+            delivery_postcode: destinationPincode,
+            cod: isCOD ? 1 : 0,
+            weight: totalWeightInKg,
+          },
+        });
+    
+        // Return the lowest charge available
+    //     const available = response.data.data.available_courier_companies;
+    //     const lowestCharge = available.reduce((min, courier) => {
+    //       return courier.rate < min ? courier.rate : min;
+    //     }, Infinity);
+    
+    //     return lowestCharge;
+    //   } catch (error) {
+    //     console.error("🚨 Error getting shipping charge:", error.message);
+    //     return 100; // fallback default
+    //   }
+    // };
+
+    const couriers = response.data?.data?.available_courier_companies || [];
+    const recommendedId = response.data?.data?.recommended_courier_company_id;
+
+    const recommended = couriers.find(c => c.courier_company_id === recommendedId);
+
+    //if (!recommended) throw new Error("No courier found for this route");
+    if (!recommended) {
+      console.warn("No recommended courier found. Selecting the cheapest available one.");
+      recommended = couriers.sort((a, b) => a.rate - b.rate)[0]; // fallback to cheapest
+    }
+    
+
+    return {
+      courier_name: recommended.courier_name,
+      rate: recommended.rate,
+      delivery_days: recommended.estimated_delivery_days,
+    };
+    // console.log("Couriers Available:", couriers);
+    // console.log("Recommended Courier:", recommended);
+
+  } catch (error) {
+    console.error("Shiprocket Charge Error:", error.response?.data || error.message);
+    return {
+      courier_name: "Default Courier",
+      rate: 100,
+      delivery_days: null,
+    };
+  }
+
 };
 
 // 🔹 Fetch Available Couriers
@@ -412,4 +524,7 @@ export {
   getEstimatedDelivery,
   returnOrder,
   exchangeOrder,
+  getShiprocketToken,
+  calculateShippingCharges,
+   getShippingCharge
 };

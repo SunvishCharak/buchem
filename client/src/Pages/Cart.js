@@ -17,18 +17,20 @@ const Cart = () => {
   useEffect(() => {
     if (products.length > 0) {
       const tempData = [];
-      const cleanedCart = structuredClone(cartItems);
-      let isCartModified = false;
+      //const cleanedCart = structuredClone(cartItems);
+      // let isCartModified = false;
   
       for (const productName in cartItems) {
-        const productExists = products.find((p) => p.name === productName);
+
+        const productSizes = cartItems[productName];
+        //const productExists = products.find((p) => p.name === productName);
   
-        if (!productExists) {
-          // Product was deleted from the website, remove it from the cart
-          delete cleanedCart[productName];
-          isCartModified = true;
-          continue;
-        }
+        // if (!productExists) {
+        //   // Product was deleted from the website, remove it from the cart
+        //   delete cleanedCart[productName];
+        //   isCartModified = true;
+        //   continue;
+        // }
   
         // Now process valid product sizes
         for (const sizeKey in cartItems[productName]) {
@@ -48,10 +50,10 @@ const Cart = () => {
   
       setCartData(tempData);
   
-      if (isCartModified) {
-        setCartItems(cleanedCart);
-        saveCartToLocalStorage(cleanedCart);
-      }
+    //   if (isCartModified) {
+    //     setCartItems(cleanedCart);
+    //     saveCartToLocalStorage(cleanedCart);
+    //   }
     }
   }, [cartItems, products]);
 

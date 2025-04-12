@@ -12,7 +12,7 @@ const ShopContextProvider = (props) => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
- 
+  const [cartItems, setCartItems] = useState([]);
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState("");
   const navigate = useNavigate();
@@ -23,14 +23,11 @@ const ShopContextProvider = (props) => {
   const [userAccount, setUserAccount] = useState(null);
   const [productReviews, setProductReviews] = useState({});
   const [customBoxData, setCustomBoxData] = useState({});
+  
+  
 
-  const [cartItems, setCartItems] = useState(()=> {
-     const savedCart = localStorage.getItem("cartItems");
-     return savedCart ? JSON.parse(savedCart) : {};
-  });
-
-  const saveCartToLocalStorage = (cartData) => {
-    localStorage.setItem("cartItems", JSON.stringify(cartData));
+  const saveCartToLocalStorage = (cart) => {
+    localStorage.setItem("cartItems", JSON.stringify(cart));
   };
 
   const addToCart = async (itemId, size, customSize = null) => {
@@ -531,7 +528,6 @@ const ShopContextProvider = (props) => {
     setShowSearch,
     cartItems,
     setCartItems,
-    saveCartToLocalStorage,
     addToCart,
     getCartCount,
     updateQuantity,
