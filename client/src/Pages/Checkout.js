@@ -55,7 +55,10 @@ const Checkout = () => {
           const { data } = await axios.post(
             backendUrl + "/api/order/verifyrazorpay",
             response,
-            { headers: { token } }
+            { headers: {
+               Authorization: `Bearer ${token}`
+
+             } }
           );
           if (data.success) {
             navigate("/orders");
@@ -100,7 +103,9 @@ const Checkout = () => {
       const responseRazorpay = await axios.post(
         backendUrl + "/api/order/razorpay",
         orderData,
-        { headers: { token } }
+        { headers: {
+          Authorization: `Bearer ${token}` },
+         }
       );
       if (responseRazorpay.data.success) {
         initPay(responseRazorpay.data.order);
@@ -166,9 +171,9 @@ const Checkout = () => {
         />
 
         <input
-          required
+          
           onChange={onChangeHandler}
-          name="landmark"
+          name="landmark (optional)"
           value={formData.landmark}
           type="text"
           placeholder="landmark"

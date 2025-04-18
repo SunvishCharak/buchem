@@ -1,23 +1,14 @@
 import axios from "axios";
-import dotenv from "dotenv";
+import orderModel from "../models/orderModel.js";
 
-dotenv.config();
 
 const SHIPROCKET_EMAIL = process.env.SHIPROCKET_EMAIL;
 const SHIPROCKET_PASSWORD = process.env.SHIPROCKET_PASSWORD;
 
 let shiprocketToken = null;
-let tokenExpiry = null;
 
 const getShiprocketToken = async () => {
   try {
-    const now = Date.now();
-
-    // Reuse token if it's still valid (Shiprocket tokens usually expire in 24 hours)
-    if (shiprocketToken && tokenExpiry && now < tokenExpiry) {
-      return shiprocketToken;
-    }
-
     const response = await axios.post(
       "https://apiv2.shiprocket.in/v1/external/auth/login",
       {
@@ -26,9 +17,6 @@ const getShiprocketToken = async () => {
       }
     );
     shiprocketToken = response.data.token;
-        // Shiprocket tokens are valid for 24 hours, setting expiry for 23 hours to be safe
-        tokenExpiry = now + 23 * 60 * 60 * 1000;
-
     return shiprocketToken;
   } catch (error) {
     console.error(
@@ -56,27 +44,18 @@ const createOrder = async (order) => {
       selling_price: item.price,
       discount: 0,
       tax: 0,
-      size: item.size || "Standard" ,
-      
     }));
     const subTotal = order.items.reduce(
       (total, item) => total + item.price * item.quantity,
       0
     );
-
-        // Store custom size in the comment field
-        const customSizeComments = order.items
-        .filter((item) => item.custom_size)
-        .map((item) => `Custom Size for ${item.name}: ${item.custom_size}`)
-        .join(" | ");
-
     const orderData = {
       order_id: String(order._id),
       order_date: new Date().toISOString(),
       pickup_location: "Home",
       pickup_pincode: "122002",
       channel_id: "",
-      comment: `Order from MERN Store. ${customSizeComments}`,
+      comment: "Order from MERN Store",
       billing_customer_name: order.address.firstName || "Test",
       billing_last_name: order.address.lastName || "Test",
       billing_address: `${order.address.street}, ${order.address.city}, ${order.address.state}, ${order.address.zipcode}`,
@@ -123,104 +102,6 @@ const createOrder = async (order) => {
   }
 };
 
-// 📦 Calculate Shipping Charges
-const calculateShippingCharges = async (zipcode, weight, isCOD = false) => {
-  const token = await getShiprocketToken();
-  const originPincode = "110086";
-
-  const response = await axios.get("https://apiv2.shiprocket.in/v1/external/courier/serviceability/", {
-    headers: { Authorization: `Bearer ${token}` },
-    params: {
-      pickup_postcode: originPincode,
-      delivery_postcode: zipcode,
-      cod: isCOD ? 1 : 0,
-      weight: weight,
-    },
-  });
-
-  const available = response.data.data.available_courier_companies;
-  const lowestCharge = available.reduce((min, courier) => {
-    return courier.rate < min ? courier.rate : min;
-  }, Infinity);
-
-  return lowestCharge !== Infinity ? lowestCharge : 70;
-};
-// const calculateShippingCharges = async (deliveryPincode, weight = 0.5) => {
-//   try {
-//     const token = await getShiprocketToken();
-
-//     const pickupPincode = "122002"; // your fixed warehouse/dispatch pincode
-
-//     const response = await axios.get(
-//       `https://apiv2.shiprocket.in/v1/external/courier/serviceability/?pickup_postcode=${pickupPincode}&delivery_postcode=${deliveryPincode}&cod=0&weight=${weight}`,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       }
-//     );
-
-    const getShippingCharge = async (destinationPincode, totalWeightInKg, isCOD = false) => {
-      try {
-        const token = await getShiprocketToken(); // Assuming this gets and returns the token
-        const originPincode = "110086"; // Replace with your warehouse pincode
-    
-        const response = await axios.get("https://apiv2.shiprocket.in/v1/external/courier/serviceability/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            pickup_postcode: originPincode,
-            delivery_postcode: destinationPincode,
-            cod: isCOD ? 1 : 0,
-            weight: totalWeightInKg,
-          },
-        });
-    
-        // Return the lowest charge available
-    //     const available = response.data.data.available_courier_companies;
-    //     const lowestCharge = available.reduce((min, courier) => {
-    //       return courier.rate < min ? courier.rate : min;
-    //     }, Infinity);
-    
-    //     return lowestCharge;
-    //   } catch (error) {
-    //     console.error("🚨 Error getting shipping charge:", error.message);
-    //     return 100; // fallback default
-    //   }
-    // };
-
-    const couriers = response.data?.data?.available_courier_companies || [];
-    const recommendedId = response.data?.data?.recommended_courier_company_id;
-
-    const recommended = couriers.find(c => c.courier_company_id === recommendedId);
-
-    //if (!recommended) throw new Error("No courier found for this route");
-    if (!recommended) {
-      console.warn("No recommended courier found. Selecting the cheapest available one.");
-      recommended = couriers.sort((a, b) => a.rate - b.rate)[0]; // fallback to cheapest
-    }
-    
-
-    return {
-      courier_name: recommended.courier_name,
-      rate: recommended.rate,
-      delivery_days: recommended.estimated_delivery_days,
-    };
-    // console.log("Couriers Available:", couriers);
-    // console.log("Recommended Courier:", recommended);
-
-  } catch (error) {
-    console.error("Shiprocket Charge Error:", error.response?.data || error.message);
-    return {
-      courier_name: "Default Courier",
-      rate: 100,
-      delivery_days: null,
-    };
-  }
-
-};
-
 // 🔹 Fetch Available Couriers
 const fetchAvailableCouriers = async (order) => {
   try {
@@ -245,8 +126,10 @@ const fetchAvailableCouriers = async (order) => {
         },
       }
     );
+    console.log("@shiprocket response",response.data.data)
     const recommendedCourierId =
       response.data?.data?.recommended_courier_company_id;
+      console.log("@recommended",recommendedCourierId)
     if (!recommendedCourierId) {
       console.error("No recommended courier found");
       return null;
@@ -392,15 +275,16 @@ const returnOrder = async ({order, reason}) => {
   try {
 
     console.log("order recieved:", order);
-    console.log("reson recieved:", reason);
-    console.log("reson Recieved:",order.reason); // Debugging line
+    console.log("reson Recieved:",reason); // Debugging line
     
     const token = await getShiprocketToken();
     if (!token) throw new Error("Shiprocket Token is missing!");
 
     // const { orderId, reason } = req.body;
 
-   //const order = await orderModel.findById(order._Id).populate("userId");
+  //  const order = await orderModel.findById(order._Id).populate("userId");
+  console.log(!Array.isArray(order.items));
+  console.log(!order || !Array.isArray(order.items));
     if (!order || !Array.isArray(order.items)) {
       throw new Error("Order is not valid or does not contain items array");
       // return res
@@ -415,9 +299,10 @@ const returnOrder = async ({order, reason}) => {
       discount: 0,
       tax: 0,
     }));
-    console.log("Formatted order items:", formattedOrderItems);
+    console.log("@Formatted order items:", formattedOrderItems);
 
     const { _id, address, paymentMethod, amount } = order;
+    console.log(address);
     const returnOrderPayload = {
       order_id: _id.toString(),
       order_date: new Date().toISOString().split("T")[0],
@@ -452,7 +337,7 @@ const returnOrder = async ({order, reason}) => {
       breadth: 10,
       height: 10,
       weight: 0.5,
-      reason,
+      return_reason:reason,
     };
     const config = {
       method: "post",
@@ -467,7 +352,7 @@ const returnOrder = async ({order, reason}) => {
     console.log("Config => ", config);
 
     const response = await axios(config);
-    if (response.data.status_code === 1) {
+    if (response.status === 200) {
       await orderModel.findByIdAndUpdate(order._id, {
         status: "Return Initiated",
       });
@@ -524,7 +409,4 @@ export {
   getEstimatedDelivery,
   returnOrder,
   exchangeOrder,
-  getShiprocketToken,
-  calculateShippingCharges,
-   getShippingCharge
 };

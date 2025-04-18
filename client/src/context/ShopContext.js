@@ -10,8 +10,8 @@ const ShopContextProvider = (props) => {
   const location = useLocation();
   const delivery_fee = 100;
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-  const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
+  const [search,setSearch]=useState("");
   const [cartItems, setCartItems] = useState([]);
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState("");
@@ -23,37 +23,32 @@ const ShopContextProvider = (props) => {
   const [userAccount, setUserAccount] = useState(null);
   const [productReviews, setProductReviews] = useState({});
   const [customBoxData, setCustomBoxData] = useState({});
-  
-  
-
+  const[extraCharge,setExtraCharge]=useState(0);
   const saveCartToLocalStorage = (cart) => {
     localStorage.setItem("cartItems", JSON.stringify(cart));
   };
 
-  const addToCart = async (itemId, size, customSize = null) => {
-    if (!size && !customSize) {
-      toast.error("Please select a size or enter custom size details");
+  const addToCart = async (itemId, size) => {
+    if (!size) {
+      toast.error("Please select a size");
       return;
     }
     let cartData = structuredClone(cartItems);
-    let sizeKey = customSize ? `Custom-${itemId}-${Date.now()}` : size; // Unique key for custom sizes
-
-    if (!cartData[itemId]){
-      cartData[itemId]= {};
-    }
-
-    if (cartData[itemId][sizeKey]) {
-      cartData[itemId][sizeKey] +=1;
-     
+    console.log("@ITEMID",itemId)
+    console.log("@SIZE",size)
+    console.log("@CARTDATA@",cartData)
+    if (cartData[itemId]) {
+      console.log('@cartdataitemid',cartData[itemId])
+      if (cartData[itemId][size]) {
+        cartData[itemId][size] += 1;
+      } else {
+        cartData[itemId][size] = 1;
+      }
     } else {
-      //cartData[itemId] = {};
-      cartData[itemId][sizeKey] = 1;
+      cartData[itemId] = {};
+      cartData[itemId][size] = 1;
     }
-
-    if (customSize) {
-      cartData[itemId][`${sizeKey}-details`] = customSize; // Store custom size details
-    }
-    
+    console.log("@CARTDAT@@",cartData)
     setCartItems(cartData);
     saveCartToLocalStorage(cartData);
 
@@ -61,8 +56,12 @@ const ShopContextProvider = (props) => {
       try {
         await axios.post(
           backendUrl + "/api/cart/add",
-          { itemId, size: sizeKey, customSize },
-          { headers: { token } }
+          { itemId, size },{
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+          
         );
       } catch (error) {
         console.log(error);
@@ -89,8 +88,12 @@ const ShopContextProvider = (props) => {
     try {
       const response = await axios.post(
         `${backendUrl}/api/order/track-order`,
-        { orderId },
-        { headers: { token } }
+        { orderId },{
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+}
+
       );
       if (response.data.success && response.data.trackingInfo) {
         const trackUrl = response.data.trackingInfo.track_url;
@@ -122,7 +125,12 @@ const ShopContextProvider = (props) => {
         await axios.post(
           backendUrl + "/api/cart/update",
           { itemId, size, quantity },
-          { headers: { token } }
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+          
         );
       } catch (error) {
         console.log(error);
@@ -135,11 +143,16 @@ const ShopContextProvider = (props) => {
     try {
       const response = await axios.post(
         backendUrl + "/api/cart/get",
-        {},
-        { headers: { token } }
+        {},{
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+}
+
       );
       if (response.data.success) {
         setCartItems(response.data.cartData);
+        console.log('@CARTITEMS',cartItems);
       }
     } catch (error) {
       console.log(error);
@@ -226,12 +239,7 @@ const ShopContextProvider = (props) => {
     }
   }, [cartItems]);
 
-  useEffect(() => {
-    const storedCart = localStorage.getItem("cartItems");
-    if (storedCart) {
-      setCartItems(JSON.parse(storedCart));
-    }
-  }, []);
+
 
   useEffect(() => {
     if (cartItems) {
@@ -258,8 +266,12 @@ const ShopContextProvider = (props) => {
     try {
       const response = await axios.post(
         `${backendUrl}/api/user/wishlist/add`,
-        { itemId },
-        { headers: { token } }
+        { itemId },{
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+}
+
       );
 
       if (response.data.success) {
@@ -276,8 +288,12 @@ const ShopContextProvider = (props) => {
     try {
       const response = await axios.post(
         `${backendUrl}/api/user/wishlist/remove`,
-        { itemId },
-        { headers: { token } }
+        { itemId },{
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+}
+
       );
       if (response.data.success) {
         setWishlist(response.data.wishlist.items);
@@ -292,8 +308,12 @@ const ShopContextProvider = (props) => {
   const getUserWishlist = async () => {
     if (token) {
       try {
-        const response = await axios.get(`${backendUrl}/api/user/wishlist`, {
-          headers: { token },
+        const response = await axios.get(`${backendUrl}/api/user/wishlist`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        
+        
         });
         if (response.data.success) {
           setWishlist(response.data.wishlist);
@@ -326,8 +346,11 @@ const ShopContextProvider = (props) => {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(`${backendUrl}/api/user/account`, {
-        headers: { token },
-      });
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      );
 
       if (response.data.success) {
         if (response.data.data) {
@@ -358,8 +381,11 @@ const ShopContextProvider = (props) => {
     try {
       const response = await axios.post(
         backendUrl + "/api/cart/apply-coupon",
-        { code },
-        { headers: { token } }
+        { code },{
+
+          
+}
+
       );
 
       if (response.data.success) {
@@ -380,7 +406,7 @@ const ShopContextProvider = (props) => {
   };
 
   const getFinalAmount = () => {
-    const totalAmount = getCartAmount() + delivery_fee;
+    const totalAmount = getCartAmount() +extraCharge+ delivery_fee;
     return totalAmount - discount;
   };
 
@@ -417,8 +443,12 @@ const ShopContextProvider = (props) => {
     try {
       const response = await axios.post(
         `${backendUrl}/api/order/exchange-order`,
-        { orderId, productId, newSize },
-        { headers: { token } }
+        { orderId, productId, newSize },{
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+}
+
       );
       if (response.data.success) {
         toast.success("Order exchange initiated successfully!");
@@ -498,10 +528,18 @@ const ShopContextProvider = (props) => {
 
    // Function to update custom data
    const handleCustomBoxData = async (data) => {
-    setCartItems((prev) => {})
-    setCustomBoxData(data); // Update state
+    console.log("@DATApre",data);
 
+    console.log(cartItems);
+    setCartItems(prev => ({...prev, data}));
+    setCustomBoxData(data); // Update state
+    console.log("@DATAout",data);
+    console.log("@CARTItems",cartItems)
     try {
+      const prod=products.find((item) => String(item._id)=== String(data.productId));
+      console.log("@prodName",prod.name)
+      const cart =await addToCart(prod.name,data.size);
+      console.log("@cartresponse",cart);
       const response = await fetch(`${backendUrl}/api/custom-box`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -509,6 +547,7 @@ const ShopContextProvider = (props) => {
       });
 
       const result = await response.json();
+      navigate('/cart')
       if (!response.ok) {
         console.error("Error:", result.message);
       }
@@ -560,7 +599,8 @@ const ShopContextProvider = (props) => {
     submitProductReview,
     customBoxData,
     handleCustomBoxData,
-    
+    extraCharge,
+    setExtraCharge
   };
 
   return (
@@ -569,3 +609,4 @@ const ShopContextProvider = (props) => {
 };
 
 export default ShopContextProvider;
+  

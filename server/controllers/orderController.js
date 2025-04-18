@@ -9,7 +9,6 @@ import {
   trackShipment,
   returnOrder,
   exchangeOrder,
-  getShippingCharge as getDynamicCharge,
 } from "../helpers/shiprocketHelper.js";
 dotenv.config();
 
@@ -39,17 +38,10 @@ const updateStock = async (items) => {
 const placeOrderRazorpay = async (req, res) => {
   try {
     const { userId, items, amount, address } = req.body;
-
-    const formattedItems = items.map((item) => ({
-      productId: item.productId,
-      quantity: item.quantity,
-      size: item.size || null, // Store size if provided
-      customization: item.customization || null, // Store customization if provided
-    }));
-
+    console.log("razorpay",req.body)
     const orderData = {
       userId,
-      items: formattedItems,
+      items,
       amount,
       address,
       paymentMethod: "Razorpay",
@@ -231,17 +223,24 @@ const createReturnOrderController = async (req, res) => {
 
     const { orderId, reason, }= req.body;
     const order = await orderModel.findById(orderId);
-
+    console.log("@ITEMS",order.items);
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
 
     const returnOrderResponse = await returnOrder({ order, reason });
-
+if(returnOrderResponse.success && returnOrderResponse.data.status_code===21){
     res.status(200).json({
       message: "Return order created successfully",
-      data: returnOrderResponse,
-    });
+      data: returnOrderResponse.data,
+    });}
+else if(returnOrderResponse.success){
+  res.status(200).json({
+    message: "Return order could not be initiated",
+    data: returnOrderResponse.data,}
+  )
+  return
+}
   } catch (error) {
     console.error("Error in returnOrderController:", error.message);
     res.status(500).json({ message: "Internal server error" });
@@ -274,32 +273,6 @@ const createExchangeOrderController = async (req, res) => {
   }
 };
 
-// controllers/orderController.js
-
-const getShippingCharge = async (req, res) => {
-  const { zipcode, totalWeight, isCOD } = req.query;
-
-  if (!zipcode || zipcode.length !== 6) {
-    return res.status(400).json({ error: "Invalid zipcode" });
-  }
-
-  const weight = totalWeight ? parseFloat(totalWeight) : 0.5; // default 0.5 kg
-  const cod = isCOD === "true";
-
-  const charge = await getDynamicCharge(zipcode, weight, cod);
-  return res.json({ charge });
-};
-//  const getShippingCharge = async (req, res) => {
-//   const { zipcode } = req.query;
-//   if (!zipcode || zipcode.length !== 6) {
-//     return res.status(400).json({ error: "Invalid zipcode" });
-//   }
-
-//   // example static charge (replace with Shiprocket API call later)
-//   return res.json({ charge: 70 });
-// };
-
-
 export {
   verifyRazorpay,
   placeOrderRazorpay,
@@ -309,5 +282,4 @@ export {
   trackOrderStatus,
   createReturnOrderController,
   createExchangeOrderController,
-  getShippingCharge
 };

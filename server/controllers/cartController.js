@@ -4,40 +4,21 @@ import CouponModel from "../models/CouponModel.js";
 // add products to cart
 const addToCart = async (req, res) => {
   try {
-    const { userId, itemId, size, customSize } = req.body;
+    console.log(req.body);
+    const { userId, itemId, size } = req.body;
     const userData = await UserModel.findById(userId);
     let cartData = await userData.cartData;
 
-    //let sizeKey = customSize ? `Custom-${itemId}-${Date.now()}` : size;
-    
-    const isCustomSize = typeof size === "object";
-
-    if (!cartData[itemId]){
-      cartData[itemId] = [];
-    }
-
-    const existingItemIndex = cartData[itemId].findIndex(
-      (item) => JSON.stringify(item.size) === JSON.stringify(size)
-    );
-    
-    if (existingItemIndex !== -1) {
-      // If the same custom size exists, increase the quantity
-      cartData[itemId][existingItemIndex].quantity += 1;
+    if (cartData[itemId]) {
+      if (cartData[itemId][size]) {
+        cartData[itemId][size] += 1;
+      } else {
+        cartData[itemId][size] = 1;
+      }
     } else {
-      // Otherwise, add it as a new entry
-      cartData[itemId].push({ size, quantity: 1 });
+      cartData[itemId] = {};
+      cartData[itemId][size] = 1;
     }
-
-    // if (cartData[itemId]) {
-    //   if (cartData[itemId][size]) {
-    //     cartData[itemId][size] += 1;
-    //   } else {
-    //     cartData[itemId][size] = 1;
-    //   }
-    // } else {
-    //   cartData[itemId] = {};
-    //   cartData[itemId][size] = 1;
-    // }
 
     await UserModel.findByIdAndUpdate(userId, { cartData });
     res.json({ success: true, message: "Added to cart" });
@@ -53,32 +34,9 @@ const updateCart = async (req, res) => {
     const { userId, itemId, size, quantity } = req.body;
 
     const userData = await UserModel.findById(userId);
-   // let cartData = await userData.cartData;
-   let cartData = userData.cartData || {};
+    let cartData = await userData.cartData;
 
-   if (!cartData[itemId]) {
-    return res.json({ success: false, message: "Item not found in cart" });
-  }
-
-  // Find the matching item with the same size
-  const existingItemIndex = cartData[itemId].findIndex(
-    (item) => JSON.stringify(item.size) === JSON.stringify(size)
-  );
-
-  if (!existingItem) {
-    return res.json({ success: false, message: "Size not found in cart" });
-  }
-
-  // Update quantity
-  cartData[itemId][existingItemIndex].quantity = quantity;
-
-
-   
-  //  if (!cartData[itemId] || !cartData[itemId][size]) {
-  //   return res.json({ success: false, message: "Item not found in cart" });
-  // }
-
-    // cartData[itemId][size].quantity = quantity;
+    cartData[itemId][size] = quantity;
 
     await UserModel.findByIdAndUpdate(userId, { cartData });
     res.json({ success: true, message: "Cart updated" });
@@ -94,8 +52,7 @@ const getUserCart = async (req, res) => {
     const { userId } = req.body;
 
     const userData = await UserModel.findById(userId);
-    //let cartData = await userData.cartData;
-    let cartData = userData.cartData || {};
+    let cartData = await userData.cartData;
 
     res.json({ success: true, cartData });
   } catch (error) {

@@ -53,7 +53,7 @@ app.get("/", (req, res) => {
 
 // app.use("/api/upload", uploadImage);
 
-//app.use("/api/shipping", orderRouter);
+
 
 app.use((err, req, res, next) => {
   console.error("🔥 ERROR:", err.stack);
